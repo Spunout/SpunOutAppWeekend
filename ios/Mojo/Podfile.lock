@@ -1,10 +1,16 @@
 PODS:
+  - Facebook-iOS-SDK (3.11.1)
   - FXBlurView (1.5.1)
+  - Parse (1.2.18):
+    - Facebook-iOS-SDK (~> 3.11)
 
 DEPENDENCIES:
   - FXBlurView (~> 1.5.1)
+  - Parse
 
 SPEC CHECKSUMS:
+  Facebook-iOS-SDK: 42a1de39170b858d675c2453d8aace55c51be2bb
   FXBlurView: 073fdfdf3fa8d715130d2c1392ba1545551776f1
+  Parse: 6dd57f2af9f89dc6facc755cec4e96f8b739b1fb
 
 COCOAPODS: 0.29.0

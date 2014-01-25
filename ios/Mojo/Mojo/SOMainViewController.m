@@ -9,6 +9,7 @@
 #import "SOMainViewController.h"
 #import "SOPointMeterView.h"
 #import "UIColor+Miyo.h"
+#import <Parse/Parse.h>
 #import <QuartzCore/QuartzCore.h>
 
 @interface SOMainViewController ()
@@ -52,11 +53,11 @@
                                                                       metrics:nil
                                                                         views:views]];
     
-    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 300.0, 340.0, 180.0)];
-    footerView.backgroundColor = [UIColor colorWithRed:0.235 green: 0.773 blue:0.0 alpha:1.0];
-    [self.view addSubview:footerView];
+    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 480.0)];
+    topView.backgroundColor = [UIColor colorWithRed:0 green:0.624 blue:0.89 alpha:1.0];
+    [self.view addSubview:topView];
     
-    UILabel *moodSelectorLabel = [[UILabel alloc] initWithFrame:CGRectMake(55.0, 300.0, 280.0, 50.0)];
+    UILabel *moodSelectorLabel = [[UILabel alloc] initWithFrame:CGRectMake(55.0, 380.0, 280.0, 50.0)];
     moodSelectorLabel.text = @"How are you feeling today?";
     moodSelectorLabel.textColor = [UIColor whiteColor];
     [self.view addSubview:moodSelectorLabel];
@@ -75,12 +76,26 @@
     [self.view addGestureRecognizer:tap];
     
     [self.view addSubview:button];
+
+//    moodSelectorSlider.tintColor = [UIColor whiteColor];
+//    [self.view addSubview:moodSelectorSlider];
     
+//    [moodSelectorSlider addTarget:self action:@selector(moodChanged:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 -(void)buttonTapped:(UITapGestureRecognizer *)gr
 {
     NSLog(@"hi!");
+}
+
+
+- (IBAction)moodChanged:(UISlider *)sender {
+    NSNumber *moodValue = [[NSNumber alloc] initWithFloat:(sender.value * 100.0)];
+    PFObject *mood = [PFObject objectWithClassName:@"Mood"];
+    mood[@"value"] = moodValue;
+
+    
+    [mood saveInBackground];
 }
 
 - (void)didReceiveMemoryWarning
