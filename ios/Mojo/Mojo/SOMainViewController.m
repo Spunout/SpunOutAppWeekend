@@ -100,6 +100,11 @@
                                                                         views:views]];
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 -(void)didTouchActivityLogButton
 {
     [self.activityMenuViewController presentMenu];
