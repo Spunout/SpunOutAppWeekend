@@ -15,6 +15,7 @@
 @interface SOMainViewController ()
 
 @property (nonatomic, strong) SOPointMeterView *pointMeterView;
+@property (nonatomic, strong) UIButton *activityLogButton;
 
 @end
 
@@ -31,13 +32,32 @@
     self.pointMeterView.progress = 0.75;
     self.pointMeterView.translatesAutoresizingMaskIntoConstraints = NO;
 
+    self.activityLogButton = [[UIButton alloc] init];
+    [self.activityLogButton setTitle:@"Log Activity" forState:UIControlStateNormal];
+    self.activityLogButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+    self.activityLogButton.titleLabel.textColor = [UIColor whiteColor];
+    self.activityLogButton.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.activityLogButton.layer.cornerRadius = 5;
+    self.activityLogButton.layer.borderWidth = 2.0f;
+    self.activityLogButton.layer.masksToBounds = YES;
+    self.activityLogButton.translatesAutoresizingMaskIntoConstraints = NO;
+
+    [self.activityLogButton addTarget:self
+                               action:@selector(didTouchActivityLogButton)
+                     forControlEvents:UIControlEventTouchUpInside];
+
     [self.view addSubview:self.pointMeterView];
+    [self.view addSubview:self.activityLogButton];
 
-    NSDictionary *views = @{@"pointMeterView": self.pointMeterView};
+    NSDictionary *views = @{@"pointMeterView": self.pointMeterView,
+                            @"activityLogButton": self.activityLogButton};
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[pointMeterView(250)]"
+    NSDictionary *metrics = @{@"pointMeterSize": @250,
+                              @"buttonWidth": @150};
+
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[pointMeterView(pointMeterSize)]"
                                                                       options:0
-                                                                      metrics:nil
+                                                                      metrics:metrics
                                                                         views:views]];
 
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.pointMeterView
@@ -48,48 +68,38 @@
                                                          multiplier:1.0
                                                            constant:0]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(100)-[pointMeterView(250)]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(80)-[pointMeterView(pointMeterSize)]"
                                                                       options:0
-                                                                      metrics:nil
+                                                                      metrics:metrics
                                                                         views:views]];
-    
-    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 480.0)];
-    topView.backgroundColor = [UIColor colorWithRed:0 green:0.624 blue:0.89 alpha:1.0];
-    [self.view addSubview:topView];
-    
-    UILabel *moodSelectorLabel = [[UILabel alloc] initWithFrame:CGRectMake(55.0, 380.0, 280.0, 50.0)];
-    moodSelectorLabel.text = @"How are you feeling today?";
-    moodSelectorLabel.textColor = [UIColor whiteColor];
-    [self.view addSubview:moodSelectorLabel];
-    
-//    UISlider *moodSelectorSlider = [[UISlider alloc] initWithFrame:CGRectMake(55.0, 350.0, 200.0, 60.0)];
-//    [self.view addSubview:moodSelectorSlider];
-    
-    UIView *button = [[UIView alloc] initWithFrame:CGRectMake(35.0, 380.0, 250.0, 50.0)];
-    button.layer.borderColor = [UIColor whiteColor].CGColor;
-    button.layer.cornerRadius = 5;
-    button.layer.borderWidth = 1.0f;
-    button.layer.masksToBounds = YES;
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(buttonTapped:)];
-    
-    [self.view addGestureRecognizer:tap];
-    
-    [self.view addSubview:button];
 
-//    moodSelectorSlider.tintColor = [UIColor whiteColor];
-//    [self.view addSubview:moodSelectorSlider];
-    
-//    [moodSelectorSlider addTarget:self action:@selector(moodChanged:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[activityLogButton(buttonWidth)]"
+                                                                      options:0
+                                                                      metrics:metrics
+                                                                        views:views]];
+
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.activityLogButton
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1.0
+                                                           constant:0]];
+
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[pointMeterView]-(50)-[activityLogButton(50)]"
+                                                                      options:0
+                                                                      metrics:metrics
+                                                                        views:views]];
 }
 
--(void)buttonTapped:(UITapGestureRecognizer *)gr
+-(void)didTouchActivityLogButton
 {
-    NSLog(@"hi!");
+
 }
 
 
-- (IBAction)moodChanged:(UISlider *)sender {
+- (IBAction)moodChanged:(UISlider *)sender
+{
     NSNumber *moodValue = [[NSNumber alloc] initWithFloat:(sender.value * 100.0)];
     PFObject *mood = [PFObject objectWithClassName:@"Mood"];
     mood[@"value"] = moodValue;
