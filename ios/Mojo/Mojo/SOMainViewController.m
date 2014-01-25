@@ -48,6 +48,12 @@
     self.activityLogButton.layer.masksToBounds = YES;
     self.activityLogButton.translatesAutoresizingMaskIntoConstraints = NO;
 
+    UILabel *moodLabel = [[UILabel alloc] init];
+    moodLabel.text = @"HOW ARE YOU FEELING?";
+    moodLabel.textColor = [UIColor whiteColor];
+    moodLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+    moodLabel.translatesAutoresizingMaskIntoConstraints = NO;
+
     self.moodSlider = [[UISlider alloc] init];
     self.moodSlider.minimumTrackTintColor = [UIColor whiteColor];
     self.moodSlider.maximumTrackTintColor = [UIColor miyoLightBlue];
@@ -60,6 +66,7 @@
                      forControlEvents:UIControlEventTouchUpInside];
 
     [self.view addSubview:self.pointMeterView];
+    [self.view addSubview:moodLabel];
     [self.view addSubview:self.moodSlider];
     [self.view addSubview:self.activityLogButton];
 
@@ -67,6 +74,7 @@
     [self addChildViewController:self.activityMenuViewController];
 
     NSDictionary *views = @{@"pointMeterView": self.pointMeterView,
+                            @"moodLabel": moodLabel,
                             @"moodSlider": self.moodSlider,
                             @"activityLogButton": self.activityLogButton};
 
@@ -86,7 +94,20 @@
                                                          multiplier:1.0
                                                            constant:0]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(80)-[pointMeterView(pointMeterSize)]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(50)-[pointMeterView(pointMeterSize)]"
+                                                                      options:0
+                                                                      metrics:metrics
+                                                                        views:views]];
+
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:moodLabel
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1.0
+                                                           constant:0]];
+
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[pointMeterView]-(20)-[moodLabel]"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];
@@ -96,15 +117,7 @@
                                                                       metrics:metrics
                                                                         views:views]];
 
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.moodSlider
-                                                          attribute:NSLayoutAttributeCenterX
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeCenterX
-                                                         multiplier:1.0
-                                                           constant:0]];
-
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[pointMeterView]-(20)-[moodSlider]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[moodLabel]-(10)-[moodSlider]"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];
