@@ -6,16 +6,21 @@
 //  Copyright (c) 2014 SpunOut. All rights reserved.
 //
 
-#import "SOMainViewController.h"
-#import "SOPointMeterView.h"
-#import "UIColor+Miyo.h"
 #import <Parse/Parse.h>
 #import <QuartzCore/QuartzCore.h>
+
+#import "SOMainViewController.h"
+#import "SOPointMeterView.h"
+#import "SOActivityMenuViewController.h"
+
+#import "UIColor+Miyo.h"
 
 @interface SOMainViewController ()
 
 @property (nonatomic, strong) SOPointMeterView *pointMeterView;
 @property (nonatomic, strong) UIButton *activityLogButton;
+
+@property (nonatomic, strong) SOActivityMenuViewController *activityMenuViewController;
 
 @end
 
@@ -48,6 +53,9 @@
 
     [self.view addSubview:self.pointMeterView];
     [self.view addSubview:self.activityLogButton];
+
+    self.activityMenuViewController = [[SOActivityMenuViewController alloc] initWithSuperview:self.view];
+    [self addChildViewController:self.activityMenuViewController];
 
     NSDictionary *views = @{@"pointMeterView": self.pointMeterView,
                             @"activityLogButton": self.activityLogButton};
@@ -94,9 +102,8 @@
 
 -(void)didTouchActivityLogButton
 {
-
+    [self.activityMenuViewController presentMenu];
 }
-
 
 - (IBAction)moodChanged:(UISlider *)sender
 {
