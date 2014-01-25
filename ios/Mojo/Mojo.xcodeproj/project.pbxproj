@@ -19,6 +19,7 @@
 		8B3FE44B1893DA500014945F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3FE4331893DA500014945F /* UIKit.framework */; };
 		8B3FE4531893DA500014945F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8B3FE4511893DA500014945F /* InfoPlist.strings */; };
 		8B3FE4551893DA500014945F /* MojoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE4541893DA500014945F /* MojoTests.m */; };
+		8B3FE4601893DC480014945F /* SOMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE45F1893DC480014945F /* SOMainViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,8 @@
 		8B3FE4501893DA500014945F /* MojoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MojoTests-Info.plist"; sourceTree = "<group>"; };
 		8B3FE4521893DA500014945F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8B3FE4541893DA500014945F /* MojoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MojoTests.m; sourceTree = "<group>"; };
+		8B3FE45E1893DC480014945F /* SOMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOMainViewController.h; sourceTree = "<group>"; };
+		8B3FE45F1893DC480014945F /* SOMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOMainViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +112,8 @@
 			children = (
 				8B3FE43E1893DA500014945F /* SOAppDelegate.h */,
 				8B3FE43F1893DA500014945F /* SOAppDelegate.m */,
+				8B3FE45E1893DC480014945F /* SOMainViewController.h */,
+				8B3FE45F1893DC480014945F /* SOMainViewController.m */,
 				8B3FE4411893DA500014945F /* Images.xcassets */,
 				8B3FE4361893DA500014945F /* Supporting Files */,
 			);
@@ -241,6 +246,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B3FE4401893DA500014945F /* SOAppDelegate.m in Sources */,
+				8B3FE4601893DC480014945F /* SOMainViewController.m in Sources */,
 				8B3FE43C1893DA500014945F /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -442,6 +448,7 @@
 				8B3FE45A1893DA500014945F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8B3FE45B1893DA500014945F /* Build configuration list for PBXNativeTarget "MojoTests" */ = {
 			isa = XCConfigurationList;
@@ -450,6 +457,7 @@
 				8B3FE45D1893DA500014945F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
