@@ -8,6 +8,7 @@
 
 #import "SOMainViewController.h"
 #import "SOPointMeterView.h"
+#import "UIColor+Miyo.h"
 
 @interface SOMainViewController ()
 
@@ -21,7 +22,7 @@
 {
     [super viewDidLoad];
 
-    self.view.backgroundColor = [UIColor blueColor];
+    self.view.backgroundColor = [UIColor miyoBlue];
 
     self.pointMeterView = [[SOPointMeterView alloc] init];
     self.pointMeterView.label.text = @"10";

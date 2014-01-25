@@ -7,6 +7,7 @@
 //
 
 #import "SOPointMeterView.h"
+#import "UIColor+Miyo.h"
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 
@@ -71,9 +72,9 @@ static const CGFloat kBorderWidth = 15.0f;
 
     // Fill
     if (self.progress > 0.0f) {
-        [[UIColor greenColor] set];
+        [[UIColor miyoGreen] set];
         CGContextAddLines(context, points, sizeof(points) / sizeof(points[0]));
-        CGContextAddArc(context, center.x, center.y, radius, DEGREES_TO_RADIANS(kAngleOffset), angle, true);
+        CGContextAddArc(context, center.x, center.y, radius, DEGREES_TO_RADIANS(kAngleOffset), angle, false);
         CGContextDrawPath(context, kCGPathEOFill);
     }
 
