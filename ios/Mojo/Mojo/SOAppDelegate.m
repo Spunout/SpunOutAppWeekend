@@ -8,6 +8,7 @@
 
 #import "SOAppDelegate.h"
 #import "SOMainViewController.h"
+#import <Parse/parse.h>
 
 @implementation SOAppDelegate
 
@@ -20,7 +21,83 @@
     self.window.rootViewController = mainViewController;
 
     [self.window makeKeyAndVisible];
+    
+    [Parse setApplicationId:@"2MS1N1zfmK380WV1zOYR1jhJWAj5BEz6uuZsAbIW" clientKey:@"Ke6SEnngzAwKRSWoPumG22ojb7UOjLl312uwOAp8"];
+    
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
+    NSString *idfv = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    
+    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    
+    bool isRegistered = [prefs stringForKey:@"isRegistered"];
+    
+    if (isRegistered)
+    {
+        NSLog(@"User Successfully logged in.");
+        [self loginUser:idfv :prefs];
+
+    } else {
+        
+        NSLog(@"User not registered, let's register!");
+        [self registerUser:idfv :prefs];
+    }
+    
     return YES;
 }
+
+-(void)loginUser:(NSString *)idfv :(NSUserDefaults *)prefs
+{
+    [PFUser logInWithUsernameInBackground:idfv password:[self sha256HashFor:idfv]
+        block:^(PFUser *user, NSError *error) {
+            
+            if (user) {
+                // yay successful login
+                [prefs setBool:YES forKey:@"isLoggedIn"];
+                
+            } else {
+                // not successful
+                [prefs setBool:NO forKey:@"isLoggedIn"];
+                
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, you could not be logged in. Try re-launching the app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alert show];
+            }
+    }];
+}
+
+-(void)registerUser:(NSString *)idfv :(NSUserDefaults *)prefs
+{
+    PFUser *user = [PFUser user];
+    user.username = idfv;
+    user.password = [self sha256HashFor:idfv];
+    [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error)
+     {
+         if (!error)
+         {
+             [prefs setBool:YES forKey:@"isRegistered"];
+         } else {
+             [prefs setBool:NO forKey:@"isRegistered"];
+             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, you could not be registered. Try re-launching the app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+             [alert show];
+         }
+         
+     }];
+}
+
+-(NSString*)sha256HashFor:(NSString*)input
+{
+    const char* str = [input UTF8String];
+    unsigned char result[256];
+    CC_SHA256(str, strlen(str), result);
+    
+    NSMutableString *ret = [NSMutableString stringWithCapacity:256*2];
+    for(int i = 0; i<256; i++)
+    {
+        [ret appendFormat:@"%02x",result[i]];
+    }
+    return ret;
+}
+
+
 
 @end

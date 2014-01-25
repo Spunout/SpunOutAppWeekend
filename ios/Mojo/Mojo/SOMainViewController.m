@@ -9,6 +9,7 @@
 #import "SOMainViewController.h"
 #import "SOPointMeterView.h"
 #import <QuartzCore/QuartzCore.h>
+#import <Parse/Parse.h>
 
 @interface SOMainViewController ()
 
@@ -22,7 +23,7 @@
 {
     [super viewDidLoad];
 
-    self.view.backgroundColor = [UIColor blueColor];
+    self.view.backgroundColor =[UIColor colorWithRed:0 green:0.624 blue:0.89 alpha:1.0];
 
     self.pointMeterView = [[SOPointMeterView alloc] init];
     self.pointMeterView.label.text = @"10";
@@ -74,13 +75,13 @@
     [self.view addGestureRecognizer:tap];
     
     [self.view addSubview:button];
-    
 }
 
 -(void)buttonTapped:(UITapGestureRecognizer *)gr
 {
     NSLog(@"hi!");
 }
+
 
 - (void)didReceiveMemoryWarning
 {
