@@ -8,6 +8,7 @@
 
 #import "SOMainViewController.h"
 #import "SOPointMeterView.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface SOMainViewController ()
 
@@ -59,8 +60,26 @@
     moodSelectorLabel.textColor = [UIColor whiteColor];
     [self.view addSubview:moodSelectorLabel];
     
-    UISlider *moodSelectorSlider = [[UISlider alloc] initWithFrame:CGRectMake(55.0, 350.0, 200.0, 60.0)];
-    [self.view addSubview:moodSelectorSlider];
+//    UISlider *moodSelectorSlider = [[UISlider alloc] initWithFrame:CGRectMake(55.0, 350.0, 200.0, 60.0)];
+//    [self.view addSubview:moodSelectorSlider];
+    
+    UIView *button = [[UIView alloc] initWithFrame:CGRectMake(35.0, 380.0, 250.0, 50.0)];
+    button.layer.borderColor = [UIColor whiteColor].CGColor;
+    button.layer.cornerRadius = 5;
+    button.layer.borderWidth = 1.0f;
+    button.layer.masksToBounds = YES;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(buttonTapped:)];
+    
+    [self.view addGestureRecognizer:tap];
+    
+    [self.view addSubview:button];
+    
+}
+
+-(void)buttonTapped:(UITapGestureRecognizer *)gr
+{
+    NSLog(@"hi!");
 }
 
 - (void)didReceiveMemoryWarning
