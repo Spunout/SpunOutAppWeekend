@@ -18,6 +18,7 @@
 @interface SOMainViewController ()
 
 @property (nonatomic, strong) SOPointMeterView *pointMeterView;
+@property (nonatomic, strong) UISlider *moodSlider;
 @property (nonatomic, strong) UIButton *activityLogButton;
 
 @property (nonatomic, strong) SOActivityMenuViewController *activityMenuViewController;
@@ -47,17 +48,26 @@
     self.activityLogButton.layer.masksToBounds = YES;
     self.activityLogButton.translatesAutoresizingMaskIntoConstraints = NO;
 
+    self.moodSlider = [[UISlider alloc] init];
+    self.moodSlider.minimumTrackTintColor = [UIColor whiteColor];
+    self.moodSlider.maximumTrackTintColor = [UIColor miyoLightBlue];
+    self.moodSlider.minimumValueImage = [UIImage imageNamed:@"smiley-sad"];
+    self.moodSlider.maximumValueImage = [UIImage imageNamed:@"smiley-happy"];
+    self.moodSlider.translatesAutoresizingMaskIntoConstraints = NO;
+
     [self.activityLogButton addTarget:self
                                action:@selector(didTouchActivityLogButton)
                      forControlEvents:UIControlEventTouchUpInside];
 
     [self.view addSubview:self.pointMeterView];
+    [self.view addSubview:self.moodSlider];
     [self.view addSubview:self.activityLogButton];
 
     self.activityMenuViewController = [[SOActivityMenuViewController alloc] initWithSuperview:self.view];
     [self addChildViewController:self.activityMenuViewController];
 
     NSDictionary *views = @{@"pointMeterView": self.pointMeterView,
+                            @"moodSlider": self.moodSlider,
                             @"activityLogButton": self.activityLogButton};
 
     NSDictionary *metrics = @{@"pointMeterSize": @250,
@@ -81,6 +91,24 @@
                                                                       metrics:metrics
                                                                         views:views]];
 
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(20)-[moodSlider]-(20)-|"
+                                                                      options:0
+                                                                      metrics:metrics
+                                                                        views:views]];
+
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.moodSlider
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1.0
+                                                           constant:0]];
+
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[pointMeterView]-(20)-[moodSlider]"
+                                                                      options:0
+                                                                      metrics:metrics
+                                                                        views:views]];
+
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[activityLogButton(buttonWidth)]"
                                                                       options:0
                                                                       metrics:metrics
@@ -94,7 +122,7 @@
                                                          multiplier:1.0
                                                            constant:0]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[pointMeterView]-(50)-[activityLogButton(50)]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[moodSlider]-(20)-[activityLogButton(50)]"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];

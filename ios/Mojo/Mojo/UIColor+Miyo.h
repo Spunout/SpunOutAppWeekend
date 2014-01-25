@@ -12,6 +12,8 @@
 
 + (UIColor *)miyoBlue;
 
++ (UIColor *)miyoLightBlue;
+
 + (UIColor *)miyoGreen;
 
 @end
