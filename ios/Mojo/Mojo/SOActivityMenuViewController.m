@@ -11,11 +11,14 @@
 #import <FXBlurView/FXBlurView.h>
 #import <QuartzCore/QuartzCore.h>
 
+static const CGFloat kMenuHeight = 300.0f;
+
 @interface SOActivityMenuViewController ()
 
 @property (nonatomic, strong) FXBlurView *menuView;
 @property (nonatomic, strong) UIView *dimView;
 @property (nonatomic, strong) NSLayoutConstraint *menuViewTopConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *dimViewHeightConstraint;
 
 @end
 
@@ -45,7 +48,7 @@
         NSDictionary *views = @{@"menuView": self.menuView,
                                 @"dimView": self.dimView};
 
-        NSDictionary *metrics = @{@"menuViewHeight": @300};
+        NSDictionary *metrics = @{@"menuViewHeight": @(kMenuHeight)};
 
         [view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[menuView]|"
                                                                      options:0
@@ -72,10 +75,23 @@
                                                                                    metrics:metrics
                                                                                      views:views]];
 
-        [view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[dimView]|"
-                                                                                   options:0
-                                                                                   metrics:metrics
-                                                                                     views:views]];
+        [view addConstraint:[NSLayoutConstraint constraintWithItem:self.dimView
+                                                         attribute:NSLayoutAttributeHeight
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:view
+                                                         attribute:NSLayoutAttributeHeight
+                                                        multiplier:1.0
+                                                          constant:0]];
+
+        self.dimViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.dimView
+                                                                    attribute:NSLayoutAttributeBottom
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:view
+                                                                    attribute:NSLayoutAttributeBottom
+                                                                   multiplier:1.0
+                                                                     constant:0];
+
+        [view addConstraint:self.dimViewHeightConstraint];
     }
 
     return self;
@@ -85,7 +101,8 @@
 {
     [UIView animateWithDuration:0.5
                      animations:^{
-                         self.menuViewTopConstraint.constant = -300;
+                         self.menuViewTopConstraint.constant = -kMenuHeight;
+                         self.dimViewHeightConstraint.constant = -kMenuHeight;
                          self.dimView.alpha = 1.0;
                          [self.menuView.superview layoutIfNeeded];
                      }
