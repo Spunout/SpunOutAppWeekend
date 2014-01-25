@@ -20,6 +20,7 @@
 		8B3FE4531893DA500014945F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8B3FE4511893DA500014945F /* InfoPlist.strings */; };
 		8B3FE4551893DA500014945F /* MojoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE4541893DA500014945F /* MojoTests.m */; };
 		8B3FE4601893DC480014945F /* SOMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE45F1893DC480014945F /* SOMainViewController.m */; };
+		8B3FE4641893DDCB0014945F /* SOPointMeterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE4631893DDCB0014945F /* SOPointMeterView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,8 @@
 		8B3FE4541893DA500014945F /* MojoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MojoTests.m; sourceTree = "<group>"; };
 		8B3FE45E1893DC480014945F /* SOMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOMainViewController.h; sourceTree = "<group>"; };
 		8B3FE45F1893DC480014945F /* SOMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOMainViewController.m; sourceTree = "<group>"; };
+		8B3FE4621893DDCB0014945F /* SOPointMeterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPointMeterView.h; sourceTree = "<group>"; };
+		8B3FE4631893DDCB0014945F /* SOPointMeterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPointMeterView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,8 +115,8 @@
 			children = (
 				8B3FE43E1893DA500014945F /* SOAppDelegate.h */,
 				8B3FE43F1893DA500014945F /* SOAppDelegate.m */,
-				8B3FE45E1893DC480014945F /* SOMainViewController.h */,
-				8B3FE45F1893DC480014945F /* SOMainViewController.m */,
+				8B3FE4611893DD480014945F /* Controllers */,
+				8B3FE4651893DDD80014945F /* Views */,
 				8B3FE4411893DA500014945F /* Images.xcassets */,
 				8B3FE4361893DA500014945F /* Supporting Files */,
 			);
@@ -147,6 +150,24 @@
 				8B3FE4511893DA500014945F /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8B3FE4611893DD480014945F /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				8B3FE45E1893DC480014945F /* SOMainViewController.h */,
+				8B3FE45F1893DC480014945F /* SOMainViewController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		8B3FE4651893DDD80014945F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				8B3FE4621893DDCB0014945F /* SOPointMeterView.h */,
+				8B3FE4631893DDCB0014945F /* SOPointMeterView.m */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -246,6 +267,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B3FE4401893DA500014945F /* SOAppDelegate.m in Sources */,
+				8B3FE4641893DDCB0014945F /* SOPointMeterView.m in Sources */,
 				8B3FE4601893DC480014945F /* SOMainViewController.m in Sources */,
 				8B3FE43C1893DA500014945F /* main.m in Sources */,
 			);
