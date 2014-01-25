@@ -8,14 +8,13 @@
 
 #import "SOActivityMenuViewController.h"
 
-#import <FXBlurView/FXBlurView.h>
 #import <QuartzCore/QuartzCore.h>
 
 static const CGFloat kMenuHeight = 300.0f;
 
 @interface SOActivityMenuViewController ()
 
-@property (nonatomic, strong) FXBlurView *menuView;
+@property (nonatomic, strong) UIToolbar *menuView;
 @property (nonatomic, strong) UIView *dimView;
 @property (nonatomic, strong) NSLayoutConstraint *menuViewTopConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *dimViewHeightConstraint;
@@ -31,9 +30,7 @@ static const CGFloat kMenuHeight = 300.0f;
     if (self) {
         self.view.backgroundColor = [UIColor clearColor];
 
-        self.menuView = [[FXBlurView alloc] init];
-        self.menuView.dynamic = YES;
-        self.menuView.tintColor = [UIColor whiteColor];
+        self.menuView = [[UIToolbar alloc] init];
         self.menuView.translatesAutoresizingMaskIntoConstraints = NO;
 
         self.dimView = [[UIView alloc] init];
@@ -105,9 +102,6 @@ static const CGFloat kMenuHeight = 300.0f;
                          self.dimViewHeightConstraint.constant = -kMenuHeight;
                          self.dimView.alpha = 1.0;
                          [self.menuView.superview layoutIfNeeded];
-                     }
-                     completion:^(BOOL finished) {
-                         self.menuView.dynamic = NO;
                      }];
 }
 
