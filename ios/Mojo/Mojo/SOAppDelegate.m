@@ -8,7 +8,11 @@
 
 #import "SOAppDelegate.h"
 #import "SOMainViewController.h"
+<<<<<<< HEAD
 #import <Parse/parse.h>
+=======
+#import <Parse/Parse.h>
+>>>>>>> 5e6770108f1d79fcdebab9f0554d24bcaa9aec0c
 
 @implementation SOAppDelegate
 
@@ -22,6 +26,7 @@
 
     [self.window makeKeyAndVisible];
     
+
     [Parse setApplicationId:@"2MS1N1zfmK380WV1zOYR1jhJWAj5BEz6uuZsAbIW" clientKey:@"Ke6SEnngzAwKRSWoPumG22ojb7UOjLl312uwOAp8"];
     
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
@@ -42,6 +47,15 @@
         NSLog(@"User not registered, let's register!");
         [self registerUser:idfv :prefs];
     }
+
+    // Parse set up
+    
+    [Parse setApplicationId:@"2MS1N1zfmK380WV1zOYR1jhJWAj5BEz6uuZsAbIW" clientKey:@"Ke6SEnngzAwKRSWoPumG22ojb7UOjLl312uwOAp8"];
+    
+    // track stats with Parse
+    
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
     
     return YES;
 }

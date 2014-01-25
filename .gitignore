@@ -22,3 +22,5 @@ DerivedData
 # CocoaPods
 Pods
 
+# Parse
+iOS/Mojo/Parse.framework

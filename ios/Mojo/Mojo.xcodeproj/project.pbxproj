@@ -21,6 +21,7 @@
 		8B3FE4551893DA500014945F /* MojoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE4541893DA500014945F /* MojoTests.m */; };
 		8B3FE4601893DC480014945F /* SOMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE45F1893DC480014945F /* SOMainViewController.m */; };
 		8B3FE4641893DDCB0014945F /* SOPointMeterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE4631893DDCB0014945F /* SOPointMeterView.m */; };
+<<<<<<< HEAD
 		CD220A8D18942627003085F1 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD220A8C18942627003085F1 /* Parse.framework */; };
 		CD220A8F1894264C003085F1 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD220A8E1894264C003085F1 /* AudioToolbox.framework */; };
 		CD220A9118942659003085F1 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD220A9018942659003085F1 /* CFNetwork.framework */; };
@@ -31,6 +32,12 @@
 		CD220A9B18942688003085F1 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD220A9A18942688003085F1 /* Security.framework */; };
 		CD220A9D1894268E003085F1 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD220A9C1894268E003085F1 /* StoreKit.framework */; };
 		CD220A9F18942697003085F1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD220A9E18942697003085F1 /* SystemConfiguration.framework */; };
+=======
+		8B3FE469189414690014945F /* SOActivityMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE468189414690014945F /* SOActivityMenuViewController.m */; };
+		8B3FE473189424350014945F /* UIColor+Miyo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE472189424350014945F /* UIColor+Miyo.m */; };
+		ACE2C59D28294FC79F4FC2E3 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B3F6851B21F6430CB59563A3 /* libPods.a */; };
+		CDC9790E1893EBFA006E20CC /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDC9790D1893EBFA006E20CC /* QuartzCore.framework */; };
+>>>>>>> 5e6770108f1d79fcdebab9f0554d24bcaa9aec0c
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +71,7 @@
 		8B3FE45F1893DC480014945F /* SOMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOMainViewController.m; sourceTree = "<group>"; };
 		8B3FE4621893DDCB0014945F /* SOPointMeterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPointMeterView.h; sourceTree = "<group>"; };
 		8B3FE4631893DDCB0014945F /* SOPointMeterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPointMeterView.m; sourceTree = "<group>"; };
+<<<<<<< HEAD
 		CD220A8C18942627003085F1 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		CD220A8E1894264C003085F1 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		CD220A9018942659003085F1 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -74,6 +82,15 @@
 		CD220A9A18942688003085F1 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		CD220A9C1894268E003085F1 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CD220A9E18942697003085F1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+=======
+		8B3FE467189414690014945F /* SOActivityMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOActivityMenuViewController.h; sourceTree = "<group>"; };
+		8B3FE468189414690014945F /* SOActivityMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOActivityMenuViewController.m; sourceTree = "<group>"; };
+		8B3FE471189424350014945F /* UIColor+Miyo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Miyo.h"; sourceTree = "<group>"; };
+		8B3FE472189424350014945F /* UIColor+Miyo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Miyo.m"; sourceTree = "<group>"; };
+		8E4C2323C4944840907D3063 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		B3F6851B21F6430CB59563A3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDC9790D1893EBFA006E20CC /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+>>>>>>> 5e6770108f1d79fcdebab9f0554d24bcaa9aec0c
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +98,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+<<<<<<< HEAD
 				CD220A9F18942697003085F1 /* SystemConfiguration.framework in Frameworks */,
 				CD220A9D1894268E003085F1 /* StoreKit.framework in Frameworks */,
 				CD220A9B18942688003085F1 /* Security.framework in Frameworks */,
@@ -88,12 +106,16 @@
 				CD220A971894267C003085F1 /* MobileCoreServices.framework in Frameworks */,
 				CD220A9518942677003085F1 /* libz.dylib in Frameworks */,
 				CD220A931894266C003085F1 /* CoreLocation.framework in Frameworks */,
+=======
+				CDC9790E1893EBFA006E20CC /* QuartzCore.framework in Frameworks */,
+>>>>>>> 5e6770108f1d79fcdebab9f0554d24bcaa9aec0c
 				8B3FE4321893DA500014945F /* CoreGraphics.framework in Frameworks */,
 				CD220A9118942659003085F1 /* CFNetwork.framework in Frameworks */,
 				CD220A8F1894264C003085F1 /* AudioToolbox.framework in Frameworks */,
 				8B3FE4341893DA500014945F /* UIKit.framework in Frameworks */,
 				CD220A8D18942627003085F1 /* Parse.framework in Frameworks */,
 				8B3FE4301893DA500014945F /* Foundation.framework in Frameworks */,
+				ACE2C59D28294FC79F4FC2E3 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,6 +140,7 @@
 				8B3FE44E1893DA500014945F /* MojoTests */,
 				8B3FE42E1893DA500014945F /* Frameworks */,
 				8B3FE42D1893DA500014945F /* Products */,
+				8E4C2323C4944840907D3063 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -133,6 +156,7 @@
 		8B3FE42E1893DA500014945F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
 				CD220A9E18942697003085F1 /* SystemConfiguration.framework */,
 				CD220A9C1894268E003085F1 /* StoreKit.framework */,
 				CD220A9A18942688003085F1 /* Security.framework */,
@@ -142,10 +166,14 @@
 				CD220A921894266C003085F1 /* CoreLocation.framework */,
 				CD220A9018942659003085F1 /* CFNetwork.framework */,
 				CD220A8E1894264C003085F1 /* AudioToolbox.framework */,
+=======
+				CDC9790D1893EBFA006E20CC /* QuartzCore.framework */,
+>>>>>>> 5e6770108f1d79fcdebab9f0554d24bcaa9aec0c
 				8B3FE42F1893DA500014945F /* Foundation.framework */,
 				8B3FE4311893DA500014945F /* CoreGraphics.framework */,
 				8B3FE4331893DA500014945F /* UIKit.framework */,
 				8B3FE4481893DA500014945F /* XCTest.framework */,
+				B3F6851B21F6430CB59563A3 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -155,6 +183,7 @@
 			children = (
 				8B3FE43E1893DA500014945F /* SOAppDelegate.h */,
 				8B3FE43F1893DA500014945F /* SOAppDelegate.m */,
+				8B3FE46A18941CDE0014945F /* Categories */,
 				8B3FE4611893DD480014945F /* Controllers */,
 				8B3FE4651893DDD80014945F /* Views */,
 				8B3FE4411893DA500014945F /* Images.xcassets */,
@@ -197,6 +226,8 @@
 			children = (
 				8B3FE45E1893DC480014945F /* SOMainViewController.h */,
 				8B3FE45F1893DC480014945F /* SOMainViewController.m */,
+				8B3FE467189414690014945F /* SOActivityMenuViewController.h */,
+				8B3FE468189414690014945F /* SOActivityMenuViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -210,6 +241,15 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
+		8B3FE46A18941CDE0014945F /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				8B3FE471189424350014945F /* UIColor+Miyo.h */,
+				8B3FE472189424350014945F /* UIColor+Miyo.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -217,9 +257,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8B3FE4581893DA500014945F /* Build configuration list for PBXNativeTarget "Mojo" */;
 			buildPhases = (
+				5F583652DA094553A2C8E20B /* Check Pods Manifest.lock */,
 				8B3FE4281893DA500014945F /* Sources */,
 				8B3FE4291893DA500014945F /* Frameworks */,
 				8B3FE42A1893DA500014945F /* Resources */,
+				41ACE7D1D968409FAB7C3FFE /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -301,15 +343,50 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		41ACE7D1D968409FAB7C3FFE /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5F583652DA094553A2C8E20B /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		8B3FE4281893DA500014945F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B3FE469189414690014945F /* SOActivityMenuViewController.m in Sources */,
 				8B3FE4401893DA500014945F /* SOAppDelegate.m in Sources */,
 				8B3FE4641893DDCB0014945F /* SOPointMeterView.m in Sources */,
 				8B3FE4601893DC480014945F /* SOMainViewController.m in Sources */,
 				8B3FE43C1893DA500014945F /* main.m in Sources */,
+				8B3FE473189424350014945F /* UIColor+Miyo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,12 +502,18 @@
 		};
 		8B3FE4591893DA500014945F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8E4C2323C4944840907D3063 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+<<<<<<< HEAD
 					/Users/jameseggers/Projects/iOS/SpunOutAppWeekend/ios/Mojo,
+=======
+					/Users/jameseggers/Projects/SpunOutAppWeekend/ios/Mojo,
+					/Users/mattdonnelly/Documents/Projects/SpunOut/SpunOutAppWeekend/ios/Mojo,
+>>>>>>> 5e6770108f1d79fcdebab9f0554d24bcaa9aec0c
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Mojo/Mojo-Prefix.pch";
@@ -442,12 +525,18 @@
 		};
 		8B3FE45A1893DA500014945F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8E4C2323C4944840907D3063 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+<<<<<<< HEAD
 					/Users/jameseggers/Projects/iOS/SpunOutAppWeekend/ios/Mojo,
+=======
+					/Users/jameseggers/Projects/SpunOutAppWeekend/ios/Mojo,
+					/Users/mattdonnelly/Documents/Projects/SpunOut/SpunOutAppWeekend/ios/Mojo,
+>>>>>>> 5e6770108f1d79fcdebab9f0554d24bcaa9aec0c
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Mojo/Mojo-Prefix.pch";
