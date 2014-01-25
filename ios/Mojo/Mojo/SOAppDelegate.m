@@ -8,6 +8,7 @@
 
 #import "SOAppDelegate.h"
 #import "SOMainViewController.h"
+#import <Parse/Parse.h>
 
 @implementation SOAppDelegate
 
@@ -20,6 +21,16 @@
     self.window.rootViewController = mainViewController;
 
     [self.window makeKeyAndVisible];
+    
+    // Parse set up
+    
+    [Parse setApplicationId:@"2MS1N1zfmK380WV1zOYR1jhJWAj5BEz6uuZsAbIW" clientKey:@"Ke6SEnngzAwKRSWoPumG22ojb7UOjLl312uwOAp8"];
+    
+    // track stats with Parse
+    
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
+    
     return YES;
 }
 
