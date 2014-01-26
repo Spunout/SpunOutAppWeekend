@@ -37,7 +37,6 @@
     
     if (isRegistered)
     {
-        NSLog(@"User Successfully logged in.");
         [self loginUser:idfv :prefs];
         
         [self deductPointsIfNotLoggedIn :prefs];
@@ -64,7 +63,10 @@
 
 -(void)pushPointsHistoryToParse:(NSUserDefaults *)prefs
 {
-    NSMutableDictionary *pointsHistory = [prefs objectForKey:@"pointsHistory"];
+    NSMutableArray *pointsHistory = [prefs objectForKey:@"pointsHistory"];
+    PFUser *currentUser = [PFUser currentUser];
+    currentUser[@"points"] = pointsHistory;
+    [currentUser save];
 
 }
 
@@ -93,14 +95,14 @@
 {
     [PFUser logInWithUsernameInBackground:idfv password:[self sha256HashFor:idfv]
         block:^(PFUser *user, NSError *error) {
-            
-            if (user) {
-                // yay successful login
-                [prefs setBool:YES forKey:@"isLoggedIn"];
-		[prefs setObject:user forKey:@"user"];
-                
-            } else {
-                // not successful
+
+	    if (user) {
+		// yay successful login
+		 NSLog(@"User Successfully logged in.");
+		[prefs setBool:YES forKey:@"isLoggedIn"];
+
+	    } else {
+		// not successful
                 [prefs setBool:NO forKey:@"isLoggedIn"];
                 
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, you could not be logged in. Try re-launching the app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -112,8 +114,10 @@
 -(void)registerUser:(NSString *)idfv :(NSUserDefaults *)prefs
 {
     PFUser *user = [PFUser user];
+
     user.username = idfv;
     user.password = [self sha256HashFor:idfv];
+
     [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error)
      {
          if (!error)
@@ -125,13 +129,13 @@
              
              // set last opened date to now
              NSDate *now = [[NSDate alloc] init];
-             [prefs setObject:now forKey:@"lastOpen"];
-             
+	     [prefs setObject:now forKey:@"lastOpen"];
+
 	     // set points history mutable dictionary
-	     NSMutableDictionary *pointsHistory = [[NSMutableDictionary alloc] initWithCapacity:8];
+	     NSMutableArray *pointsHistory = [[NSMutableArray alloc] init];
 	     [prefs setObject:pointsHistory forKey:@"pointsHistory"];
 
-         } else {
+	 } else {
              [prefs setBool:NO forKey:@"isRegistered"];
              UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, you could not be registered. Try re-launching the app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
              [alert show];
