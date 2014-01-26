@@ -61,6 +61,8 @@
     return YES;
 }
 
+
+
 -(void)pushPointsHistoryToParse:(NSUserDefaults *)prefs
 {
     NSMutableArray *pointsHistory = [prefs objectForKey:@"pointsHistory"];
@@ -68,6 +70,12 @@
     currentUser[@"points"] = pointsHistory;
     [currentUser save];
 
+    [PFCloud callFunctionInBackground:@"updatePoints" withParameters: @{ @"username" : currentUser.username, @"points": currentUser[@"points"]} block:^(NSString *result, NSError *error)
+    {
+	if (!error) {
+	    // yay
+	}
+    }];
 }
 
 -(void)deductPointsIfNotLoggedIn:(NSUserDefaults *)prefs
@@ -115,12 +123,17 @@
 {
     PFUser *user = [PFUser user];
 
+    NSMutableArray *points = [[NSMutableArray alloc] initWithCapacity:8];
+    for ( int i = 1 ; i <= 8 ; i ++ )
+	[points addObject:[NSNumber numberWithInt:0]];
+
     user.username = idfv;
     user.password = [self sha256HashFor:idfv];
+    user[@"points"] = points;
 
     [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error)
      {
-         if (!error)
+	 if (!error)
          {
              [prefs setBool:YES forKey:@"isRegistered"];
              
