@@ -71,7 +71,6 @@
 
 - (void)setProgress:(CGFloat)progress
 {
-    _progress = progress;
     BOOL growing = progress > self.progress;
     [self setProgress:progress animated:growing];
 }
