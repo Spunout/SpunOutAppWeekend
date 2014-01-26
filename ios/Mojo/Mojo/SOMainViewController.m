@@ -70,8 +70,7 @@
     [self.view addSubview:self.moodSlider];
     [self.view addSubview:self.activityLogButton];
 
-    self.activityMenuViewController = [[SOActivityMenuViewController alloc] initWithSuperview:self.view];
-    [self addChildViewController:self.activityMenuViewController];
+    self.activityMenuViewController = [[SOActivityMenuViewController alloc] init];
 
     NSDictionary *views = @{@"pointMeterView": self.pointMeterView,
                             @"moodLabel": moodLabel,
@@ -146,9 +145,9 @@
     return UIStatusBarStyleLightContent;
 }
 
--(void)didTouchActivityLogButton
+- (void)didTouchActivityLogButton
 {
-    [self.activityMenuViewController presentMenu];
+    [self.activityMenuViewController showInView:self.view];
 }
 
 - (IBAction)moodChanged:(UISlider *)sender
@@ -156,7 +155,6 @@
     NSNumber *moodValue = [[NSNumber alloc] initWithFloat:(sender.value * 100.0)];
     PFObject *mood = [PFObject objectWithClassName:@"Mood"];
     mood[@"value"] = moodValue;
-
     
     [mood saveInBackground];
 }
