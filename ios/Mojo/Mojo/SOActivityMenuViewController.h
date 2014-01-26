@@ -10,8 +10,8 @@
 
 @interface SOActivityMenuViewController : UIViewController
 
-- (instancetype)initWithSuperview:(UIView *)view;
+- (void)showInView:(UIView *)view;
 
-- (void)presentMenu;
+- (void)dismissMenu;
 
 @end

@@ -23,7 +23,7 @@ static const CGFloat kBorderWidth = 15.0f;
         self.backgroundColor = [UIColor clearColor];
 
         self.label = [[UILabel alloc] init];
-        self.label.font = [UIFont boldSystemFontOfSize:75.0f];
+        self.label.font = [UIFont boldSystemFontOfSize:100.0f];
         self.label.translatesAutoresizingMaskIntoConstraints = NO;
 
         [self addSubview:self.label];

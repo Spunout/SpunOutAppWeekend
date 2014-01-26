@@ -18,6 +18,7 @@
 @interface SOMainViewController ()
 
 @property (nonatomic, strong) SOPointMeterView *pointMeterView;
+@property (nonatomic, strong) UISlider *moodSlider;
 @property (nonatomic, strong) UIButton *activityLogButton;
 
 @property (nonatomic, strong) SOActivityMenuViewController *activityMenuViewController;
@@ -47,17 +48,33 @@
     self.activityLogButton.layer.masksToBounds = YES;
     self.activityLogButton.translatesAutoresizingMaskIntoConstraints = NO;
 
+    UILabel *moodLabel = [[UILabel alloc] init];
+    moodLabel.text = @"HOW ARE YOU FEELING?";
+    moodLabel.textColor = [UIColor whiteColor];
+    moodLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+    moodLabel.translatesAutoresizingMaskIntoConstraints = NO;
+
+    self.moodSlider = [[UISlider alloc] init];
+    self.moodSlider.minimumTrackTintColor = [UIColor whiteColor];
+    self.moodSlider.maximumTrackTintColor = [UIColor miyoLightBlue];
+    self.moodSlider.minimumValueImage = [UIImage imageNamed:@"smiley-sad"];
+    self.moodSlider.maximumValueImage = [UIImage imageNamed:@"smiley-happy"];
+    self.moodSlider.translatesAutoresizingMaskIntoConstraints = NO;
+
     [self.activityLogButton addTarget:self
                                action:@selector(didTouchActivityLogButton)
                      forControlEvents:UIControlEventTouchUpInside];
 
     [self.view addSubview:self.pointMeterView];
+    [self.view addSubview:moodLabel];
+    [self.view addSubview:self.moodSlider];
     [self.view addSubview:self.activityLogButton];
 
-    self.activityMenuViewController = [[SOActivityMenuViewController alloc] initWithSuperview:self.view];
-    [self addChildViewController:self.activityMenuViewController];
+    self.activityMenuViewController = [[SOActivityMenuViewController alloc] init];
 
     NSDictionary *views = @{@"pointMeterView": self.pointMeterView,
+                            @"moodLabel": moodLabel,
+                            @"moodSlider": self.moodSlider,
                             @"activityLogButton": self.activityLogButton};
 
     NSDictionary *metrics = @{@"pointMeterSize": @250,
@@ -76,7 +93,30 @@
                                                          multiplier:1.0
                                                            constant:0]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(80)-[pointMeterView(pointMeterSize)]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(50)-[pointMeterView(pointMeterSize)]"
+                                                                      options:0
+                                                                      metrics:metrics
+                                                                        views:views]];
+
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:moodLabel
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1.0
+                                                           constant:0]];
+
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[pointMeterView]-(20)-[moodLabel]"
+                                                                      options:0
+                                                                      metrics:metrics
+                                                                        views:views]];
+
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(20)-[moodSlider]-(20)-|"
+                                                                      options:0
+                                                                      metrics:metrics
+                                                                        views:views]];
+
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[moodLabel]-(10)-[moodSlider]"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];
@@ -94,15 +134,20 @@
                                                          multiplier:1.0
                                                            constant:0]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[pointMeterView]-(50)-[activityLogButton(50)]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[moodSlider]-(20)-[activityLogButton(50)]"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];
 }
 
--(void)didTouchActivityLogButton
+- (UIStatusBarStyle)preferredStatusBarStyle
 {
-    [self.activityMenuViewController presentMenu];
+    return UIStatusBarStyleLightContent;
+}
+
+- (void)didTouchActivityLogButton
+{
+    [self.activityMenuViewController showInView:self.view];
 }
 
 - (IBAction)moodChanged:(UISlider *)sender
@@ -110,12 +155,15 @@
     NSNumber *moodValue = [[NSNumber alloc] initWithFloat:(sender.value * 100.0)];
     PFObject *mood = [PFObject objectWithClassName:@"Mood"];
     mood[@"value"] = moodValue;
+<<<<<<< HEAD
 
 // - (IBAction)moodChanged:(UISlider *)sender {
 //     NSNumber *moodValue = [[NSNumber alloc] initWithFloat:(sender.value * 100.0)];
 //     PFObject *mood = [PFObject objectWithClassName:@"Mood"];
 //     mood[@"value"] = moodValue;
 
+=======
+>>>>>>> eb50edd1d52dee83beb8e0da99e986fbf77e818e
     
 //     [mood saveInBackground];
 // }
