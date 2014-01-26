@@ -204,7 +204,7 @@
 {
     [self.activityMenuViewController showInView:self.view];
 }
-
+g
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
