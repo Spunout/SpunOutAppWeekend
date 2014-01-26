@@ -7,12 +7,9 @@
 //
 
 #import "SOPointMeterView.h"
+#import "SOPieLayer.h"
+
 #import "UIColor+Miyo.h"
-
-#define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
-
-static const CGFloat kAngleOffset = -90.0f;
-static const CGFloat kBorderWidth = 15.0f;
 
 @interface SOPointMeterView ()
 
@@ -29,6 +26,8 @@ static const CGFloat kBorderWidth = 15.0f;
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
+
+        self.layer.contentsScale = [UIScreen mainScreen].scale;
 
         self.label = [[UILabel alloc] init];
         self.label.font = [UIFont boldSystemFontOfSize:100.0f];
@@ -59,43 +58,45 @@ static const CGFloat kBorderWidth = 15.0f;
     CGFloat count = self.maximumValue - self.minimumValue;
     self.progress = (CGFloat)currentValue / count;
 
-    self.label.text = [NSString stringWithFormat:@"%d", currentValue];
+    self.label.text = [NSString stringWithFormat:@"%lu", (unsigned long)currentValue];
     
     [self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)rect
+- (void)setProgress:(CGFloat)progress
 {
-    CGContextRef context = UIGraphicsGetCurrentContext();
+    BOOL growing = progress > self.progress;
+    [self setProgress:progress animated:growing];
+}
 
-    // Background
-    [[UIColor whiteColor] set];
-    CGContextFillEllipseInRect(context, rect);
-
-    // Math
-    CGPoint center = CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect));
-    CGFloat radius = floorf((rect.size.width - kBorderWidth) / 2);
-    CGFloat angle = DEGREES_TO_RADIANS((360.0f * self.progress) + kAngleOffset);
-    CGPoint points[3] = {
-        CGPointMake(center.x, ceilf(kBorderWidth / 2)),
-        center,
-        CGPointMake(center.x + radius * cosf(angle), center.y + radius * sinf(angle))
-    };
-
-    // Fill
-    if (self.progress > 0.0f) {
-        [[UIColor miyoGreen] set];
-        CGContextAddLines(context, points, sizeof(points) / sizeof(points[0]));
-        CGContextAddArc(context, center.x, center.y, radius, DEGREES_TO_RADIANS(kAngleOffset), angle, false);
-        CGContextDrawPath(context, kCGPathEOFill);
+- (void)setProgress:(float)progress animated:(BOOL)animated
+{
+    if (progress < 0.0f) {
+        progress = 0.0f;
+    }
+    else if(progress > 1.0f) {
+        progress = 1.0f;
     }
 
-    // Inner Border
-    if (self.progress < 0.99f) {
-        [[UIColor whiteColor] set];
-        CGContextAddLines(context, points, sizeof(points) / sizeof(points[0]));
-        CGContextDrawPath(context, kCGPathStroke);
+    SOPieLayer *layer = (SOPieLayer *)self.layer;
+    if (animated) {
+        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"progress"];
+        animation.duration = 0.3;
+        animation.fromValue = [NSNumber numberWithFloat:layer.progress];
+        animation.toValue = [NSNumber numberWithFloat:progress];
+        [layer addAnimation:animation forKey:@"progressAnimation"];
+
+        layer.progress = progress;
     }
+    else {
+        layer.progress = progress;
+        [layer setNeedsDisplay];
+    }
+}
+
++ (Class)layerClass
+{
+    return [SOPieLayer class];
 }
 
 @end

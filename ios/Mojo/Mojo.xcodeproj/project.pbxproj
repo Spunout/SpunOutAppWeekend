@@ -24,6 +24,7 @@
 		8B3FE469189414690014945F /* SOActivityMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE468189414690014945F /* SOActivityMenuViewController.m */; };
 		8B3FE473189424350014945F /* UIColor+Miyo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE472189424350014945F /* UIColor+Miyo.m */; };
 		8B61CD221895141400CF215D /* SOActivityButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B61CD211895141400CF215D /* SOActivityButton.m */; };
+		8B61CD251895421C00CF215D /* SOPieLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B61CD241895421C00CF215D /* SOPieLayer.m */; };
 		ACE2C59D28294FC79F4FC2E3 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B3F6851B21F6430CB59563A3 /* libPods.a */; };
 		CDC9790E1893EBFA006E20CC /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDC9790D1893EBFA006E20CC /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
@@ -65,6 +66,8 @@
 		8B3FE472189424350014945F /* UIColor+Miyo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Miyo.m"; sourceTree = "<group>"; };
 		8B61CD201895141400CF215D /* SOActivityButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOActivityButton.h; sourceTree = "<group>"; };
 		8B61CD211895141400CF215D /* SOActivityButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOActivityButton.m; sourceTree = "<group>"; };
+		8B61CD231895421C00CF215D /* SOPieLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPieLayer.h; sourceTree = "<group>"; };
+		8B61CD241895421C00CF215D /* SOPieLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPieLayer.m; sourceTree = "<group>"; };
 		8E4C2323C4944840907D3063 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		B3F6851B21F6430CB59563A3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDC9790D1893EBFA006E20CC /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -190,6 +193,8 @@
 				8B61CD211895141400CF215D /* SOActivityButton.m */,
 				8B3FE4621893DDCB0014945F /* SOPointMeterView.h */,
 				8B3FE4631893DDCB0014945F /* SOPointMeterView.m */,
+				8B61CD231895421C00CF215D /* SOPieLayer.h */,
+				8B61CD241895421C00CF215D /* SOPieLayer.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -338,6 +343,7 @@
 				8B3FE4401893DA500014945F /* SOAppDelegate.m in Sources */,
 				8B3FE4641893DDCB0014945F /* SOPointMeterView.m in Sources */,
 				8B61CD221895141400CF215D /* SOActivityButton.m in Sources */,
+				8B61CD251895421C00CF215D /* SOPieLayer.m in Sources */,
 				8B3FE4601893DC480014945F /* SOMainViewController.m in Sources */,
 				8B3FE43C1893DA500014945F /* main.m in Sources */,
 				8B3FE473189424350014945F /* UIColor+Miyo.m in Sources */,
