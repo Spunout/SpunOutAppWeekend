@@ -14,6 +14,14 @@
 static const CGFloat kAngleOffset = -90.0f;
 static const CGFloat kBorderWidth = 15.0f;
 
+@interface SOPointMeterView ()
+
+@property (nonatomic, strong) UILabel *label;
+
+@property (nonatomic, assign) CGFloat progress;
+
+@end
+
 @implementation SOPointMeterView
 
 - (id)initWithFrame:(CGRect)frame
@@ -46,9 +54,13 @@ static const CGFloat kBorderWidth = 15.0f;
     return self;
 }
 
-- (void)setProgress:(CGFloat)newProgress
+- (void)setCurrentValue:(NSUInteger)currentValue
 {
-    _progress = fmaxf(0.0f, fminf(1.0f, newProgress));
+    CGFloat count = self.maximumValue - self.minimumValue;
+    self.progress = (CGFloat)currentValue / count;
+
+    self.label.text = [NSString stringWithFormat:@"%d", currentValue];
+    
     [self setNeedsDisplay];
 }
 

@@ -34,8 +34,14 @@
     self.view.backgroundColor = [UIColor miyoBlue];
 
     self.pointMeterView = [[SOPointMeterView alloc] init];
-    self.pointMeterView.label.text = @"10";
-    self.pointMeterView.progress = 0.75;
+    self.pointMeterView.maximumValue = 500;
+    self.pointMeterView.minimumValue = 0;
+    if ([[NSUserDefaults standardUserDefaults] integerForKey:@"score"]) {
+        self.pointMeterView.currentValue = [[NSUserDefaults standardUserDefaults] integerForKey:@"score"];
+    }
+    else {
+        self.pointMeterView.currentValue = 150;
+    }
     self.pointMeterView.translatesAutoresizingMaskIntoConstraints = NO;
 
     self.activityLogButton = [[UIButton alloc] init];
