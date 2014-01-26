@@ -121,7 +121,7 @@
                                                                       metrics:metrics
                                                                         views:views]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[activityLogButton(buttonWidth)]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(60)-[activityLogButton]-(60)-|"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];
@@ -134,7 +134,7 @@
                                                          multiplier:1.0
                                                            constant:0]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[moodSlider]-(20)-[activityLogButton(50)]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[moodSlider]-(20)-[activityLogButton(45)]"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];

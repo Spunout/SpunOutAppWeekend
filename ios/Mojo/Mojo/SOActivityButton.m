@@ -15,7 +15,6 @@
 @interface SOActivityButton ()
 
 @property (nonatomic, strong) UIImageView *tickImageView;
-@property (nonatomic, assign, getter = isSelected) BOOL selected;
 
 @end
 
@@ -133,23 +132,28 @@
     [self addTarget:self action:@selector(handleTap) forControlEvents:UIControlEventTouchDown];
 }
 
-- (void)handleTap
+- (void)setSelected:(BOOL)selected
 {
-    if (self.isSelected) {
-        [UIView animateWithDuration:0.1
-                         animations:^{
-                             self.backgroundColor = [UIColor miyoLightGrey];
-                             self.tickImageView.alpha = 0.0;
-                         }];
-    }
-    else {
+    [super setSelected:selected];
+
+    if (selected) {
         [UIView animateWithDuration:0.1
                          animations:^{
                              self.backgroundColor = [UIColor miyoLightBlue];
                              self.tickImageView.alpha = 1.0;
                          }];
     }
+    else {
+        [UIView animateWithDuration:0.1
+                         animations:^{
+                             self.backgroundColor = [UIColor miyoLightGrey];
+                             self.tickImageView.alpha = 0.0;
+                         }];
+    }
+}
 
+- (void)handleTap
+{
     self.selected = !self.selected;
 }
 

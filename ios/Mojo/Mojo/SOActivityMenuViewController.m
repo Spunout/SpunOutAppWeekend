@@ -72,7 +72,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
         UILabel *activityLabel = [[UILabel alloc] init];
         activityLabel.text = @"WHAT HAVE YOU DONE TODAY?";
-        activityLabel.font = [UIFont boldSystemFontOfSize:12.0f];
+        activityLabel.font = [UIFont boldSystemFontOfSize:13.0f];
         activityLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
         UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
@@ -137,6 +137,8 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
         activityLogButton.layer.borderWidth = 2.0f;
         activityLogButton.layer.masksToBounds = YES;
         activityLogButton.translatesAutoresizingMaskIntoConstraints = NO;
+
+        [activityLogButton addTarget:self action:@selector(logActivites) forControlEvents:UIControlEventTouchUpInside];
 
         [self.view addSubview:self.dimView];
         [self.view addSubview:self.menuView];
@@ -325,6 +327,15 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     if (gestureRecognizer.state == UIGestureRecognizerStateEnded && velocity.y > 0) {
         [self dismissMenu];
     }
+}
+
+- (void)logActivites
+{
+    for (SOActivityButton *button in self.buttons) {
+        button.selected = NO;
+    }
+
+    [self dismissMenu];
 }
 
 #pragma mark - Collection View Data Source
