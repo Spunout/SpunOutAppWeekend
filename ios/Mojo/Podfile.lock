@@ -6,7 +6,7 @@ PODS:
 
 DEPENDENCIES:
   - FXBlurView (~> 1.5.1)
-  - Parse
+  - Parse (~> 1.2.18)
 
 SPEC CHECKSUMS:
   Facebook-iOS-SDK: 42a1de39170b858d675c2453d8aace55c51be2bb

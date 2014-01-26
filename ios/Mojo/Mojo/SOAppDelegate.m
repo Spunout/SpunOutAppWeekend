@@ -8,11 +8,9 @@
 
 #import "SOAppDelegate.h"
 #import "SOMainViewController.h"
-<<<<<<< HEAD
-#import <Parse/parse.h>
-=======
+
 #import <Parse/Parse.h>
->>>>>>> 5e6770108f1d79fcdebab9f0554d24bcaa9aec0c
+
 
 @implementation SOAppDelegate
 
