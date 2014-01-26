@@ -155,15 +155,6 @@
     NSNumber *moodValue = [[NSNumber alloc] initWithFloat:(sender.value * 100.0)];
     PFObject *mood = [PFObject objectWithClassName:@"Mood"];
     mood[@"value"] = moodValue;
-<<<<<<< HEAD
-
-// - (IBAction)moodChanged:(UISlider *)sender {
-//     NSNumber *moodValue = [[NSNumber alloc] initWithFloat:(sender.value * 100.0)];
-//     PFObject *mood = [PFObject objectWithClassName:@"Mood"];
-//     mood[@"value"] = moodValue;
-
-=======
->>>>>>> eb50edd1d52dee83beb8e0da99e986fbf77e818e
     
 //     [mood saveInBackground];
 // }
