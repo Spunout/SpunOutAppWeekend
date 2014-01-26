@@ -24,6 +24,9 @@
 		8B3FE469189414690014945F /* SOActivityMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE468189414690014945F /* SOActivityMenuViewController.m */; };
 		8B3FE473189424350014945F /* UIColor+Miyo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE472189424350014945F /* UIColor+Miyo.m */; };
 		ACE2C59D28294FC79F4FC2E3 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B3F6851B21F6430CB59563A3 /* libPods.a */; };
+		CD220AA118956332003085F1 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = CD220AA018956332003085F1 /* Default.png */; };
+		CD220AA318956472003085F1 /* icon@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CD220AA218956472003085F1 /* icon@2x.jpg */; };
+		CD220AA51895648F003085F1 /* icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CD220AA41895648F003085F1 /* icon.jpg */; };
 		CDC9790E1893EBFA006E20CC /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDC9790D1893EBFA006E20CC /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +67,9 @@
 		8B3FE472189424350014945F /* UIColor+Miyo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Miyo.m"; sourceTree = "<group>"; };
 		8E4C2323C4944840907D3063 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		B3F6851B21F6430CB59563A3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD220AA018956332003085F1 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		CD220AA218956472003085F1 /* icon@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "icon@2x.jpg"; sourceTree = "<group>"; };
+		CD220AA41895648F003085F1 /* icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = icon.jpg; sourceTree = "<group>"; };
 		CDC9790D1893EBFA006E20CC /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -96,6 +102,9 @@
 		8B3FE4231893DA500014945F = {
 			isa = PBXGroup;
 			children = (
+				CD220AA41895648F003085F1 /* icon.jpg */,
+				CD220AA218956472003085F1 /* icon@2x.jpg */,
+				CD220AA018956332003085F1 /* Default.png */,
 				8B3FE4351893DA500014945F /* Mojo */,
 				8B3FE44E1893DA500014945F /* MojoTests */,
 				8B3FE42E1893DA500014945F /* Frameworks */,
@@ -276,7 +285,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD220AA51895648F003085F1 /* icon.jpg in Resources */,
 				8B3FE43A1893DA500014945F /* InfoPlist.strings in Resources */,
+				CD220AA318956472003085F1 /* icon@2x.jpg in Resources */,
+				CD220AA118956332003085F1 /* Default.png in Resources */,
 				8B3FE4421893DA500014945F /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
