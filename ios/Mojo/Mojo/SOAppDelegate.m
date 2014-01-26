@@ -40,7 +40,7 @@
         NSLog(@"User Successfully logged in.");
         [self loginUser:idfv :prefs];
         
-        [self rescore :prefs];
+        [self deductPointsIfNotLoggedIn :prefs];
 
     } else {
         
@@ -60,9 +60,9 @@
     return YES;
 }
 
--(void)rescore:(NSUserDefaults *)prefs
+-(void)deductPointsIfNotLoggedIn:(NSUserDefaults *)prefs
 {
-    NSNumber *currentScore = [[NSNumber alloc] initWithInt:[prefs integerForKey:@"score"]];
+    int currentScore = [prefs integerForKey:@"score"];
     NSDate *now = [[NSDate alloc] init];
     NSDate *lastOpen = [prefs objectForKey:@"lastOpen"];
     
@@ -70,10 +70,15 @@
     
     NSNumber *timeInterval = [[NSNumber alloc] initWithDouble:[now timeIntervalSinceDate:lastOpen]];
     
-    NSLog([timeInterval stringValue]);
+    int daysSinceLastLogin = [timeInterval intValue] / 86400;
     
+    if (daysSinceLastLogin > 0)
+    {
+        int pointsLost = daysSinceLastLogin * 15;
+        [prefs setInteger:(currentScore - pointsLost) forKey:@"score"];
+    }
     
-    
+    [prefs setObject:now forKey:@"lastOpen"];
 }
 
 -(void)loginUser:(NSString *)idfv :(NSUserDefaults *)prefs
