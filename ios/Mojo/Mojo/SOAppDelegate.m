@@ -80,7 +80,7 @@
     NSDate *lastScoreReset = [prefs objectForKey:@"lastScoreReset"];
     
     int daysSinceLastReset = [self getNumberOfDaysSince:now :lastScoreReset];
-
+    
     if (daysSinceLastReset < 9)
     {
         int daysAgo = 0;
@@ -102,7 +102,7 @@
             daysAgo++;
         }
     }
-
+    
 }
 
 -(void)deductPointsIfNotLoggedIn:(NSUserDefaults *)prefs
@@ -127,7 +127,7 @@
 -(void)loginUser:(NSString *)idfv :(NSUserDefaults *)prefs
 {
     [PFUser logInWithUsernameInBackground:idfv password:[self sha256HashFor:idfv] block:^(PFUser *user, NSError *error) {
-                                        
+        
         if (user)
         {
             // yay successful login
