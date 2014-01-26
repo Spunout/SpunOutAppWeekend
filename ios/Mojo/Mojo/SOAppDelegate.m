@@ -37,7 +37,6 @@
     
     if (isRegistered)
     {
-        NSLog(@"User Successfully logged in.");
         [self loginUser:idfv :prefs];
         
         [self deductPointsIfNotLoggedIn :prefs];
@@ -64,8 +63,11 @@
 
 -(void)pushPointsHistoryToParse:(NSUserDefaults *)prefs
 {
-    NSMutableDictionary *pointsHistory = [prefs objectForKey:@"pointsHistory"];
-    
+    NSMutableArray *pointsHistory = [prefs objectForKey:@"pointsHistory"];
+    PFUser *currentUser = [PFUser currentUser];
+    currentUser[@"points"] = pointsHistory;
+    [currentUser save];
+
 }
 
 -(void)deductPointsIfNotLoggedIn:(NSUserDefaults *)prefs
@@ -96,8 +98,8 @@
             
             if (user) {
                 // yay successful login
+                 NSLog(@"User Successfully logged in.");
                 [prefs setBool:YES forKey:@"isLoggedIn"];
-                [prefs setObject:user forKey:@"user"];
                 
             } else {
                 // not successful
@@ -112,8 +114,10 @@
 -(void)registerUser:(NSString *)idfv :(NSUserDefaults *)prefs
 {
     PFUser *user = [PFUser user];
+   
     user.username = idfv;
     user.password = [self sha256HashFor:idfv];
+
     [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error)
      {
          if (!error)
@@ -128,7 +132,7 @@
              [prefs setObject:now forKey:@"lastOpen"];
              
              // set points history mutable dictionary
-             NSMutableDictionary *pointsHistory = [[NSMutableDictionary alloc] initWithCapacity:8];
+             NSMutableArray *pointsHistory = [[NSMutableArray alloc] init];
              [prefs setObject:pointsHistory forKey:@"pointsHistory"];
              
          } else {
