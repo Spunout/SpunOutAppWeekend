@@ -117,11 +117,12 @@ public class Initial extends Activity {
         //set the parse api key
         Parse.initialize(this, "2MS1N1zfmK380WV1zOYR1jhJWAj5BEz6uuZsAbIW", "Ke6SEnngzAwKRSWoPumG22ojb7UOjLl312uwOAp8");
 
+        //TODO add a listener to open the activity menu when the slider is set
         //set the seek bar listener
         SeekBar.OnSeekBarChangeListener seeklistener = new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                openPullUp();
+                //openPullUp();
             }
 
             @Override
