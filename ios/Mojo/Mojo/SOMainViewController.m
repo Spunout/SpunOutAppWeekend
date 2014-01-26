@@ -15,7 +15,7 @@
 
 #import "UIColor+Miyo.h"
 
-@interface SOMainViewController ()
+@interface SOMainViewController () <SOActivityMenuViewDelegate>
 
 @property (nonatomic, strong) SOPointMeterView *pointMeterView;
 @property (nonatomic, strong) UISlider *moodSlider;
@@ -77,6 +77,7 @@
     [self.view addSubview:self.activityLogButton];
 
     self.activityMenuViewController = [[SOActivityMenuViewController alloc] init];
+    self.activityMenuViewController.delegate = self;
 
     NSDictionary *views = @{@"pointMeterView": self.pointMeterView,
                             @"moodLabel": moodLabel,
@@ -144,6 +145,11 @@
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];
+}
+
+- (void)didSelectActivitesForPoints:(NSInteger)points
+{
+    self.pointMeterView.currentValue += points;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

@@ -55,6 +55,8 @@
 
 - (void)setCurrentValue:(NSUInteger)currentValue
 {
+    _currentValue = currentValue;
+
     CGFloat count = self.maximumValue - self.minimumValue;
     self.progress = (CGFloat)currentValue / count;
 

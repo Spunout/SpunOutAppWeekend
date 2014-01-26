@@ -35,6 +35,8 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 @property (nonatomic, strong) SOActivityButton *playActivityButton;
 @property (nonatomic, strong) SOActivityButton *connectActivityButton;
 
+@property (nonatomic, assign) NSUInteger points;
+
 @end
 
 @implementation SOActivityMenuViewController
@@ -45,6 +47,8 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
     if (self) {
         self.view.backgroundColor = [UIColor clearColor];
+
+        self.points = 0;
 
         self.dimView = [[UIButton alloc] init];
         self.dimView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.3f];
@@ -94,34 +98,42 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
         self.eatActivityButton = [[SOActivityButton alloc] initWithTitle:@"Eat Well" image:[UIImage imageNamed:@"eat"]];
         self.eatActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+        self.eatActivityButton.tag = 1;
         [self.buttons addObject:self.eatActivityButton];
 
         self.sleepActivityButton = [[SOActivityButton alloc] initWithTitle:@"Slept Well" image:[UIImage imageNamed:@"sleep"]];
         self.sleepActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+        self.sleepActivityButton.tag = 2;
         [self.buttons addObject:self.sleepActivityButton];
 
         self.exerciseActivityButton = [[SOActivityButton alloc] initWithTitle:@"Exercise" image:[UIImage imageNamed:@"exercise"]];
         self.exerciseActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+        self.exerciseActivityButton.tag = 3;
         [self.buttons addObject:self.exerciseActivityButton];
 
         self.learnActivityButton = [[SOActivityButton alloc] initWithTitle:@"Learn" image:[UIImage imageNamed:@"learn"]];
         self.learnActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+        self.learnActivityButton.tag = 4;
         [self.buttons addObject:self.learnActivityButton];
 
         self.talkActivityButton = [[SOActivityButton alloc] initWithTitle:@"Talk" image:[UIImage imageNamed:@"talk"]];
         self.talkActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+        self.talkActivityButton.tag = 5;
         [self.buttons addObject:self.talkActivityButton];
 
         self.makeActivityButton = [[SOActivityButton alloc] initWithTitle:@"Make" image:[UIImage imageNamed:@"make"]];
         self.makeActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+        self.makeActivityButton.tag = 6;
         [self.buttons addObject:self.makeActivityButton];
 
         self.connectActivityButton = [[SOActivityButton alloc] initWithTitle:@"Connect" image:[UIImage imageNamed:@"connect"]];
         self.connectActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+        self.connectActivityButton.tag = 7;
         [self.buttons addObject:self.connectActivityButton];
 
         self.playActivityButton = [[SOActivityButton alloc] initWithTitle:@"Play" image:[UIImage imageNamed:@"play"]];
         self.playActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+        self.playActivityButton.tag = 8;
         [self.buttons addObject:self.playActivityButton];
 
         UIView *divder2 = [[UIView alloc] init];
@@ -332,10 +344,28 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 - (void)logActivites
 {
     for (SOActivityButton *button in self.buttons) {
+        if (button.isSelected) {
+            switch (button.tag) {
+                case 1:
+                case 2:
+                    self.points += 7;
+                    break;
+                case 7:
+                case 8:
+                    self.points += 5;
+                    break;
+                default:
+                    self.points += 6;
+                    break;
+            }
+        }
+
         button.selected = NO;
     }
 
     [self dismissMenu];
+
+    [self.delegate didSelectActivitesForPoints:self.points];
 }
 
 #pragma mark - Collection View Data Source
