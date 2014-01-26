@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="spunoutBlue">#009fce</color>
+    <color name="opaque">#55000000</color>
+    <color name="spunoutGreen">#01c390</color>
+    <color name="buttonBackground">#ced6d8</color>
+    <color name="menuBackground">#e5ffffff</color>
+    <color name="white">#ffff</color>
+    <color name="splashBlue">#06addf</color>
+</resources>

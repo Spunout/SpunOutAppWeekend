@@ -4,5 +4,17 @@
     <string name="app_name">MoJo</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="slider_title">How are you feeling?</string>
+    <string name="icons_title">What have you done today?</string>
+    <string-array name="button_labels">
+        <item>EAT WELL</item>
+        <item>SLEEP WELL</item>
+        <item>EXERCISE</item>
+        <item>LEARN</item>
+        <item>TALK</item>
+        <item>MAKE</item>
+        <item>PLAY</item>
+        <item>CONNECT</item>
+    </string-array>
 
 </resources>
