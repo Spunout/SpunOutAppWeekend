@@ -39,6 +39,8 @@
     {
         NSLog(@"User Successfully logged in.");
         [self loginUser:idfv :prefs];
+        
+        [self rescore :prefs];
 
     } else {
         
@@ -56,6 +58,22 @@
     
     
     return YES;
+}
+
+-(void)rescore:(NSUserDefaults *)prefs
+{
+    NSNumber *currentScore = [[NSNumber alloc] initWithInt:[prefs integerForKey:@"score"]];
+    NSDate *now = [[NSDate alloc] init];
+    NSDate *lastOpen = [prefs objectForKey:@"lastOpen"];
+    
+    // check how many days the user has not logged in for
+    
+    NSNumber *timeInterval = [[NSNumber alloc] initWithDouble:[now timeIntervalSinceDate:lastOpen]];
+    
+    NSLog([timeInterval stringValue]);
+    
+    
+    
 }
 
 -(void)loginUser:(NSString *)idfv :(NSUserDefaults *)prefs
@@ -87,6 +105,14 @@
          if (!error)
          {
              [prefs setBool:YES forKey:@"isRegistered"];
+             
+             // set a starting score
+             [prefs setInteger:150 forKey:@"score"];
+             
+             // set last opened date to now
+             NSDate *now = [[NSDate alloc] init];
+             [prefs setObject:now forKey:@"lastOpen"];
+             
          } else {
              [prefs setBool:NO forKey:@"isRegistered"];
              UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, you could not be registered. Try re-launching the app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
