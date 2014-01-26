@@ -48,6 +48,10 @@
                                                             toItem:self
                                                          attribute:NSLayoutAttributeCenterY
                                                         multiplier:1.0f constant:0]];
+
+        UITapGestureRecognizer *tapGesureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                              action:@selector(didTapPie)];
+        [self addGestureRecognizer:tapGesureRecognizer];
     }
 
     return self;
@@ -67,6 +71,7 @@
 
 - (void)setProgress:(CGFloat)progress
 {
+    _progress = progress;
     BOOL growing = progress > self.progress;
     [self setProgress:progress animated:growing];
 }
@@ -94,6 +99,18 @@
         layer.progress = progress;
         [layer setNeedsDisplay];
     }
+
+    _progress = progress;
+}
+
+- (void)didTapPie
+{
+    SOPieLayer *layer = (SOPieLayer *)self.layer;
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"progress"];
+    animation.duration = 0.3;
+    animation.fromValue = [NSNumber numberWithFloat:0];
+    animation.toValue = [NSNumber numberWithFloat:layer.progress];
+    [layer addAnimation:animation forKey:@"progressAnimation"];
 }
 
 + (Class)layerClass
