@@ -42,6 +42,8 @@
         
         [self deductPointsIfNotLoggedIn :prefs];
 
+	[self pushPointsHistoryToParse :prefs];
+
     } else {
         
         NSLog(@"User not registered, let's register!");
@@ -58,6 +60,12 @@
     
     
     return YES;
+}
+
+-(void)pushPointsHistoryToParse:(NSUserDefaults *)prefs
+{
+    NSMutableDictionary *pointsHistory = [prefs objectForKey:@"pointsHistory"];
+
 }
 
 -(void)deductPointsIfNotLoggedIn:(NSUserDefaults *)prefs
@@ -89,6 +97,7 @@
             if (user) {
                 // yay successful login
                 [prefs setBool:YES forKey:@"isLoggedIn"];
+		[prefs setObject:user forKey:@"user"];
                 
             } else {
                 // not successful
@@ -118,6 +127,10 @@
              NSDate *now = [[NSDate alloc] init];
              [prefs setObject:now forKey:@"lastOpen"];
              
+	     // set points history mutable dictionary
+	     NSMutableDictionary *pointsHistory = [[NSMutableDictionary alloc] initWithCapacity:8];
+	     [prefs setObject:pointsHistory forKey:@"pointsHistory"];
+
          } else {
              [prefs setBool:NO forKey:@"isRegistered"];
              UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, you could not be registered. Try re-launching the app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
