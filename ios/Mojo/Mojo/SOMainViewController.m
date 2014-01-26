@@ -39,8 +39,8 @@
     self.pointMeterView.translatesAutoresizingMaskIntoConstraints = NO;
 
     self.activityLogButton = [[UIButton alloc] init];
-    [self.activityLogButton setTitle:@"Log Activity" forState:UIControlStateNormal];
-    self.activityLogButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+    [self.activityLogButton setTitle:@"LOG ACTIVITY" forState:UIControlStateNormal];
+    self.activityLogButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
     self.activityLogButton.titleLabel.textColor = [UIColor whiteColor];
     self.activityLogButton.layer.borderColor = [UIColor whiteColor].CGColor;
     self.activityLogButton.layer.cornerRadius = 5;
@@ -148,25 +148,6 @@
 - (void)didTouchActivityLogButton
 {
     [self.activityMenuViewController showInView:self.view];
-}
-
-- (IBAction)moodChanged:(UISlider *)sender
-{
-    NSNumber *moodValue = [[NSNumber alloc] initWithFloat:(sender.value * 100.0)];
-    PFObject *mood = [PFObject objectWithClassName:@"Mood"];
-    mood[@"value"] = moodValue;
-<<<<<<< HEAD
-
-// - (IBAction)moodChanged:(UISlider *)sender {
-//     NSNumber *moodValue = [[NSNumber alloc] initWithFloat:(sender.value * 100.0)];
-//     PFObject *mood = [PFObject objectWithClassName:@"Mood"];
-//     mood[@"value"] = moodValue;
-
-=======
->>>>>>> eb50edd1d52dee83beb8e0da99e986fbf77e818e
-    
-//     [mood saveInBackground];
-// }
 }
 
 - (void)didReceiveMemoryWarning

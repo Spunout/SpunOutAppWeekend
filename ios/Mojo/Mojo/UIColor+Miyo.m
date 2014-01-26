@@ -25,4 +25,9 @@
     return [UIColor colorWithRed:0.004 green:0.765 blue:0.565 alpha:1];
 }
 
++ (UIColor *)miyoLightGrey
+{
+    return [UIColor colorWithRed:0.8 green:0.83 blue:0.84 alpha:1];
+}
+
 @end
