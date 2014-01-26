@@ -83,7 +83,7 @@
     SOPieLayer *layer = (SOPieLayer *)self.layer;
     if (animated) {
         CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"progress"];
-        animation.duration = 0.3;
+        animation.duration = 0.4;
         animation.fromValue = [NSNumber numberWithFloat:layer.progress];
         animation.toValue = [NSNumber numberWithFloat:progress];
         [layer addAnimation:animation forKey:@"progressAnimation"];

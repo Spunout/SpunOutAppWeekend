@@ -366,6 +366,8 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     [self dismissMenu];
 
     [self.delegate didSelectActivitesForPoints:self.points];
+
+    self.points = 0;
 }
 
 #pragma mark - Collection View Data Source
