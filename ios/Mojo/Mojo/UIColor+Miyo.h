@@ -16,4 +16,6 @@
 
 + (UIColor *)miyoGreen;
 
++ (UIColor *)miyoLightGrey;
+
 @end

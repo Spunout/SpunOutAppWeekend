@@ -39,8 +39,8 @@
     self.pointMeterView.translatesAutoresizingMaskIntoConstraints = NO;
 
     self.activityLogButton = [[UIButton alloc] init];
-    [self.activityLogButton setTitle:@"Log Activity" forState:UIControlStateNormal];
-    self.activityLogButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+    [self.activityLogButton setTitle:@"LOG ACTIVITY" forState:UIControlStateNormal];
+    self.activityLogButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
     self.activityLogButton.titleLabel.textColor = [UIColor whiteColor];
     self.activityLogButton.layer.borderColor = [UIColor whiteColor].CGColor;
     self.activityLogButton.layer.cornerRadius = 5;
