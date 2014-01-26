@@ -41,6 +41,8 @@
         [self loginUser:idfv :prefs];
         
         [self deductPointsIfNotLoggedIn :prefs];
+        
+        [self pushPointsHistoryToParse :prefs];
 
     } else {
         
@@ -58,6 +60,12 @@
     
     
     return YES;
+}
+
+-(void)pushPointsHistoryToParse:(NSUserDefaults *)prefs
+{
+    NSMutableDictionary *pointsHistory = [prefs objectForKey:@"pointsHistory"];
+    
 }
 
 -(void)deductPointsIfNotLoggedIn:(NSUserDefaults *)prefs
@@ -89,6 +97,7 @@
             if (user) {
                 // yay successful login
                 [prefs setBool:YES forKey:@"isLoggedIn"];
+                [prefs setObject:user forKey:@"user"];
                 
             } else {
                 // not successful
@@ -117,6 +126,10 @@
              // set last opened date to now
              NSDate *now = [[NSDate alloc] init];
              [prefs setObject:now forKey:@"lastOpen"];
+             
+             // set points history mutable dictionary
+             NSMutableDictionary *pointsHistory = [[NSMutableDictionary alloc] initWithCapacity:8];
+             [prefs setObject:pointsHistory forKey:@"pointsHistory"];
              
          } else {
              [prefs setBool:NO forKey:@"isRegistered"];
