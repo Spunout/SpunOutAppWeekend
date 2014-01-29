@@ -81,7 +81,7 @@
     
     int daysSinceLastReset = [self getNumberOfDaysSince:now :lastScoreReset];
     
-    if (daysSinceLastReset < 9)
+    if (daysSinceLastReset < 7)
     {
         int daysAgo = 0;
         int interval = 0;
@@ -101,6 +101,9 @@
             
             daysAgo++;
         }
+    } else {
+        [self resetScore :prefs];
+        [self pushPointsHistoryToParse :prefs];
     }
     
 }
