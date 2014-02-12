@@ -51,13 +51,13 @@ public class Initial extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.initial_layout);
+
         //hide the action bar
         abar = getActionBar();
         abar.hide();
         //abar.setDisplayHomeAsUpEnabled(true);
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.initial_layout);
 
         //hide the overlay menu
         menu = findViewById(R.id.hideable);
@@ -65,36 +65,39 @@ public class Initial extends Activity {
 
         //TODO make the size of the circle dynamic, check screen size and scale
 
-        /*
-        GridView gridview = (GridView) findViewById(R.id.moodpage);
-        gridview.setAdapter(new ImageAdapter(this));
+        //generate the items for the menu list
+        setupGrid();
 
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                //TODO make this add an element to the parse object
-                Toast.makeText(Initial.this, "" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        */
+        //setup the seekbar listener
+        setupSeekbar();
 
+        //setup the score system for this use
+        setupScore();
+
+        //set the parse api key
+        Parse.initialize(this, "2MS1N1zfmK380WV1zOYR1jhJWAj5BEz6uuZsAbIW", "Ke6SEnngzAwKRSWoPumG22ojb7UOjLl312uwOAp8");
+    }
+
+    private void setupGrid(){
+        //TODO try and store this in the strings file
         // labels for the buttons
         String[] labels=new String[]{
-            "EAT WELL",
-            "SLEEP WELL",
-            "EXERCISE",
-            "LEARN",
-            "TALK",
-            "MAKE",
-            "PLAY",
-            "CONNECT"
+                "EAT WELL",
+                "SLEEP WELL",
+                "EXERCISE",
+                "LEARN",
+                "TALK",
+                "MAKE",
+                "PLAY",
+                "CONNECT"
         };
 
         // references to our images
         Integer[] mThumbIds = {
-            R.drawable.eat, R.drawable.sleep,
-            R.drawable.talk, R.drawable.exercise,
-            R.drawable.creative, R.drawable.learn,
-            R.drawable.play, R.drawable.relationship,
+                R.drawable.eat, R.drawable.sleep,
+                R.drawable.talk, R.drawable.exercise,
+                R.drawable.creative, R.drawable.learn,
+                R.drawable.play, R.drawable.relationship,
         };
 
         //set up the gridlayout
@@ -113,16 +116,14 @@ public class Initial extends Activity {
         SimpleAdapter adapter = new SimpleAdapter(getBaseContext(), listinfo,R.layout.activity_items, from, to);
         GridView moodgrid = (GridView) findViewById(R.id.moodpage);
         moodgrid.setAdapter(adapter);
+    }
 
-        //set the parse api key
-        Parse.initialize(this, "2MS1N1zfmK380WV1zOYR1jhJWAj5BEz6uuZsAbIW", "Ke6SEnngzAwKRSWoPumG22ojb7UOjLl312uwOAp8");
-
-        //TODO add a listener to open the activity menu when the slider is set
-        //set the seek bar listener
+    private void setupSeekbar(){
+        //create a seekbar listener that will open the menu when the seekbar is set
         SeekBar.OnSeekBarChangeListener seeklistener = new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                //openPullUp();
+
             }
 
             @Override
@@ -132,10 +133,18 @@ public class Initial extends Activity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                //when the user has chosen a value open the menu
+                menu.setVisibility(View.VISIBLE);
             }
         };
 
+        //assign this listener to the seekbar
+        sbar = (SeekBar) findViewById(R.id.seekbar);
+        sbar.setOnSeekBarChangeListener(seeklistener);
+    }
+
+    private void setupScore(){
+        //TODO remove this and get the score from storage
         double score = 70;
 
         setPoints(score);
@@ -220,15 +229,8 @@ public class Initial extends Activity {
         menu.setVisibility(View.VISIBLE);
         //abar.show();
     }
-/*
-    @Override
-    public Intent getSupportParentActivityIntent(){
-        Intent i = new Intent(Initial.this, Initial.class);
-        return i;
-    }
-*/
 
-
+    //TODO fix this: it currently triggers when a user presses down on the screen not when they swipe down
     @Override
     public boolean onTouchEvent(MotionEvent event){
 
@@ -280,7 +282,8 @@ public class Initial extends Activity {
         return penalty*15;
     }
 
-    /*public boolean setPoints(int score) {
+    //TODO decide which of these is correct
+    public boolean alternateSetPoints(int score) {
 
         float fraction = score/500;
         double start;
@@ -299,8 +302,8 @@ public class Initial extends Activity {
 
         return true;
     }
-    */
 
+    //TODO
     public boolean setPoints(double score){
 
         //TODO add real score
