@@ -77,7 +77,7 @@
              UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was an error saving your data. Try restarting the app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
              [alert show];
          }
-     }];
+     }]; 
     
     [PFCloud callFunctionInBackground:@"updateMoodPoints" withParameters: @{ @"username" : currentUser.username, @"mood_points":pointsHistory } block:^(NSString *result, NSError *error)
      {
