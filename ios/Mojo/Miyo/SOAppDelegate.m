@@ -64,7 +64,6 @@
 }
 
 
-
 -(void)pushPointsHistoryToParse:(NSUserDefaults *)prefs
 {
     NSMutableArray *pointsHistory = [prefs objectForKey:@"pointsHistory"];
@@ -73,6 +72,14 @@
     [currentUser save];
 
     [PFCloud callFunctionInBackground:@"updateLifetimePoints" withParameters: @{ @"username" : currentUser.username, @"points":pointsHistory } block:^(NSString *result, NSError *error)
+     {
+         if (error) {
+             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was an error saving your data. Try restarting the app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+             [alert show];
+         }
+     }];
+    
+    [PFCloud callFunctionInBackground:@"updateMoodPoints" withParameters: @{ @"username" : currentUser.username, @"mood_points":pointsHistory } block:^(NSString *result, NSError *error)
      {
          if (error) {
              UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was an error saving your data. Try restarting the app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
