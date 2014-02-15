@@ -47,6 +47,7 @@
         }
         
         [self loginUser:idfv :prefs];
+        [self pushPointsHistoryToParse :prefs];
         
     } else {
         
@@ -70,14 +71,14 @@
     PFUser *currentUser = [PFUser currentUser];
     currentUser[@"points"] = pointsHistory;
     [currentUser save];
-    
-//    [PFCloud callFunctionInBackground:@"updatePoints" withParameters: @{ @"username" : currentUser.username, @"points": currentUser[@"points"]} block:^(NSString *result, NSError *error)
-//     {
-//         if (error) {
-//             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was an error saving your data. Try restarting the app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//             [alert show];
-//         }
-//     }];
+
+    [PFCloud callFunctionInBackground:@"updateLifetimePoints" withParameters: @{ @"username" : currentUser.username, @"points":pointsHistory } block:^(NSString *result, NSError *error)
+     {
+         if (error) {
+             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was an error saving your data. Try restarting the app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+             [alert show];
+         }
+     }];
 }
 
 -(bool)resetPointsIfMonday:(NSUserDefaults *)prefs
@@ -174,6 +175,7 @@
     user.username = idfv;
     user.password = [self sha256HashFor:idfv];
     user[@"points"] = points;
+    user[@"lifetime_points"] = points;
     
     [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error)
      {
