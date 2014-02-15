@@ -31,23 +31,23 @@
 
         self.label = [[UILabel alloc] init];
         self.label.font = [UIFont boldSystemFontOfSize:100.0f];
+        self.label.textAlignment = NSTextAlignmentCenter;
+        self.label.adjustsFontSizeToFitWidth = YES;
         self.label.translatesAutoresizingMaskIntoConstraints = NO;
+
+        NSDictionary *views = @{@"label": self.label};
 
         [self addSubview:self.label];
 
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.label
-                                                         attribute:NSLayoutAttributeCenterX
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:self
-                                                         attribute:NSLayoutAttributeCenterX
-                                                        multiplier:1.0f constant:0]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[label]|"
+                                                                     options:0
+                                                                     metrics:nil
+                                                                       views:views]];
 
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:self.label
-                                                         attribute:NSLayoutAttributeCenterY
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:self
-                                                         attribute:NSLayoutAttributeCenterY
-                                                        multiplier:1.0f constant:0]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[label]|"
+                                                                     options:0
+                                                                     metrics:nil
+                                                                       views:views]];
 
         UITapGestureRecognizer *tapGesureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                               action:@selector(didTapPie)];

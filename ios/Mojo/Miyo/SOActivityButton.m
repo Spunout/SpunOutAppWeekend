@@ -146,7 +146,7 @@
     else {
         [UIView animateWithDuration:0.1
                          animations:^{
-                             self.backgroundColor = [UIColor miyoLightGrey];
+                             self.backgroundColor = [UIColor whiteColor];
                              self.tickImageView.alpha = 0.0;
                          }];
     }

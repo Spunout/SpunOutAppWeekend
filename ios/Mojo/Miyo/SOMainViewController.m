@@ -11,21 +11,31 @@
 
 #import "SOMainViewController.h"
 #import "SOPointMeterView.h"
-#import "SOActivityMenuViewController.h"
+#import "SOActivityButton.h"
 
 #import "UIColor+Miyo.h"
 
-@interface SOMainViewController () <SOActivityMenuViewDelegate>
+static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionViewCellIdentifier";
+
+@interface SOMainViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (nonatomic, strong) SOPointMeterView *pointMeterView;
 
 @property (nonatomic, strong) UILabel *moodLabel;
-
-@property (nonatomic, strong) UIView *logView;
 @property (nonatomic, strong) UISlider *moodSlider;
-@property (nonatomic, strong) UIButton *activityLogButton;
 
-@property (nonatomic, strong) SOActivityMenuViewController *activityMenuViewController;
+@property (nonatomic, strong) UICollectionView *buttonCollectionView;
+
+@property (nonatomic, strong) NSMutableArray *buttons;
+
+@property (nonatomic, strong) SOActivityButton *eatActivityButton;
+@property (nonatomic, strong) SOActivityButton *sleepActivityButton;
+@property (nonatomic, strong) SOActivityButton *exerciseActivityButton;
+@property (nonatomic, strong) SOActivityButton *learnActivityButton;
+@property (nonatomic, strong) SOActivityButton *talkActivityButton;
+@property (nonatomic, strong) SOActivityButton *makeActivityButton;
+@property (nonatomic, strong) SOActivityButton *playActivityButton;
+@property (nonatomic, strong) SOActivityButton *connectActivityButton;
 
 @end
 
@@ -64,21 +74,6 @@
     }
     self.pointMeterView.translatesAutoresizingMaskIntoConstraints = NO;
 
-    self.logView = [[UIView alloc] init];
-    self.logView.translatesAutoresizingMaskIntoConstraints = NO;
-
-    self.logView.hidden = !canLogActivities;
-
-    self.activityLogButton = [[UIButton alloc] init];
-    [self.activityLogButton setTitle:@"LOG ACTIVITY" forState:UIControlStateNormal];
-    self.activityLogButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-    self.activityLogButton.titleLabel.textColor = [UIColor whiteColor];
-    self.activityLogButton.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.activityLogButton.layer.cornerRadius = 5;
-    self.activityLogButton.layer.borderWidth = 2.0f;
-    self.activityLogButton.layer.masksToBounds = YES;
-    self.activityLogButton.translatesAutoresizingMaskIntoConstraints = NO;
-
     self.moodLabel = [[UILabel alloc] init];
     if (canLogActivities) {
         self.moodLabel.text = @"HOW ARE YOU FEELING?";
@@ -99,43 +94,85 @@
     self.moodSlider.maximumValueImage = [UIImage imageNamed:@"smiley-happy"];
     self.moodSlider.translatesAutoresizingMaskIntoConstraints = NO;
 
-    [self.activityLogButton addTarget:self
-                               action:@selector(didTouchActivityLogButton)
-                     forControlEvents:UIControlEventTouchUpInside];
+    UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
+    collectionViewLayout.itemSize = CGSizeMake(60.0f, 60.0f);
+    collectionViewLayout.sectionInset = UIEdgeInsetsMake(0.0, 16.0, 0, 16.0);
+    collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+
+    self.buttonCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
+                                                   collectionViewLayout:collectionViewLayout];
+    self.buttonCollectionView.delegate = self;
+    self.buttonCollectionView.dataSource = self;
+    self.buttonCollectionView.backgroundColor = [UIColor clearColor];
+    self.buttonCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
+
+    [self.buttonCollectionView registerClass:[UICollectionViewCell class]
+                  forCellWithReuseIdentifier:kButtonCollectionViewCellIdentifier];
+
+    self.buttons = [[NSMutableArray alloc] init];
+
+    self.eatActivityButton = [[SOActivityButton alloc] initWithTitle:@"Eat Well" image:[UIImage imageNamed:@"eat"]];
+    self.eatActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.eatActivityButton.tag = 1;
+    [self.buttons addObject:self.eatActivityButton];
+
+    self.sleepActivityButton = [[SOActivityButton alloc] initWithTitle:@"Slept Well" image:[UIImage imageNamed:@"sleep"]];
+    self.sleepActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.sleepActivityButton.tag = 2;
+    [self.buttons addObject:self.sleepActivityButton];
+
+    self.exerciseActivityButton = [[SOActivityButton alloc] initWithTitle:@"Exercise" image:[UIImage imageNamed:@"exercise"]];
+    self.exerciseActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.exerciseActivityButton.tag = 3;
+    [self.buttons addObject:self.exerciseActivityButton];
+
+    self.learnActivityButton = [[SOActivityButton alloc] initWithTitle:@"Learn" image:[UIImage imageNamed:@"learn"]];
+    self.learnActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.learnActivityButton.tag = 4;
+    [self.buttons addObject:self.learnActivityButton];
+
+    self.talkActivityButton = [[SOActivityButton alloc] initWithTitle:@"Talk" image:[UIImage imageNamed:@"talk"]];
+    self.talkActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.talkActivityButton.tag = 5;
+    [self.buttons addObject:self.talkActivityButton];
+
+    self.makeActivityButton = [[SOActivityButton alloc] initWithTitle:@"Make" image:[UIImage imageNamed:@"make"]];
+    self.makeActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.makeActivityButton.tag = 6;
+    [self.buttons addObject:self.makeActivityButton];
+
+    self.connectActivityButton = [[SOActivityButton alloc] initWithTitle:@"Connect" image:[UIImage imageNamed:@"connect"]];
+    self.connectActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.connectActivityButton.tag = 7;
+    [self.buttons addObject:self.connectActivityButton];
+
+    self.playActivityButton = [[SOActivityButton alloc] initWithTitle:@"Play" image:[UIImage imageNamed:@"play"]];
+    self.playActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.playActivityButton.tag = 8;
+    [self.buttons addObject:self.playActivityButton];
 
     [self.view addSubview:self.pointMeterView];
     [self.view addSubview:self.moodLabel];
-    [self.view addSubview:self.logView];
-    [self.logView addSubview:self.moodSlider];
-    [self.logView addSubview:self.activityLogButton];
-
-    self.activityMenuViewController = [[SOActivityMenuViewController alloc] init];
-    self.activityMenuViewController.delegate = self;
+    [self.view addSubview:self.moodSlider];
+    [self.view addSubview:self.buttonCollectionView];
 
     NSDictionary *views = @{@"pointMeterView": self.pointMeterView,
                             @"moodLabel": self.moodLabel,
-                            @"logView": self.logView,
                             @"moodSlider": self.moodSlider,
-                            @"activityLogButton": self.activityLogButton};
+                            @"buttonCollectionView": self.buttonCollectionView};
 
-    NSDictionary *metrics = @{@"pointMeterSize": @250,
-                              @"buttonWidth": @150};
-
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[pointMeterView(pointMeterSize)]"
-                                                                      options:0
-                                                                      metrics:metrics
-                                                                        views:views]];
+    NSDictionary *metrics = @{@"buttonWidth": @150};
 
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.pointMeterView
-                                                          attribute:NSLayoutAttributeCenterX
+                                                          attribute:NSLayoutAttributeWidth
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeCenterX
+                                                             toItem:self.pointMeterView
+                                                          attribute:NSLayoutAttributeHeight
                                                          multiplier:1.0
                                                            constant:0]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(50)-[pointMeterView(pointMeterSize)]"
-                                                                      options:0
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(35)-[pointMeterView]-(25)-[moodLabel(17)]-(20)-[moodSlider(20)]-(20)-[buttonCollectionView(140)]-(10)-|"
+                                                                      options:NSLayoutFormatAlignAllCenterX
                                                                       metrics:metrics
                                                                         views:views]];
 
@@ -144,55 +181,15 @@
                                                                       metrics:metrics
                                                                         views:views]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[pointMeterView]-(20)-[moodLabel]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(20)-[moodSlider]-(20)-|"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[logView]|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[buttonCollectionView]|"
                                                                       options:0
-                                                                      metrics:metrics
+                                                                      metrics:nil
                                                                         views:views]];
-
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[moodLabel]-(10)-[logView]"
-                                                                      options:0
-                                                                      metrics:metrics
-                                                                        views:views]];
-
-    [self.logView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(20)-[moodSlider]-(20)-|"
-                                                                         options:0
-                                                                         metrics:metrics
-                                                                           views:views]];
-
-    [self.logView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[moodSlider]"
-                                                                         options:0
-                                                                         metrics:metrics
-                                                                           views:views]];
-
-    [self.logView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(60)-[activityLogButton]-(60)-|"
-                                                                         options:0
-                                                                         metrics:metrics
-                                                                           views:views]];
-
-    [self.logView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[moodSlider]-(20)-[activityLogButton(45)]-|"
-                                                                         options:0
-                                                                         metrics:metrics
-                                                                           views:views]];
-}
-
-- (void)didSelectActivitesForPoints:(NSInteger)points
-{
-    self.pointMeterView.currentValue += points;
-    [[NSUserDefaults standardUserDefaults] setInteger:self.pointMeterView.currentValue forKey:@"score"];
-    [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"last_score_update"];
-
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
-    self.moodLabel.text = @"COME BACK TOMORROW TO CHECK IN AGAIN";
-
-    [UIView animateWithDuration:0.3 animations:^{
-        self.logView.alpha = 0;
-    }];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -200,14 +197,26 @@
     return UIStatusBarStyleLightContent;
 }
 
-- (void)didTouchActivityLogButton
+#pragma mark - Collection View Data Source
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    [self.activityMenuViewController showInView:self.view];
+    return self.buttons.count;
 }
 
-- (void)didReceiveMemoryWarning
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [super didReceiveMemoryWarning];
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kButtonCollectionViewCellIdentifier forIndexPath:indexPath];
+
+    for (UIView *subview in cell.contentView.subviews) {
+        [subview removeFromSuperview];
+    }
+
+    SOActivityButton *button = self.buttons[indexPath.row];
+    button.frame = cell.contentView.frame;
+    [cell.contentView addSubview:button];
+
+    return cell;
 }
 
 @end
