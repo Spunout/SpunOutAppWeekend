@@ -40,17 +40,24 @@
     if (isRegistered)
     {
         NSLog(@"User already registered, logging in.");
-        NSLog(idfv);
+        
+        if (![self resetPointsIfMonday :prefs])
+        {
+            [self deductPointsIfNotLoggedIn :prefs];
+        }
+        
         [self loginUser:idfv :prefs];
         
-        [self deductPointsIfNotLoggedIn :prefs];
-        
-        [self resetPointsIfMonday :prefs];
     } else {
         
         NSLog(@"User not registered, let's register!");
         [self registerUser:idfv :prefs];
     }
+    
+    NSDate *now = [[NSDate alloc] init];
+    
+    // last login is now
+    [prefs setObject:now forKey:@"lastOpen"];
     
     return YES;
 }
@@ -64,19 +71,20 @@
     currentUser[@"points"] = pointsHistory;
     [currentUser save];
     
-    [PFCloud callFunctionInBackground:@"updatePoints" withParameters: @{ @"username" : currentUser.username, @"points": currentUser[@"points"]} block:^(NSString *result, NSError *error)
-     {
-         if (error) {
-             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was an error saving your data. Try restarting the app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-             [alert show];
-         }
-     }];
+//    [PFCloud callFunctionInBackground:@"updatePoints" withParameters: @{ @"username" : currentUser.username, @"points": currentUser[@"points"]} block:^(NSString *result, NSError *error)
+//     {
+//         if (error) {
+//             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was an error saving your data. Try restarting the app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//             [alert show];
+//         }
+//     }];
 }
 
--(void)resetPointsIfMonday:(NSUserDefaults *)prefs
+-(bool)resetPointsIfMonday:(NSUserDefaults *)prefs
 {
     NSDate *now = [NSDate date];
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    bool wasScoreReset = false;
     
     NSDate *lastScoreReset = [prefs objectForKey:@"lastScoreReset"];
     
@@ -98,6 +106,7 @@
             {
                 [self resetScore :prefs];
                 [self pushPointsHistoryToParse :prefs];
+                wasScoreReset = true;
             }
             
             daysAgo++;
@@ -105,7 +114,11 @@
     } else {
         [self resetScore :prefs];
         [self pushPointsHistoryToParse :prefs];
+        wasScoreReset = true;
     }
+    
+    return wasScoreReset;
+    
     
 }
 
@@ -118,6 +131,8 @@
     // check how many days the user has not logged in for
     
     int daysSinceLastLogin = [self getNumberOfDaysSince:now :lastOpen];
+    NSNumber *daysSinceLastLoginNum = [NSNumber numberWithInt:daysSinceLastLogin];
+    NSLog(@"%d", [daysSinceLastLoginNum integerValue]);
     
     if (daysSinceLastLogin > 0)
     {
@@ -125,7 +140,7 @@
         [prefs setInteger:(currentScore - pointsLost) forKey:@"score"];
     }
     
-    [prefs setObject:now forKey:@"lastOpen"];
+    
 }
 
 -(void)loginUser:(NSString *)idfv :(NSUserDefaults *)prefs
@@ -137,6 +152,7 @@
             // yay successful login
             NSLog(@"User Successfully logged in.");
             [prefs setBool:YES forKey:@"isLoggedIn"];
+            
         } else {
             // not successful
             [prefs setBool:NO forKey:@"isLoggedIn"];
@@ -171,7 +187,7 @@
              
              // set last opened date to now
              NSDate *now = [[NSDate alloc] init];
-             [prefs setObject:now forKey:@"lastOpen"];
+             //             [prefs setObject:now forKey:@"lastOpen"];
              [prefs setObject:now forKey:@"lastScoreReset"];
              
              // set points history mutable dictionary
@@ -179,7 +195,6 @@
              [prefs setObject:pointsHistory forKey:@"pointsHistory"];
              
              // login
-             NSLog(idfv);
              [self loginUser:idfv :prefs];
              
          } else {
@@ -196,7 +211,6 @@
     [prefs setInteger:150 forKey:@"score"];
     [prefs setObject:[[NSDate alloc] init] forKey:@"lastScoreReset"];
     NSLog(@"Reseting score to 150 because Monday has passed.");
-    
 }
 
 -(int)getNumberOfDaysSince:(NSDate *)from :(NSDate *)to
@@ -207,20 +221,6 @@
     
     return daysSinceLastLogin;
 }
-
-//-(NSString*)sha256HashFor:(NSString*)input
-//{
-//    const char* str = [input UTF8String];
-//    unsigned char result[256];
-//    CC_SHA256(str, strlen(str), result);
-//    
-//    NSMutableString *ret = [NSMutableString stringWithCapacity:256*2];
-//    for(int i = 0; i<256; i++)
-//    {
-//        [ret appendFormat:@"%02x",result[i]];
-//    }
-//    return ret;
-//}
 
 -(NSString*) sha256HashFor:(NSString *)clear{
     const char *s=[clear cStringUsingEncoding:NSASCIIStringEncoding];
