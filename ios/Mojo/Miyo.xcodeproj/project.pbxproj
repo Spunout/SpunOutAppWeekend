@@ -41,20 +41,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		8B3FE42C1893DA500014945F /* Mojo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mojo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B3FE42C1893DA500014945F /* Miyo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Miyo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B3FE42F1893DA500014945F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8B3FE4311893DA500014945F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		8B3FE4331893DA500014945F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		8B3FE4371893DA500014945F /* Mojo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Mojo-Info.plist"; sourceTree = "<group>"; };
+		8B3FE4371893DA500014945F /* Miyo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Miyo-Info.plist"; sourceTree = "<group>"; };
 		8B3FE4391893DA500014945F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8B3FE43B1893DA500014945F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		8B3FE43D1893DA500014945F /* Mojo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mojo-Prefix.pch"; sourceTree = "<group>"; };
+		8B3FE43D1893DA500014945F /* Miyo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Miyo-Prefix.pch"; sourceTree = "<group>"; };
 		8B3FE43E1893DA500014945F /* SOAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SOAppDelegate.h; sourceTree = "<group>"; };
 		8B3FE43F1893DA500014945F /* SOAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SOAppDelegate.m; sourceTree = "<group>"; };
 		8B3FE4411893DA500014945F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		8B3FE4471893DA500014945F /* MojoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MojoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8B3FE4471893DA500014945F /* MiyoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MiyoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B3FE4481893DA500014945F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		8B3FE4501893DA500014945F /* MojoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MojoTests-Info.plist"; sourceTree = "<group>"; };
+		8B3FE4501893DA500014945F /* MiyoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MiyoTests-Info.plist"; sourceTree = "<group>"; };
 		8B3FE4521893DA500014945F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8B3FE4541893DA500014945F /* MojoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MojoTests.m; sourceTree = "<group>"; };
 		8B3FE45E1893DC480014945F /* SOMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOMainViewController.h; sourceTree = "<group>"; };
@@ -116,8 +116,8 @@
 		8B3FE42D1893DA500014945F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8B3FE42C1893DA500014945F /* Mojo.app */,
-				8B3FE4471893DA500014945F /* MojoTests.xctest */,
+				8B3FE42C1893DA500014945F /* Miyo.app */,
+				8B3FE4471893DA500014945F /* MiyoTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -153,10 +153,10 @@
 		8B3FE4361893DA500014945F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				8B3FE4371893DA500014945F /* Mojo-Info.plist */,
+				8B3FE4371893DA500014945F /* Miyo-Info.plist */,
 				8B3FE4381893DA500014945F /* InfoPlist.strings */,
 				8B3FE43B1893DA500014945F /* main.m */,
-				8B3FE43D1893DA500014945F /* Mojo-Prefix.pch */,
+				8B3FE43D1893DA500014945F /* Miyo-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -173,7 +173,7 @@
 		8B3FE44F1893DA500014945F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				8B3FE4501893DA500014945F /* MojoTests-Info.plist */,
+				8B3FE4501893DA500014945F /* MiyoTests-Info.plist */,
 				8B3FE4511893DA500014945F /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -215,9 +215,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8B3FE42B1893DA500014945F /* Mojo */ = {
+		8B3FE42B1893DA500014945F /* Miyo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8B3FE4581893DA500014945F /* Build configuration list for PBXNativeTarget "Mojo" */;
+			buildConfigurationList = 8B3FE4581893DA500014945F /* Build configuration list for PBXNativeTarget "Miyo" */;
 			buildPhases = (
 				5F583652DA094553A2C8E20B /* Check Pods Manifest.lock */,
 				8B3FE4281893DA500014945F /* Sources */,
@@ -229,14 +229,14 @@
 			);
 			dependencies = (
 			);
-			name = Mojo;
+			name = Miyo;
 			productName = Mojo;
-			productReference = 8B3FE42C1893DA500014945F /* Mojo.app */;
+			productReference = 8B3FE42C1893DA500014945F /* Miyo.app */;
 			productType = "com.apple.product-type.application";
 		};
-		8B3FE4461893DA500014945F /* MojoTests */ = {
+		8B3FE4461893DA500014945F /* MiyoTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8B3FE45B1893DA500014945F /* Build configuration list for PBXNativeTarget "MojoTests" */;
+			buildConfigurationList = 8B3FE45B1893DA500014945F /* Build configuration list for PBXNativeTarget "MiyoTests" */;
 			buildPhases = (
 				8B3FE4431893DA500014945F /* Sources */,
 				8B3FE4441893DA500014945F /* Frameworks */,
@@ -247,9 +247,9 @@
 			dependencies = (
 				8B3FE44D1893DA500014945F /* PBXTargetDependency */,
 			);
-			name = MojoTests;
+			name = MiyoTests;
 			productName = MojoTests;
-			productReference = 8B3FE4471893DA500014945F /* MojoTests.xctest */;
+			productReference = 8B3FE4471893DA500014945F /* MiyoTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -267,7 +267,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8B3FE4271893DA500014945F /* Build configuration list for PBXProject "Mojo" */;
+			buildConfigurationList = 8B3FE4271893DA500014945F /* Build configuration list for PBXProject "Miyo" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -279,8 +279,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8B3FE42B1893DA500014945F /* Mojo */,
-				8B3FE4461893DA500014945F /* MojoTests */,
+				8B3FE42B1893DA500014945F /* Miyo */,
+				8B3FE4461893DA500014945F /* MiyoTests */,
 			);
 		};
 /* End PBXProject section */
@@ -367,7 +367,7 @@
 /* Begin PBXTargetDependency section */
 		8B3FE44D1893DA500014945F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8B3FE42B1893DA500014945F /* Mojo */;
+			target = 8B3FE42B1893DA500014945F /* Miyo */;
 			targetProxy = 8B3FE44C1893DA500014945F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -472,8 +472,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Mojo/Mojo-Prefix.pch";
-				INFOPLIST_FILE = "Mojo/Mojo-Info.plist";
+				GCC_PREFIX_HEADER = "Mojo/Miyo-Prefix.pch";
+				INFOPLIST_FILE = "Mojo/Miyo-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -487,8 +487,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Mojo/Mojo-Prefix.pch";
-				INFOPLIST_FILE = "Mojo/Mojo-Info.plist";
+				GCC_PREFIX_HEADER = "Mojo/Miyo-Prefix.pch";
+				INFOPLIST_FILE = "Mojo/Miyo-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -510,8 +510,8 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "MojoTests/MojoTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "MojoTests/MiyoTests-Info.plist";
+				PRODUCT_NAME = MiyoTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -529,8 +529,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Mojo/Mojo-Prefix.pch";
-				INFOPLIST_FILE = "MojoTests/MojoTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "MojoTests/MiyoTests-Info.plist";
+				PRODUCT_NAME = MiyoTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -539,7 +539,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8B3FE4271893DA500014945F /* Build configuration list for PBXProject "Mojo" */ = {
+		8B3FE4271893DA500014945F /* Build configuration list for PBXProject "Miyo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8B3FE4561893DA500014945F /* Debug */,
@@ -548,7 +548,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8B3FE4581893DA500014945F /* Build configuration list for PBXNativeTarget "Mojo" */ = {
+		8B3FE4581893DA500014945F /* Build configuration list for PBXNativeTarget "Miyo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8B3FE4591893DA500014945F /* Debug */,
@@ -557,7 +557,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8B3FE45B1893DA500014945F /* Build configuration list for PBXNativeTarget "MojoTests" */ = {
+		8B3FE45B1893DA500014945F /* Build configuration list for PBXNativeTarget "MiyoTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8B3FE45C1893DA500014945F /* Debug */,
