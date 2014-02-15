@@ -45,7 +45,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 {
     [super viewDidLoad];
 
-    BOOL canLogActivities;
+    BOOL hasLoggedActivities = YES;
 
     NSDate *lastScoreUpdate = [[NSUserDefaults standardUserDefaults] objectForKey:@"last_score_update"];
     if (lastScoreUpdate) {
@@ -55,10 +55,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
         NSDateComponents *comp1 = [[NSCalendar currentCalendar] components:unitFlags fromDate:lastScoreUpdate];
         NSDateComponents *comp2 = [[NSCalendar currentCalendar] components:unitFlags fromDate:now];
 
-        canLogActivities = [comp1 day] != [comp2 day];
-    }
-    else {
-        canLogActivities = YES;
+        hasLoggedActivities = [comp1 day] != [comp2 day];
     }
 
     self.view.backgroundColor = [UIColor miyoBlue];
@@ -78,7 +75,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     self.pointMeterView.translatesAutoresizingMaskIntoConstraints = NO;
 
     self.moodLabel = [[UILabel alloc] init];
-    if (canLogActivities) {
+    if (hasLoggedActivities) {
         self.moodLabel.text = @"HOW ARE YOU FEELING?";
     }
     else {
@@ -120,40 +117,72 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     self.eatActivityButton.tag = 1;
     [self.buttons addObject:self.eatActivityButton];
 
+    [self.eatActivityButton addTarget:self
+                               action:@selector(didTapActivityButton:)
+                     forControlEvents:UIControlEventTouchUpInside];
+
     self.sleepActivityButton = [[SOActivityButton alloc] initWithTitle:@"Slept Well" image:[UIImage imageNamed:@"sleep"]];
     self.sleepActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.sleepActivityButton.tag = 2;
     [self.buttons addObject:self.sleepActivityButton];
+
+    [self.sleepActivityButton addTarget:self
+                                 action:@selector(didTapActivityButton:)
+                       forControlEvents:UIControlEventTouchUpInside];
 
     self.exerciseActivityButton = [[SOActivityButton alloc] initWithTitle:@"Exercise" image:[UIImage imageNamed:@"exercise"]];
     self.exerciseActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.exerciseActivityButton.tag = 3;
     [self.buttons addObject:self.exerciseActivityButton];
 
+    [self.exerciseActivityButton addTarget:self
+                                    action:@selector(didTapActivityButton:)
+                          forControlEvents:UIControlEventTouchUpInside];
+
     self.learnActivityButton = [[SOActivityButton alloc] initWithTitle:@"Learn" image:[UIImage imageNamed:@"learn"]];
     self.learnActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.learnActivityButton.tag = 4;
     [self.buttons addObject:self.learnActivityButton];
+
+    [self.learnActivityButton addTarget:self
+                                 action:@selector(didTapActivityButton:)
+                       forControlEvents:UIControlEventTouchUpInside];
 
     self.talkActivityButton = [[SOActivityButton alloc] initWithTitle:@"Talk" image:[UIImage imageNamed:@"talk"]];
     self.talkActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.talkActivityButton.tag = 5;
     [self.buttons addObject:self.talkActivityButton];
 
+    [self.talkActivityButton addTarget:self
+                                action:@selector(didTapActivityButton:)
+                      forControlEvents:UIControlEventTouchUpInside];
+
     self.makeActivityButton = [[SOActivityButton alloc] initWithTitle:@"Make" image:[UIImage imageNamed:@"make"]];
     self.makeActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.makeActivityButton.tag = 6;
     [self.buttons addObject:self.makeActivityButton];
+
+    [self.makeActivityButton addTarget:self
+                                action:@selector(didTapActivityButton:)
+                      forControlEvents:UIControlEventTouchUpInside];
 
     self.connectActivityButton = [[SOActivityButton alloc] initWithTitle:@"Connect" image:[UIImage imageNamed:@"connect"]];
     self.connectActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.connectActivityButton.tag = 7;
     [self.buttons addObject:self.connectActivityButton];
 
+    [self.connectActivityButton addTarget:self
+                                   action:@selector(didTapActivityButton:)
+                         forControlEvents:UIControlEventTouchUpInside];
+
     self.playActivityButton = [[SOActivityButton alloc] initWithTitle:@"Play" image:[UIImage imageNamed:@"play"]];
     self.playActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.playActivityButton.tag = 8;
     [self.buttons addObject:self.playActivityButton];
+
+    [self.playActivityButton addTarget:self
+                                action:@selector(didTapActivityButton:)
+                      forControlEvents:UIControlEventTouchUpInside];
 
     [self.view addSubview:pointMeterContainer];
     [pointMeterContainer addSubview:self.pointMeterView];
@@ -245,5 +274,36 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
 #pragma mark - Activity Logging
 
+- (void)didTapActivityButton:(UIButton *)button
+{
+    NSInteger points;
+
+    switch (button.tag) {
+        case 1:
+        case 2:
+            points = 7;
+            break;
+        case 7:
+        case 8:
+            points = 5;
+            break;
+        default:
+            points = 6;
+            break;
+    }
+
+    if (button.isSelected) {
+        self.pointMeterView.currentValue += points;
+    }
+    else {
+        self.pointMeterView.currentValue -= points;
+    }
+
+    NSMutableArray *selectedIndexes = [NSMutableArray array];
+
+    for (UIButton *button in self.buttons) {
+        [selectedIndexes addObject:[NSNumber numberWithBool:button.isSelected]];
+    }
+}
 
 @end
