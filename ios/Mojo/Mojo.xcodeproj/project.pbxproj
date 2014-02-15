@@ -25,6 +25,7 @@
 		8B3FE473189424350014945F /* UIColor+Miyo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE472189424350014945F /* UIColor+Miyo.m */; };
 		8B61CD221895141400CF215D /* SOActivityButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B61CD211895141400CF215D /* SOActivityButton.m */; };
 		8B61CD251895421C00CF215D /* SOPieLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B61CD241895421C00CF215D /* SOPieLayer.m */; };
+		8B9D207B18AF80E800832FF8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B9D207A18AF80E800832FF8 /* Security.framework */; };
 		ACE2C59D28294FC79F4FC2E3 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B3F6851B21F6430CB59563A3 /* libPods.a */; };
 		CDC9790E1893EBFA006E20CC /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDC9790D1893EBFA006E20CC /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
@@ -68,6 +69,7 @@
 		8B61CD211895141400CF215D /* SOActivityButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOActivityButton.m; sourceTree = "<group>"; };
 		8B61CD231895421C00CF215D /* SOPieLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPieLayer.h; sourceTree = "<group>"; };
 		8B61CD241895421C00CF215D /* SOPieLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPieLayer.m; sourceTree = "<group>"; };
+		8B9D207A18AF80E800832FF8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		8E4C2323C4944840907D3063 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		B3F6851B21F6430CB59563A3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDC9790D1893EBFA006E20CC /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -78,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B9D207B18AF80E800832FF8 /* Security.framework in Frameworks */,
 				CDC9790E1893EBFA006E20CC /* QuartzCore.framework in Frameworks */,
 				8B3FE4321893DA500014945F /* CoreGraphics.framework in Frameworks */,
 				8B3FE4341893DA500014945F /* UIKit.framework in Frameworks */,
@@ -122,6 +125,7 @@
 		8B3FE42E1893DA500014945F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8B9D207A18AF80E800832FF8 /* Security.framework */,
 				CDC9790D1893EBFA006E20CC /* QuartzCore.framework */,
 				8B3FE42F1893DA500014945F /* Foundation.framework */,
 				8B3FE4311893DA500014945F /* CoreGraphics.framework */,

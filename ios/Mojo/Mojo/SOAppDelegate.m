@@ -10,6 +10,7 @@
 #import "SOMainViewController.h"
 
 #import <Parse/Parse.h>
+#import <CommonCrypto/CommonCrypto.h>
 
 
 @implementation SOAppDelegate
@@ -110,7 +111,7 @@
 
 -(void)deductPointsIfNotLoggedIn:(NSUserDefaults *)prefs
 {
-    int currentScore = [prefs integerForKey:@"score"];
+    NSInteger currentScore = [prefs integerForKey:@"score"];
     NSDate *now = [[NSDate alloc] init];
     NSDate *lastOpen = [prefs objectForKey:@"lastOpen"];
     
