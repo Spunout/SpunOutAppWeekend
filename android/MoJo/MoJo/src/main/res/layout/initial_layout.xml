@@ -15,26 +15,29 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:gravity="center">
+            android:layout_weight="1">
 
             <ImageView
                 android:id="@+id/meterbackground"
+                android:layout_centerInParent="true"
                 android:layout_width="@dimen/points_size"
                 android:layout_height="@dimen/points_size"
                 android:src="@drawable/pointmeterbackground"/>
 
             <ImageView
                 android:id="@+id/meterforeground"
+                android:layout_centerInParent="true"
                 android:layout_width="@dimen/points_inner"
                 android:layout_height="@dimen/points_inner"
                 android:layout_marginTop="10px"
                 android:layout_marginLeft="10px"/>
 
             <TextView
+                android:id="@+id/score_number"
+                android:layout_centerInParent="true"
                 android:layout_width="@dimen/points_size"
                 android:layout_height="@dimen/points_size"
-                android:text="47"
+                android:text="150"
                 android:textSize="70sp"
                 android:gravity="center"/>
 
@@ -78,19 +81,7 @@
 
         </RelativeLayout>
 
-        <Button
-            android:onClick="openPullUp"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/spunout_button"
-            android:text="Record"
-            android:textSize="20dp"/>
-
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/hideable"
@@ -121,16 +112,18 @@
                 android:verticalSpacing="10dp"
                 android:columnWidth="100dp"
                 android:numColumns="4"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10dp"
+                android:choiceMode="multipleChoice"/>
 
             <Button
+                android:onClick="recordChoices"
                 android:layout_width="200dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/spunout_button"
-                android:text="Log"
+                android:text="Record"
                 android:textSize="25dp"/>
 
         </LinearLayout>
