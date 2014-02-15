@@ -39,6 +39,7 @@
     if (isRegistered)
     {
         NSLog(@"User already registered, logging in.");
+        NSLog(idfv);
         [self loginUser:idfv :prefs];
         
         [self deductPointsIfNotLoggedIn :prefs];
@@ -48,7 +49,6 @@
         
         NSLog(@"User not registered, let's register!");
         [self registerUser:idfv :prefs];
-        [self loginUser:idfv :prefs];
     }
     
     return YES;
@@ -170,13 +170,16 @@
              
              // set last opened date to now
              NSDate *now = [[NSDate alloc] init];
-             NSDate *nowTwo = [[NSDate alloc] init];
              [prefs setObject:now forKey:@"lastOpen"];
-             [prefs setObject:nowTwo forKey:@"lastScoreReset"];
+             [prefs setObject:now forKey:@"lastScoreReset"];
              
              // set points history mutable dictionary
              NSMutableArray *pointsHistory = [[NSMutableArray alloc] init];
              [prefs setObject:pointsHistory forKey:@"pointsHistory"];
+             
+             // login
+             NSLog(idfv);
+             [self loginUser:idfv :prefs];
              
          } else {
              [prefs setBool:NO forKey:@"isRegistered"];
@@ -204,20 +207,33 @@
     return daysSinceLastLogin;
 }
 
--(NSString*)sha256HashFor:(NSString*)input
-{
-    const char* str = [input UTF8String];
-    unsigned char result[256];
-    CC_SHA256(str, strlen(str), result);
-    
-    NSMutableString *ret = [NSMutableString stringWithCapacity:256*2];
-    for(int i = 0; i<256; i++)
-    {
-        [ret appendFormat:@"%02x",result[i]];
-    }
-    return ret;
-}
+//-(NSString*)sha256HashFor:(NSString*)input
+//{
+//    const char* str = [input UTF8String];
+//    unsigned char result[256];
+//    CC_SHA256(str, strlen(str), result);
+//    
+//    NSMutableString *ret = [NSMutableString stringWithCapacity:256*2];
+//    for(int i = 0; i<256; i++)
+//    {
+//        [ret appendFormat:@"%02x",result[i]];
+//    }
+//    return ret;
+//}
 
+-(NSString*) sha256HashFor:(NSString *)clear{
+    const char *s=[clear cStringUsingEncoding:NSASCIIStringEncoding];
+    NSData *keyData=[NSData dataWithBytes:s length:strlen(s)];
+    
+    uint8_t digest[45]={0};
+    CC_SHA256(keyData.bytes, keyData.length, digest);
+    NSData *out=[NSData dataWithBytes:digest length:45];
+    NSString *hash=[out description];
+    hash = [hash stringByReplacingOccurrencesOfString:@" " withString:@""];
+    hash = [hash stringByReplacingOccurrencesOfString:@"<" withString:@""];
+    hash = [hash stringByReplacingOccurrencesOfString:@">" withString:@""];
+    return hash;
+}
 
 
 @end
