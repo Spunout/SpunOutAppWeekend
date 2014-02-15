@@ -105,8 +105,8 @@
 		8B3FE4231893DA500014945F = {
 			isa = PBXGroup;
 			children = (
-				8B3FE4351893DA500014945F /* Mojo */,
-				8B3FE44E1893DA500014945F /* MojoTests */,
+				8B3FE4351893DA500014945F /* Miyo */,
+				8B3FE44E1893DA500014945F /* MiyoTests */,
 				8B3FE42E1893DA500014945F /* Frameworks */,
 				8B3FE42D1893DA500014945F /* Products */,
 				8E4C2323C4944840907D3063 /* Pods.xcconfig */,
@@ -136,7 +136,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		8B3FE4351893DA500014945F /* Mojo */ = {
+		8B3FE4351893DA500014945F /* Miyo */ = {
 			isa = PBXGroup;
 			children = (
 				8B3FE43E1893DA500014945F /* SOAppDelegate.h */,
@@ -147,7 +147,7 @@
 				8B3FE4411893DA500014945F /* Images.xcassets */,
 				8B3FE4361893DA500014945F /* Supporting Files */,
 			);
-			path = Mojo;
+			path = Miyo;
 			sourceTree = "<group>";
 		};
 		8B3FE4361893DA500014945F /* Supporting Files */ = {
@@ -161,13 +161,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		8B3FE44E1893DA500014945F /* MojoTests */ = {
+		8B3FE44E1893DA500014945F /* MiyoTests */ = {
 			isa = PBXGroup;
 			children = (
 				8B3FE4541893DA500014945F /* MojoTests.m */,
 				8B3FE44F1893DA500014945F /* Supporting Files */,
 			);
-			path = MojoTests;
+			path = MiyoTests;
 			sourceTree = "<group>";
 		};
 		8B3FE44F1893DA500014945F /* Supporting Files */ = {
@@ -472,8 +472,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Mojo/Miyo-Prefix.pch";
-				INFOPLIST_FILE = "Mojo/Miyo-Info.plist";
+				GCC_PREFIX_HEADER = "Miyo/Miyo-Prefix.pch";
+				INFOPLIST_FILE = "Miyo/Miyo-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -487,8 +487,8 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Mojo/Miyo-Prefix.pch";
-				INFOPLIST_FILE = "Mojo/Miyo-Info.plist";
+				GCC_PREFIX_HEADER = "Miyo/Miyo-Prefix.pch";
+				INFOPLIST_FILE = "Miyo/Miyo-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
