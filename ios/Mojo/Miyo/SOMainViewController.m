@@ -8,6 +8,7 @@
 
 #import <Parse/Parse.h>
 #import <QuartzCore/QuartzCore.h>
+#import <MBProgressHUD/MBProgressHUD.h>
 
 #import "SOMainViewController.h"
 #import "SOPointMeterView.h"
@@ -94,6 +95,10 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     self.moodSlider.minimumValueImage = [UIImage imageNamed:@"smiley-sad"];
     self.moodSlider.maximumValueImage = [UIImage imageNamed:@"smiley-happy"];
     self.moodSlider.translatesAutoresizingMaskIntoConstraints = NO;
+
+    [self.moodSlider addTarget:self
+                        action:@selector(didAdjustUpMoodSlider:)
+              forControlEvents:UIControlEventTouchUpInside];
 
     UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewLayout.itemSize = CGSizeMake(60.0f, 60.0f);
@@ -273,6 +278,18 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 }
 
 #pragma mark - Activity Logging
+
+- (void)didAdjustUpMoodSlider:(UISlider *)slider
+{
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark"]];
+    hud.mode = MBProgressHUDModeCustomView;
+    hud.labelText = @"Logged";
+    hud.yOffset = -30;
+    [hud show:YES];
+    [hud hide:YES afterDelay:0.75];
+}
 
 - (void)didTapActivityButton:(UIButton *)button
 {
