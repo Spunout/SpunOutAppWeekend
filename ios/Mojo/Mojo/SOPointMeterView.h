@@ -10,8 +10,9 @@
 
 @interface SOPointMeterView : UIView
 
-@property (nonatomic, strong) UILabel *label;
-@property (nonatomic, assign) CGFloat progress;
-@property (nonatomic, strong) UIColor *fillColor;
+@property (nonatomic, assign) NSUInteger currentValue;
+
+@property (nonatomic, assign) NSUInteger maximumValue;
+@property (nonatomic, assign) NSUInteger minimumValue;
 
 @end

@@ -15,9 +15,13 @@
 
 #import "UIColor+Miyo.h"
 
-@interface SOMainViewController ()
+@interface SOMainViewController () <SOActivityMenuViewDelegate>
 
 @property (nonatomic, strong) SOPointMeterView *pointMeterView;
+
+@property (nonatomic, strong) UILabel *moodLabel;
+
+@property (nonatomic, strong) UIView *logView;
 @property (nonatomic, strong) UISlider *moodSlider;
 @property (nonatomic, strong) UIButton *activityLogButton;
 
@@ -31,16 +35,43 @@
 {
     [super viewDidLoad];
 
+    BOOL canLogActivities;
+
+    NSDate *lastScoreUpdate = [[NSUserDefaults standardUserDefaults] objectForKey:@"last_score_update"];
+    if (lastScoreUpdate) {
+        NSDate *now = [NSDate date];
+
+        unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
+        NSDateComponents *comp1 = [[NSCalendar currentCalendar] components:unitFlags fromDate:lastScoreUpdate];
+        NSDateComponents *comp2 = [[NSCalendar currentCalendar] components:unitFlags fromDate:now];
+
+        canLogActivities = [comp1 day] != [comp2 day];
+    }
+    else {
+        canLogActivities = YES;
+    }
+
     self.view.backgroundColor = [UIColor miyoBlue];
 
     self.pointMeterView = [[SOPointMeterView alloc] init];
-    self.pointMeterView.label.text = @"10";
-    self.pointMeterView.progress = 0.75;
+    self.pointMeterView.maximumValue = 500;
+    self.pointMeterView.minimumValue = 0;
+    if ([[NSUserDefaults standardUserDefaults] integerForKey:@"score"]) {
+        self.pointMeterView.currentValue = [[NSUserDefaults standardUserDefaults] integerForKey:@"score"];
+    }
+    else {
+        self.pointMeterView.currentValue = 150;
+    }
     self.pointMeterView.translatesAutoresizingMaskIntoConstraints = NO;
 
+    self.logView = [[UIView alloc] init];
+    self.logView.translatesAutoresizingMaskIntoConstraints = NO;
+
+    self.logView.hidden = !canLogActivities;
+
     self.activityLogButton = [[UIButton alloc] init];
-    [self.activityLogButton setTitle:@"Log Activity" forState:UIControlStateNormal];
-    self.activityLogButton.titleLabel.font = [UIFont boldSystemFontOfSize:18];
+    [self.activityLogButton setTitle:@"LOG ACTIVITY" forState:UIControlStateNormal];
+    self.activityLogButton.titleLabel.font = [UIFont boldSystemFontOfSize:14];
     self.activityLogButton.titleLabel.textColor = [UIColor whiteColor];
     self.activityLogButton.layer.borderColor = [UIColor whiteColor].CGColor;
     self.activityLogButton.layer.cornerRadius = 5;
@@ -48,11 +79,18 @@
     self.activityLogButton.layer.masksToBounds = YES;
     self.activityLogButton.translatesAutoresizingMaskIntoConstraints = NO;
 
-    UILabel *moodLabel = [[UILabel alloc] init];
-    moodLabel.text = @"HOW ARE YOU FEELING?";
-    moodLabel.textColor = [UIColor whiteColor];
-    moodLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-    moodLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.moodLabel = [[UILabel alloc] init];
+    if (canLogActivities) {
+        self.moodLabel.text = @"HOW ARE YOU FEELING?";
+    }
+    else {
+        self.moodLabel.text = @"COME BACK TOMORROW TO CHECK IN AGAIN";
+    }
+    self.moodLabel.textColor = [UIColor whiteColor];
+    self.moodLabel.textAlignment = NSTextAlignmentCenter;
+    self.moodLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+    self.moodLabel.numberOfLines = 0;
+    self.moodLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
     self.moodSlider = [[UISlider alloc] init];
     self.moodSlider.minimumTrackTintColor = [UIColor whiteColor];
@@ -66,14 +104,17 @@
                      forControlEvents:UIControlEventTouchUpInside];
 
     [self.view addSubview:self.pointMeterView];
-    [self.view addSubview:moodLabel];
-    [self.view addSubview:self.moodSlider];
-    [self.view addSubview:self.activityLogButton];
+    [self.view addSubview:self.moodLabel];
+    [self.view addSubview:self.logView];
+    [self.logView addSubview:self.moodSlider];
+    [self.logView addSubview:self.activityLogButton];
 
     self.activityMenuViewController = [[SOActivityMenuViewController alloc] init];
+    self.activityMenuViewController.delegate = self;
 
     NSDictionary *views = @{@"pointMeterView": self.pointMeterView,
-                            @"moodLabel": moodLabel,
+                            @"moodLabel": self.moodLabel,
+                            @"logView": self.logView,
                             @"moodSlider": self.moodSlider,
                             @"activityLogButton": self.activityLogButton};
 
@@ -98,46 +139,60 @@
                                                                       metrics:metrics
                                                                         views:views]];
 
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:moodLabel
-                                                          attribute:NSLayoutAttributeCenterX
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeCenterX
-                                                         multiplier:1.0
-                                                           constant:0]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(20)-[moodLabel]-(20)-|"
+                                                                      options:0
+                                                                      metrics:metrics
+                                                                        views:views]];
 
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[pointMeterView]-(20)-[moodLabel]"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(20)-[moodSlider]-(20)-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[logView]|"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[moodLabel]-(10)-[moodSlider]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[moodLabel]-(10)-[logView]"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[activityLogButton(buttonWidth)]"
-                                                                      options:0
-                                                                      metrics:metrics
-                                                                        views:views]];
+    [self.logView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(20)-[moodSlider]-(20)-|"
+                                                                         options:0
+                                                                         metrics:metrics
+                                                                           views:views]];
 
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.activityLogButton
-                                                          attribute:NSLayoutAttributeCenterX
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeCenterX
-                                                         multiplier:1.0
-                                                           constant:0]];
+    [self.logView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[moodSlider]"
+                                                                         options:0
+                                                                         metrics:metrics
+                                                                           views:views]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[moodSlider]-(20)-[activityLogButton(50)]"
-                                                                      options:0
-                                                                      metrics:metrics
-                                                                        views:views]];
+    [self.logView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(60)-[activityLogButton]-(60)-|"
+                                                                         options:0
+                                                                         metrics:metrics
+                                                                           views:views]];
+
+    [self.logView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[moodSlider]-(20)-[activityLogButton(45)]-|"
+                                                                         options:0
+                                                                         metrics:metrics
+                                                                           views:views]];
+}
+
+- (void)didSelectActivitesForPoints:(NSInteger)points
+{
+    self.pointMeterView.currentValue += points;
+    [[NSUserDefaults standardUserDefaults] setInteger:self.pointMeterView.currentValue forKey:@"score"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"last_score_update"];
+
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    self.moodLabel.text = @"COME BACK TOMORROW TO CHECK IN AGAIN";
+
+    [UIView animateWithDuration:0.3 animations:^{
+        self.logView.alpha = 0;
+    }];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -148,16 +203,6 @@
 - (void)didTouchActivityLogButton
 {
     [self.activityMenuViewController showInView:self.view];
-}
-
-- (IBAction)moodChanged:(UISlider *)sender
-{
-    NSNumber *moodValue = [[NSNumber alloc] initWithFloat:(sender.value * 100.0)];
-    PFObject *mood = [PFObject objectWithClassName:@"Mood"];
-    mood[@"value"] = moodValue;
-    
-//     [mood saveInBackground];
-// }
 }
 
 - (void)didReceiveMemoryWarning
