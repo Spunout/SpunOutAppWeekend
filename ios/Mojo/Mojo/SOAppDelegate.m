@@ -178,7 +178,6 @@
              [prefs setObject:pointsHistory forKey:@"pointsHistory"];
              
              // login
-             NSLog(idfv);
              [self loginUser:idfv :prefs];
              
          } else {
@@ -206,20 +205,6 @@
     
     return daysSinceLastLogin;
 }
-
-//-(NSString*)sha256HashFor:(NSString*)input
-//{
-//    const char* str = [input UTF8String];
-//    unsigned char result[256];
-//    CC_SHA256(str, strlen(str), result);
-//    
-//    NSMutableString *ret = [NSMutableString stringWithCapacity:256*2];
-//    for(int i = 0; i<256; i++)
-//    {
-//        [ret appendFormat:@"%02x",result[i]];
-//    }
-//    return ret;
-//}
 
 -(NSString*) sha256HashFor:(NSString *)clear{
     const char *s=[clear cStringUsingEncoding:NSASCIIStringEncoding];
