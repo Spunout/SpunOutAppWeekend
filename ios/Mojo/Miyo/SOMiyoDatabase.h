@@ -12,4 +12,8 @@
 
 + (SOMiyoDatabase *)sharedInstance;
 
+- (void)insertOrUpdateMood:(double)mood activities:(NSArray *)activities earnedPoints:(NSInteger)earnedPoints;
+
+- (NSArray *)getLastSelectedActivites;
+
 @end

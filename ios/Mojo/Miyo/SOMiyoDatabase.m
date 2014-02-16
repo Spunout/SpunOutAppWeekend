@@ -9,13 +9,16 @@
 #import "SOMiyoDatabase.h"
 #import "SOAppDelegate.h"
 
+#import "NSDate+Comparisons.h"
+
 #import <FMDB/FMDatabase.h>
 
 static NSString *const kSODatabaseName = @"miyo.db";
 
 @implementation SOMiyoDatabase
 
-+ (SOMiyoDatabase *)sharedInstance {
++ (SOMiyoDatabase *)sharedInstance
+{
     static SOMiyoDatabase *sharedInstance;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -35,6 +38,92 @@ static NSString *const kSODatabaseName = @"miyo.db";
 #endif
     }
     return self;
+}
+
+/*
+    CREATE TABLE data (
+        mood REAL,
+        eat BOOLEAN,
+        sleep BOOLEAN,
+        exercise BOOLEAN,
+        learn BOOLEAN,
+        talk BOOLEAN,
+        make BOOLEAN,
+        connect BOOLEAN,
+        play BOOLEAN,
+        timestamp DATETIME,
+        lifetime_points INTEGER,
+        PRIMARY KEY (timestamp)
+    );
+*/
+
+- (void)insertOrUpdateMood:(double)mood activities:(NSArray *)activities earnedPoints:(NSInteger)earnedPoints
+{
+    [self inTransaction:^(FMDatabase *db, BOOL *rollback) {
+        FMResultSet *lastResultSet = [db executeQuery:@"SELECT * FROM data ORDER BY timestamp DESC"];
+
+        NSInteger lifetimePointsTotal = 0;
+
+        if ([lastResultSet next]) {
+            NSDate *lastTimestamp = [lastResultSet dateForColumn:@"timestamp"];
+
+            if ([lastTimestamp isToday]) {
+                if (![db executeUpdate:@"DELETE FROM data WHERE timestamp = ?", lastTimestamp]) {
+                    *rollback = YES;
+                }
+            }
+
+            lifetimePointsTotal = [lastResultSet intForColumn:@"lifetime_points"] + earnedPoints;
+        }
+
+        if ([lastResultSet next]) {
+            lifetimePointsTotal = [lastResultSet intForColumn:@"lifetime_points"] + earnedPoints;
+        }
+        else {
+            lifetimePointsTotal = earnedPoints;
+        }
+
+        [lastResultSet close];
+
+        NSMutableArray *arguments = [NSMutableArray array];
+        [arguments addObject:[NSNumber numberWithDouble:mood]];
+        [arguments addObjectsFromArray:activities];
+        [arguments addObject:[NSDate date]];
+        [arguments addObject:[NSNumber numberWithInteger:lifetimePointsTotal]];
+
+        if (![db executeUpdate:@"INSERT INTO data VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" withArgumentsInArray:arguments]) {
+            *rollback = YES;
+        }
+    }];
+}
+
+- (NSArray *)getLastSelectedActivites
+{
+    __block NSMutableArray *selectedActivites = nil;
+
+    [self inDatabase:^(FMDatabase *db) {
+        FMResultSet *lastResultSet = [db executeQuery:@"SELECT * FROM data ORDER BY timestamp DESC"];
+
+        if ([lastResultSet next]) {
+            NSDate *lastTimestamp = [lastResultSet dateForColumn:@"timestamp"];
+
+            if ([lastTimestamp isToday]) {
+                selectedActivites = [NSMutableArray array];
+                [selectedActivites addObject:[NSNumber numberWithBool:[lastResultSet boolForColumnIndex:1]]];
+                [selectedActivites addObject:[NSNumber numberWithBool:[lastResultSet boolForColumnIndex:2]]];
+                [selectedActivites addObject:[NSNumber numberWithBool:[lastResultSet boolForColumnIndex:3]]];
+                [selectedActivites addObject:[NSNumber numberWithBool:[lastResultSet boolForColumnIndex:4]]];
+                [selectedActivites addObject:[NSNumber numberWithBool:[lastResultSet boolForColumnIndex:5]]];
+                [selectedActivites addObject:[NSNumber numberWithBool:[lastResultSet boolForColumnIndex:6]]];
+                [selectedActivites addObject:[NSNumber numberWithBool:[lastResultSet boolForColumnIndex:7]]];
+                [selectedActivites addObject:[NSNumber numberWithBool:[lastResultSet boolForColumnIndex:8]]];
+            }
+        }
+
+        [lastResultSet close];
+    }];
+
+    return selectedActivites;
 }
 
 @end

@@ -13,8 +13,6 @@
 #import <CommonCrypto/CommonCrypto.h>
 #import <FMDB/FMDatabase.h>
 
-static NSString *const kSOScoreKeyName = @"SOScoreKeyName";
-
 @implementation SOAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -56,10 +54,10 @@ static NSString *const kSOScoreKeyName = @"SOScoreKeyName";
         NSString *migrations = [[NSBundle bundleWithPath:migrationsPath] resourcePath];
         NSInteger fileCount = [[[NSFileManager defaultManager] subpathsOfDirectoryAtPath:migrationsPath error:nil] count];
 
-        for (NSInteger i = version + 1; i < fileCount; i++) {
-            [db executeUpdateFromFileWithPath:[migrations stringByAppendingString:[NSString stringWithFormat:@"/%d.sql", i]]];
+        for (NSInteger i = version; i < fileCount; i++) {
+            [db executeUpdateFromFileWithPath:[migrations stringByAppendingString:[NSString stringWithFormat:@"/%d.sql", i+1]]];
             // FMDB treats all statements as prepared statements so we have to set the version without it
-            NSInteger rc = sqlite3_exec(db.sqliteHandle, [[NSString stringWithFormat:@"PRAGMA user_version = %d", i] UTF8String], NULL, NULL, NULL);
+            NSInteger rc = sqlite3_exec(db.sqliteHandle, [[NSString stringWithFormat:@"PRAGMA user_version = %d", i+1] UTF8String], NULL, NULL, NULL);
             if (rc != SQLITE_OK) {
                 NSLog(@"Failed to update database user version");
             }
