@@ -267,10 +267,6 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
     
     
-//    UISwipeGestureRecognizer *swipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeftDetected:)];
-//    swipeRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
-//    [self.view addGestureRecognizer:swipeRecognizer];
-// 
 }
 
 

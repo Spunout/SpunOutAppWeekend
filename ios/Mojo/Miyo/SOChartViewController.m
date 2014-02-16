@@ -74,6 +74,11 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 27;
     [self.view addSubview: lineChartView];
     [lineChartView reloadData];
     
+    UIProgressView *levelProgress = [[UIProgressView alloc] initWithFrame:CGRectMake(20.0,450.0,280.0,40.0)];
+    levelProgress.progressTintColor = [UIColor greenColor];
+    [levelProgress setProgress:0.5];
+    [self.view addSubview:levelProgress];
+    
 
     
 }
