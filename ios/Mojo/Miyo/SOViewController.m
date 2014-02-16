@@ -96,7 +96,7 @@
         return self.badgesViewController;
     }
     else if (viewController == self.badgesViewController) {
-        return self.chartViewController;
+        return nil;
     }
 
     return nil;
