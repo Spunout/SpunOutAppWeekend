@@ -11,14 +11,16 @@
 #import "SOViewController.h"
 #import "SOMainViewController.h"
 #import "SOChartViewController.h"
+#import "SOBadgesViewController.h"
 
 
 
 @interface SOViewController ()
 
-
 @property (strong, nonatomic) UIPageViewController *pageViewController;
-
+@property (nonatomic, strong) SOMainViewController *mainViewController;
+@property (nonatomic, strong) SOChartViewController *chartViewController;
+@property (nonatomic, strong) SOBadgesViewController *badgesViewController;
 
 @end
 
@@ -40,13 +42,15 @@
     
     NSMutableArray *viewControllers = [[NSMutableArray alloc] init];
     
-    SOMainViewController *mainViewController = [[SOMainViewController alloc] init];
-    //SOChartViewController *chartViewController = [[SOChartViewController alloc] init];
-    
-    [viewControllers addObject: mainViewController];
-    
-    self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+    self.mainViewController = [[SOMainViewController alloc] init];
+    self.chartViewController = [[SOChartViewController alloc] init];
+    self.badgesViewController = [[SOBadgesViewController alloc] init];
 
+    [viewControllers addObject:self.mainViewController];
+
+    self.pageViewController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
+                                                              navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
+                                                                            options:nil];
     
     self.pageViewController.dataSource = self;
     self.pageViewController.delegate = self;
@@ -68,40 +72,34 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
-    
-   int pageIndex = ((SOMainViewController*) viewController).pageIndex;
-    
-    
-
-    return [self.viewControllers objectAtIndex:pageIndex];
-    
-    
-    
-}
-
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
-    
-    
-    int pageIndex = [(SOChartViewController *)viewController pageIndex];
-    
-    
-    if (pageIndex < [self.viewControllers count] && [self.viewControllers objectAtIndex:pageIndex])
-    {
-        return [self.viewControllers objectAtIndex:pageIndex];
-    } else {
-        if (pageIndex == 1)
-        {
-            [self.viewControllers addObject: [[SOChartViewController alloc] init]];
-            return [self.viewControllers objectAtIndex:pageIndex];
-        }
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
+{
+    if (viewController == self.mainViewController) {
+        return nil;
+    }
+    else if (viewController == self.chartViewController) {
+        return self.mainViewController;
+    }
+    else if (viewController == self.badgesViewController) {
+        return self.chartViewController;
     }
 
-    NSLog([NSString stringWithFormat: @"%d", (int)pageIndex]);
-    return [[SOChartViewController alloc] init];
-    
-    
-    
+    return nil;
+}
+
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
+{
+    if (viewController == self.mainViewController) {
+        return self.chartViewController;
+    }
+    else if (viewController == self.chartViewController) {
+        return self.badgesViewController;
+    }
+    else if (viewController == self.badgesViewController) {
+        return self.chartViewController;
+    }
+
+    return nil;
 }
 
 - (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController
@@ -113,8 +111,5 @@
 {
     return 0;
 }
-
-
-
 
 @end
