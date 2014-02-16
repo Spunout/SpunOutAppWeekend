@@ -38,24 +38,11 @@ static UIColor *chartHeaderViewDefaultSeparatorColor = nil;
         _titleLabel.numberOfLines = 1;
         _titleLabel.adjustsFontSizeToFitWidth = YES;
         _titleLabel.textAlignment = NSTextAlignmentCenter;
-//        _titleLabel.font = [UIFont SystemFont];
         _titleLabel.textColor = [UIColor whiteColor];
         _titleLabel.shadowColor = [UIColor blackColor];
         _titleLabel.shadowOffset = CGSizeMake(0, 1);
         _titleLabel.backgroundColor = [UIColor clearColor];
         [self addSubview:_titleLabel];
-        
-//        _subtitleLabel = [[UILabel alloc] init];
-//        _subtitleLabel.numberOfLines = 1;
-//        _subtitleLabel.adjustsFontSizeToFitWidth = NO;
-//        _subtitleLabel.font = [UIFont systemFontOfSize:13.0];
-////        _subtitleLabel.font = kJBFontHeaderSubtitle;
-//        _subtitleLabel.textAlignment = NSTextAlignmentCenter;
-//        _subtitleLabel.textColor = [UIColor whiteColor];
-//        _subtitleLabel.shadowColor = [UIColor blackColor];
-//        _subtitleLabel.shadowOffset = CGSizeMake(0, 1);
-//        _subtitleLabel.backgroundColor = [UIColor clearColor];
-//        [self addSubview:_subtitleLabel];
         
         _separatorView = [[UIView alloc] init];
         _separatorView.backgroundColor = chartHeaderViewDefaultSeparatorColor;
@@ -80,7 +67,6 @@ static UIColor *chartHeaderViewDefaultSeparatorColor = nil;
     [super layoutSubviews];
     
     CGFloat titleHeight = ceil(self.bounds.size.height * 0.5);
-    CGFloat subTitleHeight = self.bounds.size.height - titleHeight -20.0;
     CGFloat xOffset = 2.0;
     CGFloat yOffset = 0;
     
@@ -88,7 +74,6 @@ static UIColor *chartHeaderViewDefaultSeparatorColor = nil;
     yOffset += self.titleLabel.frame.size.height;
     self.separatorView.frame = CGRectMake(xOffset * 2, yOffset, self.bounds.size.width - (xOffset * 4), 2.0);
     yOffset += self.separatorView.frame.size.height;
-    //self.subtitleLabel.frame = CGRectMake(xOffset, yOffset, self.bounds.size.width - (xOffset * 2), subTitleHeight);
 }
 
 /*

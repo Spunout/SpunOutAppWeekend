@@ -12,6 +12,8 @@
 #import "SOMainViewController.h"
 #import "SOChartViewController.h"
 
+
+
 @interface SOViewController ()
 
 
@@ -84,7 +86,7 @@
     int pageIndex = [(SOChartViewController *)viewController pageIndex];
     
     
-    if ([self.viewControllers count] == (pageIndex + 1))
+    if (pageIndex < [self.viewControllers count] && [self.viewControllers objectAtIndex:pageIndex])
     {
         return [self.viewControllers objectAtIndex:pageIndex];
     } else {

@@ -19,7 +19,7 @@
 
 static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionViewCellIdentifier";
 
-@interface SOMainViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UIPageViewControllerDataSource>
+@interface SOMainViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (strong, nonatomic) UIPageViewController *pageController;
 

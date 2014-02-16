@@ -13,7 +13,10 @@
 #import "JBLineChartView.h"
 #import "SOChartHeader.h"
 #import "SOChartFooter.h"
+#import "SOActivityButton.h"
 #include <stdlib.h>
+
+static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionViewCellIdentifier";
 
 // Numerics
 CGFloat const kJBLineChartViewControllerChartHeight = 250.0f;
@@ -23,8 +26,20 @@ CGFloat const kJBLineChartViewControllerChartFooterHeight = 20.0f;
 NSInteger const kJBLineChartViewControllerNumChartPoints = 27;
 
 
-@interface SOChartViewController () <JBLineChartViewDelegate, JBLineChartViewDataSource>
+@interface SOChartViewController () <JBLineChartViewDelegate, JBLineChartViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource>
 
+@property (nonatomic, strong) UICollectionView *buttonCollectionView;
+
+@property (nonatomic, strong) NSMutableArray *buttons;
+
+@property (nonatomic, strong) SOActivityButton *eatActivityButton;
+@property (nonatomic, strong) SOActivityButton *sleepActivityButton;
+@property (nonatomic, strong) SOActivityButton *exerciseActivityButton;
+@property (nonatomic, strong) SOActivityButton *learnActivityButton;
+@property (nonatomic, strong) SOActivityButton *talkActivityButton;
+@property (nonatomic, strong) SOActivityButton *makeActivityButton;
+@property (nonatomic, strong) SOActivityButton *playActivityButton;
+@property (nonatomic, strong) SOActivityButton *connectActivityButton;
 
 @end
 
@@ -79,7 +94,113 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 27;
     [levelProgress setProgress:0.5];
     [self.view addSubview:levelProgress];
     
+    UILabel *levelLabel = [[UILabel alloc] initWithFrame:CGRectMake(30.0, 410.0, 270.0, 50.0)];
+    levelLabel.text = @"YOUR LEVEL PROGRESS";
+    levelLabel.textColor = [UIColor whiteColor];
+    levelLabel.textAlignment = NSTextAlignmentCenter;
+    levelLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+    [self.view addSubview:levelLabel];
 
+    
+    // buttons
+    
+    UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
+    collectionViewLayout.itemSize = CGSizeMake(60.0f, 60.0f);
+    collectionViewLayout.sectionInset = UIEdgeInsetsMake(0.0, 16.0, 0, 16.0);
+    collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    
+    self.buttonCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
+                                                   collectionViewLayout:collectionViewLayout];
+    self.buttonCollectionView.delegate = self;
+    self.buttonCollectionView.dataSource = self;
+    self.buttonCollectionView.backgroundColor = [UIColor clearColor];
+    self.buttonCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self.buttonCollectionView registerClass:[UICollectionViewCell class]
+                  forCellWithReuseIdentifier:kButtonCollectionViewCellIdentifier];
+    
+    self.buttons = [[NSMutableArray alloc] init];
+    
+    self.eatActivityButton = [[SOActivityButton alloc] initWithTitle:@"Eat Well" image:[UIImage imageNamed:@"eat"]];
+    self.eatActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.eatActivityButton.tag = 0;
+    [self.buttons addObject:self.eatActivityButton];
+    
+    [self.eatActivityButton addTarget:self
+                               action:@selector(didTapActivityButton:)
+                     forControlEvents:UIControlEventTouchUpInside];
+    
+    self.sleepActivityButton = [[SOActivityButton alloc] initWithTitle:@"Slept Well" image:[UIImage imageNamed:@"sleep"]];
+    self.sleepActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.sleepActivityButton.tag = 1;
+    [self.buttons addObject:self.sleepActivityButton];
+    
+    [self.sleepActivityButton addTarget:self
+                                 action:@selector(didTapActivityButton:)
+                       forControlEvents:UIControlEventTouchUpInside];
+    
+    self.exerciseActivityButton = [[SOActivityButton alloc] initWithTitle:@"Exercise" image:[UIImage imageNamed:@"exercise"]];
+    self.exerciseActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.exerciseActivityButton.tag = 2;
+    [self.buttons addObject:self.exerciseActivityButton];
+    
+    [self.exerciseActivityButton addTarget:self
+                                    action:@selector(didTapActivityButton:)
+                          forControlEvents:UIControlEventTouchUpInside];
+    
+    self.learnActivityButton = [[SOActivityButton alloc] initWithTitle:@"Learn" image:[UIImage imageNamed:@"learn"]];
+    self.learnActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.learnActivityButton.tag = 3;
+    [self.buttons addObject:self.learnActivityButton];
+    
+    [self.learnActivityButton addTarget:self
+                                 action:@selector(didTapActivityButton:)
+                       forControlEvents:UIControlEventTouchUpInside];
+    
+    self.talkActivityButton = [[SOActivityButton alloc] initWithTitle:@"Talk" image:[UIImage imageNamed:@"talk"]];
+    self.talkActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.talkActivityButton.tag = 4;
+    [self.buttons addObject:self.talkActivityButton];
+    
+    [self.talkActivityButton addTarget:self
+                                action:@selector(didTapActivityButton:)
+                      forControlEvents:UIControlEventTouchUpInside];
+    
+    self.makeActivityButton = [[SOActivityButton alloc] initWithTitle:@"Make" image:[UIImage imageNamed:@"make"]];
+    self.makeActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.makeActivityButton.tag = 5;
+    [self.buttons addObject:self.makeActivityButton];
+    
+    [self.makeActivityButton addTarget:self
+                                action:@selector(didTapActivityButton:)
+                      forControlEvents:UIControlEventTouchUpInside];
+    
+    self.connectActivityButton = [[SOActivityButton alloc] initWithTitle:@"Connect" image:[UIImage imageNamed:@"connect"]];
+    self.connectActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.connectActivityButton.tag = 6;
+    [self.buttons addObject:self.connectActivityButton];
+    
+    [self.connectActivityButton addTarget:self
+                                   action:@selector(didTapActivityButton:)
+                         forControlEvents:UIControlEventTouchUpInside];
+    
+    self.playActivityButton = [[SOActivityButton alloc] initWithTitle:@"Play" image:[UIImage imageNamed:@"play"]];
+    self.playActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.playActivityButton.tag = 7;
+    [self.buttons addObject:self.playActivityButton];
+    
+    [self.playActivityButton addTarget:self
+                                action:@selector(didTapActivityButton:)
+                      forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    NSDictionary *views = @{ @"buttonCollectionView": self.buttonCollectionView };
+
+    [self.view addSubview:self.buttonCollectionView];
+    [self.view addConstraints: [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[buttonCollectionView]|" options:0 metrics:nil views:views]];
+    
+    
+    
     
 }
 
@@ -106,6 +227,34 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 27;
 {
     return [UIColor whiteColor];
 }
+
+#pragma mark - Collection View Data Source
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return self.buttons.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kButtonCollectionViewCellIdentifier forIndexPath:indexPath];
+    
+    for (UIView *subview in cell.contentView.subviews) {
+        [subview removeFromSuperview];
+    }
+    
+    SOActivityButton *button = self.buttons[indexPath.row];
+    button.frame = cell.contentView.frame;
+    [cell.contentView addSubview:button];
+    
+    return cell;
+}
+
+- (void)didTapActivityButton:(UIButton *)button
+{
+  
+}
+
 
 
 - (void)didReceiveMemoryWarning
