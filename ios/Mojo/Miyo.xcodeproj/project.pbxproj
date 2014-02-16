@@ -22,8 +22,12 @@
 		8B3FE4601893DC480014945F /* SOMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE45F1893DC480014945F /* SOMainViewController.m */; };
 		8B3FE4641893DDCB0014945F /* SOPointMeterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE4631893DDCB0014945F /* SOPointMeterView.m */; };
 		8B3FE473189424350014945F /* UIColor+Miyo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE472189424350014945F /* UIColor+Miyo.m */; };
+		8B603D9A18B0DA0900E90810 /* SOMiyoDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B603D9918B0DA0900E90810 /* SOMiyoDatabase.m */; };
+		8B603D9D18B0DCE700E90810 /* FMDatabase+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B603D9C18B0DCE700E90810 /* FMDatabase+Additions.m */; };
+		8B603D9F18B0DD7A00E90810 /* Migrations.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8B603D9E18B0DD7A00E90810 /* Migrations.bundle */; };
 		8B61CD221895141400CF215D /* SOActivityButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B61CD211895141400CF215D /* SOActivityButton.m */; };
 		8B61CD251895421C00CF215D /* SOPieLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B61CD241895421C00CF215D /* SOPieLayer.m */; };
+		8B68EABE18B0F51100375837 /* NSDate+Comparisons.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B68EABD18B0F51100375837 /* NSDate+Comparisons.m */; };
 		8B9D207B18AF80E800832FF8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B9D207A18AF80E800832FF8 /* Security.framework */; };
 		ACE2C59D28294FC79F4FC2E3 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B3F6851B21F6430CB59563A3 /* libPods.a */; };
 		CD94AA4818B0D344001FED32 /* SOChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD94AA4718B0D344001FED32 /* SOChartViewController.m */; };
@@ -67,10 +71,17 @@
 		8B3FE4631893DDCB0014945F /* SOPointMeterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPointMeterView.m; sourceTree = "<group>"; };
 		8B3FE471189424350014945F /* UIColor+Miyo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Miyo.h"; sourceTree = "<group>"; };
 		8B3FE472189424350014945F /* UIColor+Miyo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Miyo.m"; sourceTree = "<group>"; };
+		8B603D9818B0DA0900E90810 /* SOMiyoDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOMiyoDatabase.h; sourceTree = "<group>"; };
+		8B603D9918B0DA0900E90810 /* SOMiyoDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOMiyoDatabase.m; sourceTree = "<group>"; };
+		8B603D9B18B0DCE700E90810 /* FMDatabase+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FMDatabase+Additions.h"; sourceTree = "<group>"; };
+		8B603D9C18B0DCE700E90810 /* FMDatabase+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FMDatabase+Additions.m"; sourceTree = "<group>"; };
+		8B603D9E18B0DD7A00E90810 /* Migrations.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Migrations.bundle; path = ../Migrations.bundle; sourceTree = "<group>"; };
 		8B61CD201895141400CF215D /* SOActivityButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOActivityButton.h; sourceTree = "<group>"; };
 		8B61CD211895141400CF215D /* SOActivityButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOActivityButton.m; sourceTree = "<group>"; };
 		8B61CD231895421C00CF215D /* SOPieLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPieLayer.h; sourceTree = "<group>"; };
 		8B61CD241895421C00CF215D /* SOPieLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPieLayer.m; sourceTree = "<group>"; };
+		8B68EABC18B0F51100375837 /* NSDate+Comparisons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Comparisons.h"; sourceTree = "<group>"; };
+		8B68EABD18B0F51100375837 /* NSDate+Comparisons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Comparisons.m"; sourceTree = "<group>"; };
 		8B9D207A18AF80E800832FF8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		8E4C2323C4944840907D3063 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		B3F6851B21F6430CB59563A3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -155,6 +166,7 @@
 				8B3FE43F1893DA500014945F /* SOAppDelegate.m */,
 				8B3FE46A18941CDE0014945F /* Categories */,
 				8B3FE4611893DD480014945F /* Controllers */,
+				8B603D9718B0D9C100E90810 /* Model */,
 				8B3FE4651893DDD80014945F /* Views */,
 				8B3FE4411893DA500014945F /* Images.xcassets */,
 				8B3FE4361893DA500014945F /* Supporting Files */,
@@ -165,6 +177,7 @@
 		8B3FE4361893DA500014945F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8B603D9E18B0DD7A00E90810 /* Migrations.bundle */,
 				8B3FE4371893DA500014945F /* Miyo-Info.plist */,
 				8B3FE4381893DA500014945F /* InfoPlist.strings */,
 				8B3FE43B1893DA500014945F /* main.m */,
@@ -226,10 +239,23 @@
 		8B3FE46A18941CDE0014945F /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				8B603D9B18B0DCE700E90810 /* FMDatabase+Additions.h */,
+				8B603D9C18B0DCE700E90810 /* FMDatabase+Additions.m */,
+				8B68EABC18B0F51100375837 /* NSDate+Comparisons.h */,
+				8B68EABD18B0F51100375837 /* NSDate+Comparisons.m */,
 				8B3FE471189424350014945F /* UIColor+Miyo.h */,
 				8B3FE472189424350014945F /* UIColor+Miyo.m */,
 			);
 			name = Categories;
+			sourceTree = "<group>";
+		};
+		8B603D9718B0D9C100E90810 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8B603D9818B0DA0900E90810 /* SOMiyoDatabase.h */,
+				8B603D9918B0DA0900E90810 /* SOMiyoDatabase.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -314,6 +340,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B3FE43A1893DA500014945F /* InfoPlist.strings in Resources */,
+				8B603D9F18B0DD7A00E90810 /* Migrations.bundle in Resources */,
 				8B3FE4421893DA500014945F /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -366,6 +393,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B603D9A18B0DA0900E90810 /* SOMiyoDatabase.m in Sources */,
 				8B3FE4401893DA500014945F /* SOAppDelegate.m in Sources */,
 				8B3FE4641893DDCB0014945F /* SOPointMeterView.m in Sources */,
 				CD94AA5418B0F7E2001FED32 /* SOChartFooter.m in Sources */,
@@ -375,6 +403,8 @@
 				CD94AA5118B0F49A001FED32 /* SOChartHeader.m in Sources */,
 				CD94AA4E18B0D661001FED32 /* SOActivityChart.m in Sources */,
 				CD94AA4818B0D344001FED32 /* SOChartViewController.m in Sources */,
+                8B68EABE18B0F51100375837 /* NSDate+Comparisons.m in Sources */,
+                8B603D9D18B0DCE700E90810 /* FMDatabase+Additions.m in Sources */,
 				8B3FE43C1893DA500014945F /* main.m in Sources */,
 				CD94AA5718B10E5A001FED32 /* SOViewController.m in Sources */,
 				8B3FE473189424350014945F /* UIColor+Miyo.m in Sources */,
