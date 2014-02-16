@@ -23,12 +23,16 @@
     && dateComponents.day == todayComponents.day;
 }
 
-- (BOOL)isMonday
+- (BOOL)isNewWeek
 {
-    NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitWeekday
+    NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitWeekOfYear
                                                                        fromDate:self];
+    NSDateComponents *todayComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitWeekOfYear
+                                                                        fromDate:[NSDate date]];
 
-    return dateComponents.weekday == 1;
+    return dateComponents.era == todayComponents.era
+    && dateComponents.year == todayComponents.year
+    && dateComponents.month == todayComponents.month;
 }
 
 @end

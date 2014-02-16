@@ -49,7 +49,7 @@
 
 - (void)resetPointsIfMonday
 {
-    if ([[NSDate date] isMonday]) {
+    if ([[[SOMiyoDatabase sharedInstance] lastUpdateDate] isNewWeek]) {
         [[NSUserDefaults standardUserDefaults] setInteger:150 forKey:@"score"];
     }
 }

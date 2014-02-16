@@ -165,4 +165,21 @@ static NSString *const kSODatabaseName = @"miyo.db";
     return log(lifetimePoints) / log(2);
 }
 
+- (NSDate *)lastUpdateDate
+{
+    __block NSDate *lastUpdateDate = nil;
+
+    [self inDatabase:^(FMDatabase *db) {
+        FMResultSet *resultSet = [db executeQuery:@"SELECT * FROM data ORDER BY timestamp DESC LIMIT 1 OFFSET 1;"];
+
+        if ([resultSet next]) {
+            lastUpdateDate = [resultSet dateForColumn:@"timestamp"];
+        }
+
+        [resultSet close];
+    }];
+
+    return lastUpdateDate;
+}
+
 @end

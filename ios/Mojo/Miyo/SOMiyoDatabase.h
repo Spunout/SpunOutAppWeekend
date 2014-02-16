@@ -20,4 +20,6 @@
 - (NSInteger)getCurrentLifetimePoints;
 - (NSInteger)getCurrentLevel;
 
+- (NSDate *)lastUpdateDate;
+
 @end
