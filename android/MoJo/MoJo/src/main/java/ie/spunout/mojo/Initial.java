@@ -61,34 +61,42 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.Scanner;
 
-public class Initial extends Activity {
+public class Initial extends android.support.v4.app.Fragment {
     private View menu;                      //the object for the choice menu
-    private ActionBar abar;                 //the action bar for the view
+    private View parent;                    //the parent activity
     private SeekBar sbar;                   //the seekbar in the view
     private int score;                      //The users current score
     private TextView scoreNumber;           //the score in the middle of the circle
     private ImageView meterForeground;      //the circle filling the score indicator
     private ImageView meterBackground;
-    private String user_id;                 //the unique identifier for this user
     private boolean[] choices;              //keeps track of the users current choices in the menu
     private static final String TAG = "Miyo";//log tag
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void  onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.initial_layout);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+        parent = inflater.inflate(R.layout.initial_layout, container, false);
+
+        //get the parent activity
+        //parent = getActivity();
 
         //hide the action bar
-        abar = getActionBar();
-        abar.hide();
+        //abar = getActionBar();
+        //abar.hide();
         //abar.setDisplayHomeAsUpEnabled(true);
 
         //TODO: make sure all of these are in the right order
 
         //hide the overlay menu
-        menu = findViewById(R.id.hideable);
-        menu.setVisibility(View.INVISIBLE);
+        //menu = findViewById(R.id.hideable);
+        //menu.setVisibility(View.INVISIBLE);
 
         //TODO the start point is 150
 
@@ -110,27 +118,10 @@ public class Initial extends Activity {
         //setup the choices array from device memory
         setupChoices();
 
-        //get the user id
-        user_id = Settings.Secure.getString(this.getContentResolver(),Secure.ANDROID_ID);
-        //set the parse api key
-        Parse.initialize(this, "2MS1N1zfmK380WV1zOYR1jhJWAj5BEz6uuZsAbIW", "Ke6SEnngzAwKRSWoPumG22ojb7UOjLl312uwOAp8");
-
         //setup the score system for this use
         setupScore();
 
-        //TODO: remove this code
-        //fintans code
-        HashMap<String, Object> params = new HashMap<String, Object>();
-        params.put("username", user_id);
-        ParseCloud.callFunctionInBackground("checkLevel", params, new FunctionCallback<ArrayList>() {
-            public void done(ArrayList result, ParseException e) {
-                if (e == null) {
-                    // update points
-                    Log.i(TAG, "fintans thing :"+result.toString());
-                }
-                Log.i(TAG, "fintans thing :"+result.toString());
-            }
-        });
+        return parent;
     }
 
     private void setupGrid(){
@@ -168,8 +159,8 @@ public class Initial extends Activity {
         // Keys used in Hashmap
         String[] from = { "image","name" };
         int[] to = { R.id.img,R.id.txt };
-        SimpleAdapter adapter = new SimpleAdapter(getBaseContext(), listinfo,R.layout.activity_items, from, to);
-        GridView moodgrid = (GridView) findViewById(R.id.moodpage);
+        SimpleAdapter adapter = new SimpleAdapter(getActivity().getBaseContext(), listinfo,R.layout.activity_items, from, to);
+        GridView moodgrid = (GridView) parent.findViewById(R.id.moodpage);
         moodgrid.setAdapter(adapter);
 
         moodgrid.setItemChecked(3,true);
@@ -211,20 +202,17 @@ public class Initial extends Activity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 //when the user has chosen a value open the menu
-                menu.setVisibility(View.VISIBLE);
                 int value = seekBar.getProgress();
                 //TODO make sure that this is the max score
                 int diff = (score+value) < 500 ? value: value-((score+value)%500);
                 for (int i = 0; i < diff; i++){
                     incrementScore();
                 }
-                //send the new score to parse
-                updateScore(new int[1]);
             }
         };
 
         //assign this listener to the seekbar
-        sbar = (SeekBar) findViewById(R.id.seekbar);
+        sbar = (SeekBar) parent.findViewById(R.id.seekbar);
         sbar.setOnSeekBarChangeListener(seeklistener);
     }
 
@@ -233,7 +221,7 @@ public class Initial extends Activity {
         setPoints();
 
         // set up for the local storage
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         //editor.putBoolean("my_first_time", true);
         editor.commit();
@@ -243,33 +231,6 @@ public class Initial extends Activity {
         if (sharedPref.getBoolean("my_first_time", true)) {
             //the app is being launched for first time, do something
             Log.v("Comments", "First time");
-
-            //create a new parse user
-            String temp = "[1,1,1,1,1,1,1,1]";
-            JSONArray points = new JSONArray();
-            try{
-                points = new JSONArray(temp);
-            }catch (JSONException ex){
-                Log.e(TAG,"failed to create JSON array");
-            }
-            ParseUser user = new ParseUser();
-            user.setUsername(user_id);
-            user.setPassword("pwd");
-            user.put("points", points);
-
-
-            user.signUpInBackground(new SignUpCallback() {
-                public void done(ParseException e) {
-                    if (e == null) {
-                        // Hooray! Let them use the app now.
-                        Log.i(TAG, "user created");
-                    } else {
-                        // Sign up didn't succeed. Look at the ParseException
-                        // to figure out what went wrong
-                        Log.i(TAG, "user creation failed");
-                    }
-                }
-            });
 
             editor.putInt("Score", 150);
             editor.commit();
@@ -299,7 +260,7 @@ public class Initial extends Activity {
                 editor.commit();
             } else {
                 unOpenedPenalty();
-                Toast toast = new Toast(this);
+                Toast toast = new Toast(getActivity());
             }
         } else {
             //Nothing Happening here
@@ -319,12 +280,12 @@ public class Initial extends Activity {
     }
 
     private void setupMeter(){
-        meterForeground = (ImageView) findViewById(R.id.meterforeground);
-        meterBackground = (ImageView) findViewById(R.id.meterbackground);
-        scoreNumber = (TextView) findViewById(R.id.score_number);
+        meterForeground = (ImageView) parent.findViewById(R.id.meterforeground);
+        meterBackground = (ImageView) parent.findViewById(R.id.meterbackground);
+        scoreNumber = (TextView) parent.findViewById(R.id.score_number);
 
 
-        Display display = getWindowManager().getDefaultDisplay();
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         int width = size.x;
@@ -363,50 +324,8 @@ public class Initial extends Activity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void openPullUp(View view){
-        menu.setVisibility(View.VISIBLE);
-        //abar.show();
-    }
-
-    //TODO fix this: it currently triggers when a user presses down on the screen not when they swipe down
-    @Override
-    public boolean onTouchEvent(MotionEvent event){
-
-        int action = MotionEventCompat.getActionMasked(event);
-
-        switch(action) {
-            case (MotionEvent.ACTION_DOWN) :
-                if (menu.getVisibility() == View.VISIBLE){
-                    menu.setVisibility(View.INVISIBLE);
-                }
-                return true;
-            default :
-                return super.onTouchEvent(event);
-        }
-    }
-
     public boolean firstOpenOfTheDay() {
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         Date today = new Date(System.currentTimeMillis());
         Date d = new Date(sharedPref.getLong("LastOpen", 0));
 
@@ -422,7 +341,7 @@ public class Initial extends Activity {
     }
 
     public boolean firstOpenOfTheWeek() {
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         Date d = new Date(sharedPref.getLong("LastOpen", 0));
         Date today = new Date(System.currentTimeMillis());
         Calendar cal = DateToCalendar(d);
@@ -431,7 +350,7 @@ public class Initial extends Activity {
     }
 
     public int unOpenedPenalty() {
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         Date d = new Date(sharedPref.getLong("LastOpen", 0));
         Date today = new Date(System.currentTimeMillis());
         Calendar cal = DateToCalendar(d);
@@ -453,9 +372,9 @@ public class Initial extends Activity {
         shape.setIntrinsicWidth(350);
         shape.getPaint().setColor(Color.LTGRAY);
 
-        ImageView foreground = new ImageView(this);
+        ImageView foreground = new ImageView(getActivity());
         Drawable mDrawable = shape;
-        foreground = (ImageView) this.findViewById(R.id.meterforeground);
+        foreground = (ImageView) parent.findViewById(R.id.meterforeground);
         foreground.setImageDrawable(mDrawable);
 
         return true;
@@ -481,7 +400,7 @@ public class Initial extends Activity {
         anim.setTarget(arc);
 
         Drawable mDrawable = shape;
-        ImageView foreground = (ImageView) findViewById(R.id.meterforeground);
+        ImageView foreground = (ImageView) parent.findViewById(R.id.meterforeground);
         foreground.setImageDrawable(mDrawable);
 
         foreground.getDrawable();
@@ -497,7 +416,7 @@ public class Initial extends Activity {
         for (int i = 0; i < activities.length; i++) {
             if (activities[i]) {
                 String name = "";
-                SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
                 name = types[i];
                 scoreupdate = sharedPref.getFloat(name, scoreupdate);
                 SharedPreferences.Editor editor = sharedPref.edit();
@@ -516,33 +435,45 @@ public class Initial extends Activity {
         return score;
     }
 
-    //sends the current choices to parse
-    public void updateScore(int[] p){
-        String temp = "[2,2,2,2,2,2,2,2]";
-        JSONArray points = new JSONArray();
-        try{
-            points = new JSONArray(temp);
-        }catch (JSONException ex){
-            Log.e(TAG,"failed to create JSON array");
-        }
-
-        String Username = user_id;
-        Log.i(TAG,"UUID = "+Username);
-        Log.i(TAG, "Sending data to parse");
-        HashMap<String, Object> params = new HashMap<String, Object>();
-        params.put("username", Username);
-        params.put("points", points);
-        ParseCloud.callFunctionInBackground("updateWeekPoints", params, new FunctionCallback<ParseUser>() {
-            public void done(ParseUser result, ParseException e) {
-                if (e == null) {
-                    // update points
-                }
-                Log.i(TAG,result.toString());
-            }
-        });
-    }
-
     public void recordChoices(View view){
         Log.i(TAG, "recording choices: "+choices);
+    }
+
+    //code to calculate whether they have achieved badges
+    public class CalculateLevel {
+        private final Integer[] levels = new Integer[29];
+        private Scanner sc;
+
+        public void main(String[]args){
+            double multiplier = 1.55;
+            levels[0] = 10;
+            //initiate an array with the values that need to be passed to level up
+            for(int i = 1; i <=28; i ++ ){
+                levels[i] = (int) (levels[i-1]*multiplier);
+                if(i==10){
+                    multiplier = 1.1;
+                }
+            }
+            //assign a value to lifepoints
+            int lifePoints = 0;
+            //pull value of lifepoints from db
+            new CalculateLevel(levels, lifePoints);
+        }
+
+        //using the lifePoints calculate the level that the user is at.
+        private CalculateLevel(Integer[] levels, int lifePoints){
+            if(lifePoints > levels[27]){
+                System.out.print("You are at level 28");
+            }
+            for(int i = 0; i<28; i++){
+                if(lifePoints < 10){
+                    System.out.print("You are at level 0");
+                    break;
+                }else if(lifePoints >= levels[i] && lifePoints <= levels[i+1]){
+                    System.out.print("You are at level " + (i+1));
+                    break;
+                }
+            }
+        }
     }
 }

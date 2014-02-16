@@ -3,25 +3,25 @@
 
     <!--<item>
         <shape>
-            <padding android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
+            <padding android:Top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
             <solid android:color="#00ffffff" />
         </shape>
     </item>
     <item>
         <shape>
-            <padding android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
+            <padding android:Top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
             <solid android:color="#10ffffff" />
         </shape>
     </item>
     <item>
         <shape>
-            <padding android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
+            <padding android:Top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
             <solid android:color="#20ffffff" />
         </shape>
     </item>
     <item>
         <shape>
-            <padding android:top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
+            <padding android:Top="1dp" android:right="1dp" android:bottom="1dp" android:left="1dp" />
             <solid android:color="#30ffffff" />
         </shape>
     </item>
