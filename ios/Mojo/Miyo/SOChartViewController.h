@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+#define NUMBER_OF_ACTIVITIES 8
+
 @interface SOChartViewController : UIViewController
 
+@property (assign, nonatomic) NSInteger pageIndex;
 
 @end
 

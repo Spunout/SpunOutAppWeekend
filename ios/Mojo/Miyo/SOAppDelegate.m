@@ -6,12 +6,21 @@
 //  Copyright (c) 2014 SpunOut. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
+
 #import "SOAppDelegate.h"
+#import "SOViewController.h"
 #import "SOMainViewController.h"
 #import "SOChartViewController.h"
 
 #import <Parse/Parse.h>
 #import <CommonCrypto/CommonCrypto.h>
+
+@interface SOAppDelegate ()
+
+@property (strong, nonatomic) UIPageViewController *pageController;
+
+@end
 
 
 @implementation SOAppDelegate
@@ -21,22 +30,9 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
-    NSMutableArray *viewControllers = [[NSMutableArray alloc] init];
-    
-    SOMainViewController *mainViewController = [[SOMainViewController alloc] init];
-    SOChartViewController *chartViewController = [[SOChartViewController alloc] init];
-    
-    [viewControllers addObject: mainViewController];
-    [viewControllers addObject: chartViewController];
-    
-    UIPageControl *pageControl = [[UIPageControl alloc] initWithFrame: CGRectMake(20.0, 50.0, 60.0, 60.0)];
-    pageControl.numberOfPages = [viewControllers count];
-    pageControl.currentPage = 0;
-    pageControl.backgroundColor = [UIColor redColor];
-    
+//    self.window.rootViewController = [[SOMainViewController alloc] init];
 
-    self.window.rootViewController = mainViewController;
-
+    self.window.rootViewController = [[SOViewController alloc] init];
     [self.window makeKeyAndVisible];
 
 
@@ -230,6 +226,7 @@
     hash = [hash stringByReplacingOccurrencesOfString:@">" withString:@""];
     return hash;
 }
+
 
 
 @end

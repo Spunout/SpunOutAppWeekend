@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 SpunOut. All rights reserved.
 //
 
+
 #import <Parse/Parse.h>
 #import <QuartzCore/QuartzCore.h>
 #import <MBProgressHUD/MBProgressHUD.h>
@@ -19,7 +20,9 @@
 
 static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionViewCellIdentifier";
 
-@interface SOMainViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
+@interface SOMainViewController () <UICollectionViewDelegate, UICollectionViewDataSource, UIPageViewControllerDataSource>
+
+@property (strong, nonatomic) UIPageViewController *pageController;
 
 @property (nonatomic, strong) SOPointMeterView *pointMeterView;
 
@@ -49,11 +52,14 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     
     // page control
     
+    self.pageIndex = 0;
+    
     UIPageControl *pageControl = [[UIPageControl alloc] init];
     pageControl.frame = CGRectMake(130.0, 435.0, 60.0, 70.0);
     pageControl.numberOfPages = 3;
     pageControl.currentPage = 0;
     [self.view addSubview:pageControl];
+    
 
     BOOL hasLoggedActivities = YES;
 
@@ -258,7 +264,16 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
+
+    
+    
+//    UISwipeGestureRecognizer *swipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeftDetected:)];
+//    swipeRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+//    [self.view addGestureRecognizer:swipeRecognizer];
+// 
 }
+
+
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
@@ -301,10 +316,6 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     [hud hide:YES afterDelay:0.75];
 }
 
-- (void)didClickChartButton:(id)sender
-{
-    [self presentViewController:[[SOChartViewController alloc] init] animated:YES completion:nil];
-}
 
 - (void)didTapActivityButton:(UIButton *)button
 {
@@ -337,5 +348,6 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
         [selectedIndexes addObject:[NSNumber numberWithBool:button.isSelected]];
     }
 }
+
 
 @end

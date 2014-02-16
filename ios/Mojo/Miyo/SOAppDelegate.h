@@ -11,7 +11,7 @@
 @interface SOAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (nonatomic, strong) NSMutableArray *viewControllers;
 @property (nonatomic, strong) IBOutlet UIPageControl *pageControl;
+
 
 @end
