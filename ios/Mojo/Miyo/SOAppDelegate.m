@@ -8,8 +8,9 @@
 
 #import "SOAppDelegate.h"
 #import "SOMainViewController.h"
-#import "FMDatabase+Additions.h"
+#import "SOMiyoDatabase.h"
 
+#import "FMDatabase+Additions.h"
 #import "NSDate+Comparisons.h"
 
 #import <CommonCrypto/CommonCrypto.h>

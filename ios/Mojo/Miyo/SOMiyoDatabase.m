@@ -72,8 +72,6 @@ static NSString *const kSODatabaseName = @"miyo.db";
                     *rollback = YES;
                 }
             }
-
-            lifetimePointsTotal = [lastResultSet intForColumn:@"lifetime_points"] + earnedPoints;
         }
 
         if ([lastResultSet next]) {
@@ -124,6 +122,47 @@ static NSString *const kSODatabaseName = @"miyo.db";
     }];
 
     return selectedActivites;
+}
+
+- (NSInteger)getCountForActivity:(NSString *)activity overNumberOfDays:(NSInteger)days
+{
+    __block NSInteger activityCount = 0;
+
+    [self inDatabase:^(FMDatabase *db) {
+        FMResultSet *resultSet = [db executeQuery:@"SELECT SUM(?) FROM data ORDER BY timestamp DESC LIMIT ? OFFSET 1;", activity, days];
+
+        if ([resultSet next]) {
+            activityCount = [resultSet intForColumnIndex:0];
+        }
+
+        [resultSet close];
+    }];
+
+    return activityCount;
+}
+
+- (NSInteger)getCurrentLifetimePoints
+{
+    __block NSInteger activityCount = 0;
+
+    [self inDatabase:^(FMDatabase *db) {
+        FMResultSet *resultSet = [db executeQuery:@"SELECT lifetime_points FROM data ORDER BY timestamp DESC LIMIT 1 OFFSET 1;"];
+
+        if ([resultSet next]) {
+            activityCount = [resultSet intForColumnIndex:0];
+        }
+
+        [resultSet close];
+    }];
+
+    return activityCount;
+}
+
+- (NSInteger)getCurrentLevel
+{
+    NSInteger lifetimePoints = [self getCurrentLifetimePoints];
+
+    return log(lifetimePoints) / log(2);
 }
 
 @end
