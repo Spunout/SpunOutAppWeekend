@@ -19,8 +19,7 @@ DerivedData
 *.hmap
 *.ipa
 
+Parse.framework
+
 # CocoaPods
 Pods
-
-# Parse
-iOS/Mojo/Parse.framework
