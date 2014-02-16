@@ -8,6 +8,7 @@
 
 #import "SOAppDelegate.h"
 #import "SOMainViewController.h"
+#import "SOChartViewController.h"
 
 #import <Parse/Parse.h>
 #import <CommonCrypto/CommonCrypto.h>
@@ -19,59 +20,53 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
-
+    
+    NSMutableArray *viewControllers = [[NSMutableArray alloc] init];
+    
     SOMainViewController *mainViewController = [[SOMainViewController alloc] init];
+    SOChartViewController *chartViewController = [[SOChartViewController alloc] init];
+    
+    [viewControllers addObject: mainViewController];
+    [viewControllers addObject: chartViewController];
+    
+    UIPageControl *pageControl = [[UIPageControl alloc] initWithFrame: CGRectMake(20.0, 50.0, 60.0, 60.0)];
+    pageControl.numberOfPages = [viewControllers count];
+    pageControl.currentPage = 0;
+    pageControl.backgroundColor = [UIColor redColor];
+    
+
     self.window.rootViewController = mainViewController;
 
     [self.window makeKeyAndVisible];
 
 
-    [Parse setApplicationId:@"2MS1N1zfmK380WV1zOYR1jhJWAj5BEz6uuZsAbIW" clientKey:@"Ke6SEnngzAwKRSWoPumG22ojb7UOjLl312uwOAp8"];
-
-    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
-
-    NSString *idfv = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
 
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
 
 
-    bool isRegistered = [prefs stringForKey:@"isRegistered"];
-
-    if (isRegistered)
+    if (![self resetPointsIfMonday :prefs])
     {
-        NSLog(@"User already registered, logging in.");
-
-        if (![self resetPointsIfMonday :prefs])
-        {
-            [self deductPointsIfNotLoggedIn :prefs];
-        }
-
-        [self loginUser:idfv :prefs];
-        [self pushPointsHistoryToParse :prefs];
-
-    } else {
-
-        NSLog(@"User not registered, let's register!");
-        [self registerUser:idfv :prefs];
+        [self deductPointsIfNotLoggedIn :prefs];
     }
 
     NSDate *now = [[NSDate alloc] init];
 
-    // last login is now
+    // last open is now
     [prefs setObject:now forKey:@"lastOpen"];
 
     return YES;
 }
 
 
--(void)pushPointsHistoryToParse:(NSUserDefaults *)prefs
+
+-(void)pushPointsHistoryToParse:(NSUserDefaults *)prefs functionName:(NSString *)functionName
 {
     NSMutableArray *pointsHistory = [prefs objectForKey:@"pointsHistory"];
     PFUser *currentUser = [PFUser currentUser];
     currentUser[@"points"] = pointsHistory;
     [currentUser save];
 
-    [PFCloud callFunctionInBackground:@"updateLifetimePoints" withParameters: @{ @"username" : currentUser.username, @"points":pointsHistory } block:^(NSString *result, NSError *error)
+    [PFCloud callFunctionInBackground:functionName withParameters: @{ @"username" : currentUser.username, @"points":pointsHistory } block:^(NSString *result, NSError *error)
      {
          if (error) {
              UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was an error saving your data. Try restarting the app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -79,13 +74,6 @@
          }
      }];
 
-    [PFCloud callFunctionInBackground:@"updateMoodPoints" withParameters: @{ @"username" : currentUser.username, @"mood_points":pointsHistory } block:^(NSString *result, NSError *error)
-     {
-         if (error) {
-             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was an error saving your data. Try restarting the app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-             [alert show];
-         }
-     }];
 }
 
 -(bool)resetPointsIfMonday:(NSUserDefaults *)prefs
@@ -113,7 +101,6 @@
             if ([[gregorian components:NSWeekdayCalendarUnit | NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:[now dateByAddingTimeInterval:-interval]] weekday] == 2)
             {
                 [self resetScore :prefs];
-                [self pushPointsHistoryToParse :prefs];
                 wasScoreReset = true;
             }
 
@@ -121,7 +108,6 @@
         }
     } else {
         [self resetScore :prefs];
-        [self pushPointsHistoryToParse :prefs];
         wasScoreReset = true;
     }
 

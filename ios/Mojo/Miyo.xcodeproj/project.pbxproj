@@ -26,6 +26,8 @@
 		8B61CD251895421C00CF215D /* SOPieLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B61CD241895421C00CF215D /* SOPieLayer.m */; };
 		8B9D207B18AF80E800832FF8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B9D207A18AF80E800832FF8 /* Security.framework */; };
 		ACE2C59D28294FC79F4FC2E3 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B3F6851B21F6430CB59563A3 /* libPods.a */; };
+		CD94AA4818B0D344001FED32 /* SOChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD94AA4718B0D344001FED32 /* SOChartViewController.m */; };
+		CD94AA4E18B0D661001FED32 /* SOActivityChart.m in Sources */ = {isa = PBXBuildFile; fileRef = CD94AA4D18B0D661001FED32 /* SOActivityChart.m */; };
 		CDC9790E1893EBFA006E20CC /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDC9790D1893EBFA006E20CC /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
@@ -69,6 +71,10 @@
 		8B9D207A18AF80E800832FF8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		8E4C2323C4944840907D3063 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		B3F6851B21F6430CB59563A3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD94AA4618B0D344001FED32 /* SOChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOChartViewController.h; sourceTree = "<group>"; };
+		CD94AA4718B0D344001FED32 /* SOChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOChartViewController.m; sourceTree = "<group>"; };
+		CD94AA4C18B0D661001FED32 /* SOActivityChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOActivityChart.h; sourceTree = "<group>"; };
+		CD94AA4D18B0D661001FED32 /* SOActivityChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOActivityChart.m; sourceTree = "<group>"; };
 		CDC9790D1893EBFA006E20CC /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -179,6 +185,8 @@
 		8B3FE4611893DD480014945F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				CD94AA4618B0D344001FED32 /* SOChartViewController.h */,
+				CD94AA4718B0D344001FED32 /* SOChartViewController.m */,
 				8B3FE45E1893DC480014945F /* SOMainViewController.h */,
 				8B3FE45F1893DC480014945F /* SOMainViewController.m */,
 			);
@@ -190,6 +198,8 @@
 			children = (
 				8B61CD201895141400CF215D /* SOActivityButton.h */,
 				8B61CD211895141400CF215D /* SOActivityButton.m */,
+				CD94AA4C18B0D661001FED32 /* SOActivityChart.h */,
+				CD94AA4D18B0D661001FED32 /* SOActivityChart.m */,
 				8B3FE4621893DDCB0014945F /* SOPointMeterView.h */,
 				8B3FE4631893DDCB0014945F /* SOPointMeterView.m */,
 				8B61CD231895421C00CF215D /* SOPieLayer.h */,
@@ -346,6 +356,8 @@
 				8B61CD221895141400CF215D /* SOActivityButton.m in Sources */,
 				8B61CD251895421C00CF215D /* SOPieLayer.m in Sources */,
 				8B3FE4601893DC480014945F /* SOMainViewController.m in Sources */,
+				CD94AA4E18B0D661001FED32 /* SOActivityChart.m in Sources */,
+				CD94AA4818B0D344001FED32 /* SOChartViewController.m in Sources */,
 				8B3FE43C1893DA500014945F /* main.m in Sources */,
 				8B3FE473189424350014945F /* UIColor+Miyo.m in Sources */,
 			);

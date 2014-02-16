@@ -11,6 +11,7 @@
 #import <MBProgressHUD/MBProgressHUD.h>
 
 #import "SOMainViewController.h"
+#import "SOChartViewController.h"
 #import "SOPointMeterView.h"
 #import "SOActivityButton.h"
 
@@ -45,6 +46,14 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // page control
+    
+    UIPageControl *pageControl = [[UIPageControl alloc] init];
+    pageControl.frame = CGRectMake(130.0, 435.0, 60.0, 70.0);
+    pageControl.numberOfPages = 3;
+    pageControl.currentPage = 0;
+    [self.view addSubview:pageControl];
 
     BOOL hasLoggedActivities = YES;
 
@@ -58,6 +67,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
         hasLoggedActivities = [comp1 day] != [comp2 day];
     }
+    
 
     self.view.backgroundColor = [UIColor miyoBlue];
 
@@ -289,6 +299,11 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     hud.yOffset = -30;
     [hud show:YES];
     [hud hide:YES afterDelay:0.75];
+}
+
+- (void)didClickChartButton:(id)sender
+{
+    [self presentViewController:[[SOChartViewController alloc] init] animated:YES completion:nil];
 }
 
 - (void)didTapActivityButton:(UIButton *)button
