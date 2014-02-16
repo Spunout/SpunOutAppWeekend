@@ -14,4 +14,6 @@
 @property (nonatomic, strong) IBOutlet UIPageControl *pageControl;
 
 
++ (NSString *)databasePath;
+
 @end

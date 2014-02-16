@@ -12,16 +12,19 @@
 #import "SOViewController.h"
 #import "SOMainViewController.h"
 #import "SOChartViewController.h"
+#import "SOMiyoDatabase.h"
 
-#import <Parse/Parse.h>
+#import "FMDatabase+Additions.h"
+#import "NSDate+Comparisons.h"
+
 #import <CommonCrypto/CommonCrypto.h>
+#import <FMDB/FMDatabase.h>
 
 @interface SOAppDelegate ()
 
 @property (strong, nonatomic) UIPageViewController *pageController;
 
 @end
-
 
 @implementation SOAppDelegate
 
@@ -35,198 +38,55 @@
     self.window.rootViewController = [[SOViewController alloc] init];
     [self.window makeKeyAndVisible];
 
-
-
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-
-
-    if (![self resetPointsIfMonday :prefs])
-    {
-        [self deductPointsIfNotLoggedIn :prefs];
-    }
-
-    NSDate *now = [[NSDate alloc] init];
-
-    // last open is now
-    [prefs setObject:now forKey:@"lastOpen"];
+    [self resetPointsIfMonday];
 
     return YES;
 }
 
-
-
--(void)pushPointsHistoryToParse:(NSUserDefaults *)prefs functionName:(NSString *)functionName
+- (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    NSMutableArray *pointsHistory = [prefs objectForKey:@"pointsHistory"];
-    PFUser *currentUser = [PFUser currentUser];
-    currentUser[@"points"] = pointsHistory;
-    [currentUser save];
-
-    [PFCloud callFunctionInBackground:functionName withParameters: @{ @"username" : currentUser.username, @"points":pointsHistory } block:^(NSString *result, NSError *error)
-     {
-         if (error) {
-             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was an error saving your data. Try restarting the app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-             [alert show];
-         }
-     }];
-
+    [self migrateDatabaseSchema];
 }
 
--(bool)resetPointsIfMonday:(NSUserDefaults *)prefs
+- (void)resetPointsIfMonday
 {
-    NSDate *now = [NSDate date];
-    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    bool wasScoreReset = false;
+    if ([[NSDate date] isMonday]) {
+        [[NSUserDefaults standardUserDefaults] setInteger:150 forKey:@"score"];
+    }
+}
 
-    NSDate *lastScoreReset = [prefs objectForKey:@"lastScoreReset"];
+#pragma mark - Miyo Database
 
-    int daysSinceLastReset = [self getNumberOfDaysSince:now :lastScoreReset];
++ (NSString *)databasePath
+{
+    NSURL *documentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory
+                                                                        inDomains:NSUserDomainMask] lastObject];
+    return [[documentsDirectory URLByAppendingPathComponent:@"miyo.db"] absoluteString];
+}
 
-    if (daysSinceLastReset < 7)
-    {
-        int daysAgo = 0;
-        int interval = 0;
+- (void)migrateDatabaseSchema
+{
+    FMDatabase *db = [FMDatabase databaseWithPath:[SOAppDelegate databasePath]];
+    [db open];
 
-        while (daysAgo < daysSinceLastReset)
-        {
-            if (daysAgo != 0)
-            {
-                interval = 86400 * daysAgo;
+    FMResultSet *s = [db executeQuery:@"PRAGMA user_version;"];
+    if ([s next]) {
+        NSInteger version = [s intForColumnIndex:0];
+        NSString *migrationsPath = [[NSBundle mainBundle] pathForResource:@"Migrations" ofType:@"bundle"];
+        NSString *migrations = [[NSBundle bundleWithPath:migrationsPath] resourcePath];
+        NSInteger fileCount = [[[NSFileManager defaultManager] subpathsOfDirectoryAtPath:migrationsPath error:nil] count];
+
+        for (NSInteger i = version; i < fileCount; i++) {
+            [db executeUpdateFromFileWithPath:[migrations stringByAppendingString:[NSString stringWithFormat:@"/%d.sql", i+1]]];
+            // FMDB treats all statements as prepared statements so we have to set the version without it
+            NSInteger rc = sqlite3_exec(db.sqliteHandle, [[NSString stringWithFormat:@"PRAGMA user_version = %d", i+1] UTF8String], NULL, NULL, NULL);
+            if (rc != SQLITE_OK) {
+                NSLog(@"Failed to update database user version");
             }
-
-            if ([[gregorian components:NSWeekdayCalendarUnit | NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:[now dateByAddingTimeInterval:-interval]] weekday] == 2)
-            {
-                [self resetScore :prefs];
-                wasScoreReset = true;
-            }
-
-            daysAgo++;
         }
-    } else {
-        [self resetScore :prefs];
-        wasScoreReset = true;
     }
 
-    return wasScoreReset;
-
-
+    [db close];
 }
-
--(void)deductPointsIfNotLoggedIn:(NSUserDefaults *)prefs
-{
-    NSInteger currentScore = [prefs integerForKey:@"score"];
-    NSDate *now = [[NSDate alloc] init];
-    NSDate *lastOpen = [prefs objectForKey:@"lastOpen"];
-
-    // check how many days the user has not logged in for
-
-    int daysSinceLastLogin = [self getNumberOfDaysSince:now :lastOpen];
-    NSNumber *daysSinceLastLoginNum = [NSNumber numberWithInt:daysSinceLastLogin];
-    NSLog(@"%d", [daysSinceLastLoginNum integerValue]);
-
-    if (daysSinceLastLogin > 0)
-    {
-        int pointsLost = daysSinceLastLogin * 15;
-        [prefs setInteger:(currentScore - pointsLost) forKey:@"score"];
-    }
-
-
-}
-
--(void)loginUser:(NSString *)idfv :(NSUserDefaults *)prefs
-{
-    [PFUser logInWithUsernameInBackground:idfv password:[self sha256HashFor:idfv] block:^(PFUser *user, NSError *error) {
-
-        if (user)
-        {
-            // yay successful login
-            NSLog(@"User Successfully logged in.");
-            [prefs setBool:YES forKey:@"isLoggedIn"];
-
-        } else {
-            // not successful
-            [prefs setBool:NO forKey:@"isLoggedIn"];
-
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, you could not be logged in. Try re-launching the app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alert show];
-        }
-    }];
-}
-
--(void)registerUser:(NSString *)idfv :(NSUserDefaults *)prefs
-{
-    PFUser *user = [PFUser user];
-
-    NSMutableArray *points = [[NSMutableArray alloc] initWithCapacity:8];
-    for ( int i = 1 ; i <= 8 ; i ++ )
-        [points addObject:[NSNumber numberWithInt:0]];
-
-    user.username = idfv;
-    user.password = [self sha256HashFor:idfv];
-    user[@"points"] = points;
-    user[@"lifetime_points"] = points;
-
-    [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error)
-     {
-         if (!error)
-         {
-             NSLog(@"Successfully Registered!");
-             [prefs setBool:YES forKey:@"isRegistered"];
-
-             // set a starting score
-             [prefs setInteger:150 forKey:@"score"];
-
-             // set last opened date to now
-             NSDate *now = [[NSDate alloc] init];
-             //             [prefs setObject:now forKey:@"lastOpen"];
-             [prefs setObject:now forKey:@"lastScoreReset"];
-
-             // set points history mutable dictionary
-             NSMutableArray *pointsHistory = [[NSMutableArray alloc] init];
-             [prefs setObject:pointsHistory forKey:@"pointsHistory"];
-
-             // login
-             [self loginUser:idfv :prefs];
-
-         } else {
-             [prefs setBool:NO forKey:@"isRegistered"];
-             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Sorry, you could not be registered. Try re-launching the app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-             [alert show];
-         }
-
-     }];
-}
-
--(void)resetScore:(NSUserDefaults *)prefs
-{
-    [prefs setInteger:150 forKey:@"score"];
-    [prefs setObject:[[NSDate alloc] init] forKey:@"lastScoreReset"];
-    NSLog(@"Reseting score to 150 because Monday has passed.");
-}
-
--(int)getNumberOfDaysSince:(NSDate *)from :(NSDate *)to
-{
-    NSNumber *timeInterval = [[NSNumber alloc] initWithDouble:[from timeIntervalSinceDate:to]];
-
-    int daysSinceLastLogin = [timeInterval intValue] / 86400;
-
-    return daysSinceLastLogin;
-}
-
--(NSString*) sha256HashFor:(NSString *)clear{
-    const char *s=[clear cStringUsingEncoding:NSASCIIStringEncoding];
-    NSData *keyData=[NSData dataWithBytes:s length:strlen(s)];
-
-    uint8_t digest[45]={0};
-    CC_SHA256(keyData.bytes, keyData.length, digest);
-    NSData *out=[NSData dataWithBytes:digest length:45];
-    NSString *hash=[out description];
-    hash = [hash stringByReplacingOccurrencesOfString:@" " withString:@""];
-    hash = [hash stringByReplacingOccurrencesOfString:@"<" withString:@""];
-    hash = [hash stringByReplacingOccurrencesOfString:@">" withString:@""];
-    return hash;
-}
-
-
 
 @end

@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 SpunOut. All rights reserved.
 //
 
-
-#import <Parse/Parse.h>
 #import <QuartzCore/QuartzCore.h>
 #import <MBProgressHUD/MBProgressHUD.h>
 
@@ -15,6 +13,7 @@
 #import "SOChartViewController.h"
 #import "SOPointMeterView.h"
 #import "SOActivityButton.h"
+#import "SOMiyoDatabase.h"
 
 #import "UIColor+Miyo.h"
 
@@ -60,20 +59,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     pageControl.currentPage = 0;
     [self.view addSubview:pageControl];
     
-
-    BOOL hasLoggedActivities = YES;
-
-    NSDate *lastScoreUpdate = [[NSUserDefaults standardUserDefaults] objectForKey:@"last_score_update"];
-    if (lastScoreUpdate) {
-        NSDate *now = [NSDate date];
-
-        unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
-        NSDateComponents *comp1 = [[NSCalendar currentCalendar] components:unitFlags fromDate:lastScoreUpdate];
-        NSDateComponents *comp2 = [[NSCalendar currentCalendar] components:unitFlags fromDate:now];
-
-        hasLoggedActivities = [comp1 day] != [comp2 day];
-    }
-    
+    NSArray *selectedActivites = [[SOMiyoDatabase sharedInstance] getLastSelectedActivites];
 
     self.view.backgroundColor = [UIColor miyoBlue];
 
@@ -83,21 +69,14 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     self.pointMeterView = [[SOPointMeterView alloc] init];
     self.pointMeterView.maximumValue = 500;
     self.pointMeterView.minimumValue = 0;
-    if ([[NSUserDefaults standardUserDefaults] integerForKey:@"score"]) {
-        self.pointMeterView.currentValue = [[NSUserDefaults standardUserDefaults] integerForKey:@"score"];
+    if (![[NSUserDefaults standardUserDefaults] integerForKey:@"score"]) {
+        [[NSUserDefaults standardUserDefaults] setInteger:150 forKey:@"score"];
     }
-    else {
-        self.pointMeterView.currentValue = 150;
-    }
+    self.pointMeterView.currentValue = [[NSUserDefaults standardUserDefaults] integerForKey:@"score"];
     self.pointMeterView.translatesAutoresizingMaskIntoConstraints = NO;
 
     self.moodLabel = [[UILabel alloc] init];
-    if (hasLoggedActivities) {
-        self.moodLabel.text = @"HOW ARE YOU FEELING?";
-    }
-    else {
-        self.moodLabel.text = @"WHAT ELSE HAVE YOU DONE TODAY?";
-    }
+    self.moodLabel.text = @"HOW ARE YOU FEELING TODAY?";
     self.moodLabel.textColor = [UIColor whiteColor];
     self.moodLabel.textAlignment = NSTextAlignmentCenter;
     self.moodLabel.font = [UIFont boldSystemFontOfSize:17.0f];
@@ -135,7 +114,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
     self.eatActivityButton = [[SOActivityButton alloc] initWithTitle:@"Eat Well" image:[UIImage imageNamed:@"eat"]];
     self.eatActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.eatActivityButton.tag = 1;
+    self.eatActivityButton.tag = 0;
     [self.buttons addObject:self.eatActivityButton];
 
     [self.eatActivityButton addTarget:self
@@ -144,7 +123,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
     self.sleepActivityButton = [[SOActivityButton alloc] initWithTitle:@"Slept Well" image:[UIImage imageNamed:@"sleep"]];
     self.sleepActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.sleepActivityButton.tag = 2;
+    self.sleepActivityButton.tag = 1;
     [self.buttons addObject:self.sleepActivityButton];
 
     [self.sleepActivityButton addTarget:self
@@ -153,7 +132,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
     self.exerciseActivityButton = [[SOActivityButton alloc] initWithTitle:@"Exercise" image:[UIImage imageNamed:@"exercise"]];
     self.exerciseActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.exerciseActivityButton.tag = 3;
+    self.exerciseActivityButton.tag = 2;
     [self.buttons addObject:self.exerciseActivityButton];
 
     [self.exerciseActivityButton addTarget:self
@@ -162,7 +141,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
     self.learnActivityButton = [[SOActivityButton alloc] initWithTitle:@"Learn" image:[UIImage imageNamed:@"learn"]];
     self.learnActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.learnActivityButton.tag = 4;
+    self.learnActivityButton.tag = 3;
     [self.buttons addObject:self.learnActivityButton];
 
     [self.learnActivityButton addTarget:self
@@ -171,7 +150,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
     self.talkActivityButton = [[SOActivityButton alloc] initWithTitle:@"Talk" image:[UIImage imageNamed:@"talk"]];
     self.talkActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.talkActivityButton.tag = 5;
+    self.talkActivityButton.tag = 4;
     [self.buttons addObject:self.talkActivityButton];
 
     [self.talkActivityButton addTarget:self
@@ -180,7 +159,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
     self.makeActivityButton = [[SOActivityButton alloc] initWithTitle:@"Make" image:[UIImage imageNamed:@"make"]];
     self.makeActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.makeActivityButton.tag = 6;
+    self.makeActivityButton.tag = 5;
     [self.buttons addObject:self.makeActivityButton];
 
     [self.makeActivityButton addTarget:self
@@ -189,7 +168,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
     self.connectActivityButton = [[SOActivityButton alloc] initWithTitle:@"Connect" image:[UIImage imageNamed:@"connect"]];
     self.connectActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.connectActivityButton.tag = 7;
+    self.connectActivityButton.tag = 6;
     [self.buttons addObject:self.connectActivityButton];
 
     [self.connectActivityButton addTarget:self
@@ -198,12 +177,20 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
     self.playActivityButton = [[SOActivityButton alloc] initWithTitle:@"Play" image:[UIImage imageNamed:@"play"]];
     self.playActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.playActivityButton.tag = 8;
+    self.playActivityButton.tag = 7;
     [self.buttons addObject:self.playActivityButton];
 
     [self.playActivityButton addTarget:self
                                 action:@selector(didTapActivityButton:)
                       forControlEvents:UIControlEventTouchUpInside];
+
+
+    if (selectedActivites) {
+        for (NSInteger i = 0; i < self.buttons.count; i++) {
+            SOActivityButton *button = self.buttons[i];
+            button.selected = [(NSNumber *)selectedActivites[i] boolValue];
+        }
+    }
 
     [self.view addSubview:pointMeterContainer];
     [pointMeterContainer addSubview:self.pointMeterView];
@@ -314,6 +301,8 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     hud.yOffset = -30;
     [hud show:YES];
     [hud hide:YES afterDelay:0.75];
+
+    [self logActivites];
 }
 
 
@@ -342,11 +331,40 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
         self.pointMeterView.currentValue -= points;
     }
 
-    NSMutableArray *selectedIndexes = [NSMutableArray array];
+    [[NSUserDefaults standardUserDefaults] setInteger:self.pointMeterView.currentValue forKey:@"score"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    [self logActivites];
+}
+
+- (void)logActivites
+{
+    NSMutableArray *selectedActivities = [NSMutableArray array];
+    NSInteger points = 0;
 
     for (UIButton *button in self.buttons) {
-        [selectedIndexes addObject:[NSNumber numberWithBool:button.isSelected]];
+        if (button.isSelected) {
+            switch (button.tag) {
+                case 0:
+                case 1:
+                    points += 7;
+                    break;
+                case 6:
+                case 7:
+                    points += 5;
+                    break;
+                default:
+                    points += 6;
+                    break;
+            }
+        }
+
+        [selectedActivities addObject:[NSNumber numberWithBool:button.isSelected]];
     }
+
+    [[SOMiyoDatabase sharedInstance] insertOrUpdateMood:self.moodSlider.value
+                                             activities:selectedActivities
+                                           earnedPoints:points];
 }
 
 
