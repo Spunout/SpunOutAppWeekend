@@ -7,4 +7,5 @@
     <color name="menuBackground">#e5ffffff</color>
     <color name="white">#ffff</color>
     <color name="splashBlue">#06addf</color>
+    <color name="backgroundBlue">#0094CA</color>
 </resources>

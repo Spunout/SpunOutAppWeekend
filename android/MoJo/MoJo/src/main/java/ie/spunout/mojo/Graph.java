@@ -1,5 +1,6 @@
 package ie.spunout.mojo;
 
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,8 +32,32 @@ public class Graph extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){
         parent = inflater.inflate(R.layout.fragment_graphs, container, false);
         setupGrid();
+        setupGraph();
+
 
         return parent;
+    }
+
+    private void setupGraph(){
+        Line l = new Line();
+        LinePoint p = new LinePoint();
+        p.setX(0);
+        p.setY(5);
+        l.addPoint(p);
+        p = new LinePoint();
+        p.setX(8);
+        p.setY(8);
+        l.addPoint(p);
+        p = new LinePoint();
+        p.setX(10);
+        p.setY(4);
+        l.addPoint(p);
+        l.setColor(Color.parseColor("#FFBB33"));
+
+        LineGraph li = (LineGraph) parent.findViewById(R.id.graph);
+        li.addLine(l);
+        li.setRangeY(0, 10);
+        li.setLineToFill(0);
     }
 
     private void setupGrid(){
