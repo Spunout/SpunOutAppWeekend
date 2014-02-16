@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 SpunOut. All rights reserved.
 //
 
-#import <Parse/Parse.h>
 #import <QuartzCore/QuartzCore.h>
 #import <MBProgressHUD/MBProgressHUD.h>
 
@@ -293,38 +292,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
 - (void)didTapActivityButton:(UIButton *)button
 {
-    NSMutableArray *pointHistory = [[[NSUserDefaults standardUserDefaults] arrayForKey:@"pointsHistory"] mutableCopy];
 
-    NSInteger points;
-
-    switch (button.tag) {
-        case 1:
-        case 2:
-            points = 7;
-            break;
-        case 7:
-        case 8:
-            points = 5;
-            break;
-        default:
-            points = 6;
-            break;
-    }
-
-    if (button.isSelected) {
-        self.pointMeterView.currentValue += points;
-    }
-    else {
-        self.pointMeterView.currentValue -= points;
-    }
-
-    for (NSInteger i = 0; i < self.buttons.count; i++) {
-        UIButton *button = self.buttons[i];
-        if (button.isSelected) {
-            NSInteger newValue =  [(NSNumber *)pointHistory[i] integerValue] + 1;
-            pointHistory[i] = [NSNumber numberWithInteger:newValue];
-        }
-    }
 }
 
 @end
