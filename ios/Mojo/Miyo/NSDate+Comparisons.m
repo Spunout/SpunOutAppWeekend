@@ -23,4 +23,12 @@
     && dateComponents.day == todayComponents.day;
 }
 
+- (BOOL)isMonday
+{
+    NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitWeekday
+                                                                       fromDate:self];
+
+    return dateComponents.weekday == 1;
+}
+
 @end

@@ -10,6 +10,8 @@
 #import "SOMainViewController.h"
 #import "FMDatabase+Additions.h"
 
+#import "NSDate+Comparisons.h"
+
 #import <CommonCrypto/CommonCrypto.h>
 #import <FMDB/FMDatabase.h>
 
@@ -25,12 +27,21 @@
 
     [self.window makeKeyAndVisible];
 
+    [self resetPointsIfMonday];
+
     return YES;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     [self migrateDatabaseSchema];
+}
+
+- (void)resetPointsIfMonday
+{
+    if ([[NSDate date] isMonday]) {
+        [[NSUserDefaults standardUserDefaults] setInteger:150 forKey:@"score"];
+    }
 }
 
 #pragma mark - Miyo Database

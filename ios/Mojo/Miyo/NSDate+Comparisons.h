@@ -11,5 +11,6 @@
 @interface NSDate (Comparisons)
 
 - (BOOL)isToday;
+- (BOOL)isMonday;
 
 @end
