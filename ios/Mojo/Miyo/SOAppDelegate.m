@@ -32,7 +32,7 @@
 {
     [self migrateDatabaseSchema];
 
-    //[self checkAchievements];
+    [self checkAchievements];
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
