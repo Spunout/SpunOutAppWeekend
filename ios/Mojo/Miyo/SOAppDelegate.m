@@ -32,6 +32,8 @@
 {
     [self migrateDatabaseSchema];
 
+    //[self checkAchievements];
+
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
@@ -49,6 +51,23 @@
 {
     if ([[NSDate date] isMonday]) {
         [[NSUserDefaults standardUserDefaults] setInteger:150 forKey:@"score"];
+    }
+}
+
+- (void)checkAchievements
+{
+    NSArray *activities = @[@"eat", @"sleep", @"exercise", @"learn", @"talk", @"make", @"connect", @"play"];
+
+    for (NSString *activity in activities) {
+        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:activity overNumberOfDays:7] > 6) {
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:[NSString stringWithFormat:@"%@-bronze", activity]];
+        }
+        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:activity overNumberOfDays:14] > 12) {
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:[NSString stringWithFormat:@"%@-silver", activity]];
+        }
+        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:activity overNumberOfDays:21] > 18) {
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:[NSString stringWithFormat:@"%@-gold", activity]];
+        }
     }
 }
 

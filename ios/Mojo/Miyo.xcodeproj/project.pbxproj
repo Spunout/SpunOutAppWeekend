@@ -22,6 +22,8 @@
 		8B3FE4601893DC480014945F /* SOMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE45F1893DC480014945F /* SOMainViewController.m */; };
 		8B3FE4641893DDCB0014945F /* SOPointMeterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE4631893DDCB0014945F /* SOPointMeterView.m */; };
 		8B3FE473189424350014945F /* UIColor+Miyo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE472189424350014945F /* UIColor+Miyo.m */; };
+		8B43936118B1220A00EC2514 /* SOBadgesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B43936018B1220A00EC2514 /* SOBadgesViewController.m */; };
+		8B43936418B122D600EC2514 /* SOBadgeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B43936318B122D600EC2514 /* SOBadgeTableViewCell.m */; };
 		8B603D9A18B0DA0900E90810 /* SOMiyoDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B603D9918B0DA0900E90810 /* SOMiyoDatabase.m */; };
 		8B603D9D18B0DCE700E90810 /* FMDatabase+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B603D9C18B0DCE700E90810 /* FMDatabase+Additions.m */; };
 		8B603D9F18B0DD7A00E90810 /* Migrations.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8B603D9E18B0DD7A00E90810 /* Migrations.bundle */; };
@@ -71,6 +73,10 @@
 		8B3FE4631893DDCB0014945F /* SOPointMeterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOPointMeterView.m; sourceTree = "<group>"; };
 		8B3FE471189424350014945F /* UIColor+Miyo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Miyo.h"; sourceTree = "<group>"; };
 		8B3FE472189424350014945F /* UIColor+Miyo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Miyo.m"; sourceTree = "<group>"; };
+		8B43935F18B1220A00EC2514 /* SOBadgesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOBadgesViewController.h; sourceTree = "<group>"; };
+		8B43936018B1220A00EC2514 /* SOBadgesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOBadgesViewController.m; sourceTree = "<group>"; };
+		8B43936218B122D600EC2514 /* SOBadgeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOBadgeTableViewCell.h; sourceTree = "<group>"; };
+		8B43936318B122D600EC2514 /* SOBadgeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOBadgeTableViewCell.m; sourceTree = "<group>"; };
 		8B603D9818B0DA0900E90810 /* SOMiyoDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOMiyoDatabase.h; sourceTree = "<group>"; };
 		8B603D9918B0DA0900E90810 /* SOMiyoDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOMiyoDatabase.m; sourceTree = "<group>"; };
 		8B603D9B18B0DCE700E90810 /* FMDatabase+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FMDatabase+Additions.h"; sourceTree = "<group>"; };
@@ -213,6 +219,8 @@
 				CD94AA4718B0D344001FED32 /* SOChartViewController.m */,
 				8B3FE45E1893DC480014945F /* SOMainViewController.h */,
 				8B3FE45F1893DC480014945F /* SOMainViewController.m */,
+				8B43935F18B1220A00EC2514 /* SOBadgesViewController.h */,
+				8B43936018B1220A00EC2514 /* SOBadgesViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -232,6 +240,8 @@
 				CD94AA5018B0F49A001FED32 /* SOChartHeader.m */,
 				CD94AA5218B0F7E2001FED32 /* SOChartFooter.h */,
 				CD94AA5318B0F7E2001FED32 /* SOChartFooter.m */,
+				8B43936218B122D600EC2514 /* SOBadgeTableViewCell.h */,
+				8B43936318B122D600EC2514 /* SOBadgeTableViewCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -394,6 +404,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B603D9A18B0DA0900E90810 /* SOMiyoDatabase.m in Sources */,
+				8B43936418B122D600EC2514 /* SOBadgeTableViewCell.m in Sources */,
 				8B3FE4401893DA500014945F /* SOAppDelegate.m in Sources */,
 				8B3FE4641893DDCB0014945F /* SOPointMeterView.m in Sources */,
 				CD94AA5418B0F7E2001FED32 /* SOChartFooter.m in Sources */,
@@ -403,8 +414,9 @@
 				CD94AA5118B0F49A001FED32 /* SOChartHeader.m in Sources */,
 				CD94AA4E18B0D661001FED32 /* SOActivityChart.m in Sources */,
 				CD94AA4818B0D344001FED32 /* SOChartViewController.m in Sources */,
-                8B68EABE18B0F51100375837 /* NSDate+Comparisons.m in Sources */,
-                8B603D9D18B0DCE700E90810 /* FMDatabase+Additions.m in Sources */,
+				8B43936118B1220A00EC2514 /* SOBadgesViewController.m in Sources */,
+				8B68EABE18B0F51100375837 /* NSDate+Comparisons.m in Sources */,
+				8B603D9D18B0DCE700E90810 /* FMDatabase+Additions.m in Sources */,
 				8B3FE43C1893DA500014945F /* main.m in Sources */,
 				CD94AA5718B10E5A001FED32 /* SOViewController.m in Sources */,
 				8B3FE473189424350014945F /* UIColor+Miyo.m in Sources */,
