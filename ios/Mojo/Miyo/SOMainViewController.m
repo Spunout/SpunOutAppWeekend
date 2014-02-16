@@ -293,6 +293,8 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
 - (void)didTapActivityButton:(UIButton *)button
 {
+    NSMutableArray *pointHistory = [[[NSUserDefaults standardUserDefaults] arrayForKey:@"pointsHistory"] mutableCopy];
+
     NSInteger points;
 
     switch (button.tag) {
@@ -316,10 +318,12 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
         self.pointMeterView.currentValue -= points;
     }
 
-    NSMutableArray *selectedIndexes = [NSMutableArray array];
-
-    for (UIButton *button in self.buttons) {
-        [selectedIndexes addObject:[NSNumber numberWithBool:button.isSelected]];
+    for (NSInteger i = 0; i < self.buttons.count; i++) {
+        UIButton *button = self.buttons[i];
+        if (button.isSelected) {
+            NSInteger newValue =  [(NSNumber *)pointHistory[i] integerValue] + 1;
+            pointHistory[i] = [NSNumber numberWithInteger:newValue];
+        }
     }
 }
 
