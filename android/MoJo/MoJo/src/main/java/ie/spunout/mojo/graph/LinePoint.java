@@ -21,7 +21,7 @@
        under the License.
  */
 
-package ie.spunout.mojo;
+package ie.spunout.mojo.graph;
 
 import android.graphics.Path;
 import android.graphics.Region;

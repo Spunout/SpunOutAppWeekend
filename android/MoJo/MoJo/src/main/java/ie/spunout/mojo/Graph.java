@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import ie.spunout.mojo.graph.Line;
+import ie.spunout.mojo.graph.LineGraph;
+import ie.spunout.mojo.graph.LinePoint;
+
 /**
  * Created by jameswalsh on 16/02/2014.
  */
@@ -40,17 +44,13 @@ public class Graph extends Fragment{
 
     private void setupGraph(){
         Line l = new Line();
-        LinePoint p = new LinePoint();
-        p.setX(0);
-        p.setY(5);
+        LinePoint p = new LinePoint(0, 5);
         l.addPoint(p);
-        p = new LinePoint();
-        p.setX(8);
-        p.setY(8);
+        p = new LinePoint(8, 8);
         l.addPoint(p);
-        p = new LinePoint();
-        p.setX(10);
-        p.setY(4);
+        p = new LinePoint(10, 4);
+        l.addPoint(p);
+        p = new LinePoint(0, 0);
         l.addPoint(p);
         l.setColor(Color.parseColor("#FFBB33"));
 

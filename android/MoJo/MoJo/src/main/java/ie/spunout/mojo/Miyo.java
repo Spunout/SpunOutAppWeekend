@@ -1,23 +1,26 @@
 package ie.spunout.mojo;
-//Miyo.java
+
 import java.util.Date;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+/**
+ * Used to keep track of the users inputs into the activity tracker
+ */
 public class Miyo {
 
     //private variables
-    int mood;
-    int eat;
-    int sleep;
-    int learn;
-    int play;
-    int exercise;
-    int make;
-    int connect;
-    int talk;
-    long timestamp;
-    int life_time_points;
+    private int mood;
+    private int eat;
+    private int sleep;
+    private int learn;
+    private int play;
+    private int exercise;
+    private int make;
+    private int connect;
+    private int talk;
+    private long timestamp;
+    private int life_time_points;
 
 
     // Empty constructor

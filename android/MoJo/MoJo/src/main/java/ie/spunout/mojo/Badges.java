@@ -24,6 +24,7 @@ public class Badges extends ListFragment {
 
         setListAdapter(adapter);
 
+        checkBadges();
     }
 
     @Override
@@ -31,5 +32,9 @@ public class Badges extends ListFragment {
         View view = inflater.inflate(R.layout.fragment_badges, container, false);
 
         return view;
+    }
+
+    private void checkBadges(){
+        //
     }
 }

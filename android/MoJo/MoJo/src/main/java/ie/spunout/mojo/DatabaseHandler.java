@@ -62,7 +62,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     // Adding new contact
-    public void addMiyo(Miyo miyo) {
+/*    public void addMiyo(Miyo miyo) {
         SQLiteDatabase dbw = this.getWritableDatabase();
         SQLiteDatabase dbr = this.getReadableDatabase();
 
@@ -88,7 +88,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         dbw.insert(TABLE_MIYO, null, values);
         dbw.close(); // Closing database connection
     }
-
+*/
     // get Miyo instance
     public Miyo getMiyo(long timestamp) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -133,7 +133,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      *
      * @return the number of times action has happened in the past days
      */
-    public int getNumberOf(String action, int days = 7){
+/*    public int getNumberOf(String action, int days = 7){
         int millisperday = 86400000;//1000*60*60*24
         String strCount = "";
         int count = 0;
@@ -151,9 +151,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         count = Integer.valueOf(strCount).intValue();
         return count;
     }
+*/
 
-
-    public Long getTodayEntryOrZero(){
+/*    public Long getTodayEntryOrZero(){
         Date date = new Date();                      // timestamp now
         Calendar cal = Calendar.getInstance();       // get calendar instance
         cal.setTime(date);                           // set cal to date
@@ -178,10 +178,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         return ret;
     }
-    public long getRecentLTP(){
+*/
+
+/*    public long getRecentLTP(){
         return getRecentLTP(1);
     }
-    public long getRecentLTP(int offset)
+*/
+/*    public long getRecentLTP(int offset)
     {
         String offset_s = Integer.toString(offset);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
@@ -193,8 +196,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         return Integer.parseInteger(cursor.getString(0));
     }
+*/
 
-    public badges(){
+/*    public badges(){
         checkBadge(KEY_EAT);
         checkBadge(KEY_SLEEP);
         checkBadge(KEY_LEARN);
@@ -204,8 +208,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         checkBadge(KEY_CONNECT);
         checkBadge(KEY_TALK);
     }
-
-
+*/
+/*
     public checkBadge(String action)
     {
         //demo of how to get from local storage
@@ -229,8 +233,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 } break;
         }
     }
+*/
 
-    public int checkLevel(int current_level)
+/*    public int checkLevel(int current_level)
     {
         long ltp = getRecentLTP(0); //get todays ltp value
         if(current_level != (levels.length-1)) //not at max level
@@ -242,10 +247,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         return current_level;
     }
+*/
 
-    public void calculateLTP(Miyo miyo)
+/*    public void calculateLTP(Miyo miyo)
     {
-        long ltp = getRecentLTP();//yesterday's score OR zero
+        //TODO: make sure this cast is ok
+        int ltp =  (int)getRecentLTP();//yesterday's score OR zero
         ltp += (miyo.getEat()*7);
         ltp += (miyo.getSleep()*7);
         ltp += (miyo.getLearn()*5);
@@ -256,5 +263,5 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ltp += (miyo.getTalk()*6);
         miyo.setLifeTimePoints(ltp);
     }
-
+*/
 }

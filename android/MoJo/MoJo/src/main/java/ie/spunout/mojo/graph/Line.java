@@ -21,7 +21,7 @@
        under the License.
  */
 
-package ie.spunout.mojo;
+package ie.spunout.mojo.graph;
 
 import java.util.ArrayList;
 
