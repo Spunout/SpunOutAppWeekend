@@ -1,12 +1,8 @@
 package ie.spunout.mojo;
 
 import android.animation.ValueAnimator;
-import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
-import android.app.TaskStackBuilder;
+import android.support.v4.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -14,58 +10,25 @@ import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.ArcShape;
-import android.graphics.drawable.shapes.Shape;
-import android.media.Image;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v7.app.ActionBarActivity;
-import android.util.JsonWriter;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.Display;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
-import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.SeekBar;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.provider.Settings.Secure;
 
 //TODO: fix this so that we don't have to have min api lvl 19
-import org.json.*;
 
-import com.parse.FunctionCallback;
-import com.parse.Parse;
-import com.parse.ParseCloud;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseUser;
-import com.parse.SignUpCallback;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
-public class Initial extends android.support.v4.app.Fragment {
-    private View menu;                      //the object for the choice menu
-    private View parent;                    //the parent activity
+public class Initial extends Fragment {
+    private View view;                    //the view activity
     private SeekBar sbar;                   //the seekbar in the view
     private int score;                      //The users current score
     private TextView scoreNumber;           //the score in the middle of the circle
@@ -75,17 +38,17 @@ public class Initial extends android.support.v4.app.Fragment {
     private static final String TAG = "Miyo";//log tag
 
     @Override
-    public void  onCreate(Bundle savedInstanceState)  {
+    public void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        parent = inflater.inflate(R.layout.initial_layout, container, false);
+        view = inflater.inflate(R.layout.fragment_initial, container, false);
 
-        //get the parent activity
-        //parent = getActivity();
+        //get the view activity
+        //view = getActivity();
 
         //hide the action bar
         //abar = getActionBar();
@@ -103,7 +66,8 @@ public class Initial extends android.support.v4.app.Fragment {
         //TODO make the size of the circle dynamic, check screen size and scale
 
         //generate the items for the menu list
-        setupGrid();
+        //setupGrid();
+        setupOnClicks();
 
         //set the size of the meter
         setupMeter();
@@ -121,67 +85,178 @@ public class Initial extends android.support.v4.app.Fragment {
         //setup the score system for this use
         setupScore();
 
-        return parent;
+        return view;
     }
 
-    private void setupGrid(){
-        //TODO try and store this in the strings file
-        // labels for the buttons
-        String[] labels=new String[]{
-                "EAT WELL",
-                "SLEEP WELL",
-                "EXERCISE",
-                "LEARN",
-                "TALK",
-                "MAKE",
-                "PLAY",
-                "CONNECT"
-        };
-
-        // references to our images
-        Integer[] mThumbIds = {
-                R.drawable.eat, R.drawable.sleep,
-                R.drawable.talk, R.drawable.exercise,
-                R.drawable.creative, R.drawable.learn,
-                R.drawable.play, R.drawable.relationship,
-        };
-
-        //set up the gridlayout
-        List<HashMap<String, String>> listinfo = new ArrayList<HashMap<String, String>>();
-        listinfo.clear();
-        for(int i=0;i<labels.length;i++){
-            HashMap<String, String> hm = new HashMap<String, String>();
-            hm.put("name",labels[i]);
-            hm.put("image", Integer.toString(mThumbIds[i]));
-            listinfo.add(hm);
-        }
-
-        // Keys used in Hashmap
-        String[] from = { "image","name" };
-        int[] to = { R.id.img,R.id.txt };
-        SimpleAdapter adapter = new SimpleAdapter(getActivity().getBaseContext(), listinfo,R.layout.activity_items, from, to);
-        GridView moodgrid = (GridView) parent.findViewById(R.id.moodpage);
-        moodgrid.setAdapter(adapter);
-
-        moodgrid.setItemChecked(3,true);
-
-        //set what will happen when an item in the view is clicked
-        moodgrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    /**
+     * Add on click methods for all of the activity buttons
+     */
+    private void setupOnClicks(){
+        //setup the eat button listener
+        View eat = view.findViewById(R.id.eat_button);
+        eat.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onClick(View v) {
                 Drawable newBackground;
 
                 //check if the item has already been selected
-                if(choices[position]){
+                if(choices[0]){
                     //if so, deselect it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
-                    choices[position] = false;
+                    choices[0] = false;
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
-                    choices[position] = true;
+                    choices[0] = true;
                 }
-                view.setBackground(newBackground);
+                v.setBackground(newBackground);
+            }
+        });
+
+        //setup the sleep button listener
+        View sleep = view.findViewById(R.id.sleep_button);
+        sleep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Drawable newBackground;
+
+                //check if the item has already been selected
+                if(choices[1]){
+                    //if so, deselect it
+                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
+                    choices[1] = false;
+                }else{
+                    //if not, highlight it
+                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                    choices[1] = true;
+                }
+                v.setBackground(newBackground);
+            }
+        });
+
+        //setup the exercise button listener
+        View exercise = view.findViewById(R.id.exercise_button);
+        exercise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Drawable newBackground;
+
+                //check if the item has already been selected
+                if(choices[2]){
+                    //if so, deselect it
+                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
+                    choices[2] = false;
+                }else{
+                    //if not, highlight it
+                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                    choices[2] = true;
+                }
+                v.setBackground(newBackground);
+            }
+        });
+
+        //setup the learn button listener
+        View learn = view.findViewById(R.id.learn_button);
+        learn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Drawable newBackground;
+
+                //check if the item has already been selected
+                if(choices[3]){
+                    //if so, deselect it
+                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
+                    choices[3] = false;
+                }else{
+                    //if not, highlight it
+                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                    choices[3] = true;
+                }
+                v.setBackground(newBackground);
+            }
+        });
+
+        //setup the talk button listener
+        View talk = view.findViewById(R.id.talk_button);
+        talk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Drawable newBackground;
+
+                //check if the item has already been selected
+                if(choices[4]){
+                    //if so, deselect it
+                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
+                    choices[4] = false;
+                }else{
+                    //if not, highlight it
+                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                    choices[4] = true;
+                }
+                v.setBackground(newBackground);
+            }
+        });
+
+        //setup the make button listener
+        View make = view.findViewById(R.id.make_button);
+        make.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Drawable newBackground;
+
+                //check if the item has already been selected
+                if(choices[5]){
+                    //if so, deselect it
+                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
+                    choices[5] = false;
+                }else{
+                    //if not, highlight it
+                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                    choices[5] = true;
+                }
+                v.setBackground(newBackground);
+            }
+        });
+
+        //setup the play button listener
+        View play = view.findViewById(R.id.play_button);
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Drawable newBackground;
+
+                //check if the item has already been selected
+                if(choices[6]){
+                    //if so, deselect it
+                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
+                    choices[6] = false;
+                }else{
+                    //if not, highlight it
+                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                    choices[6] = true;
+                }
+                v.setBackground(newBackground);
+            }
+        });
+
+        //setup the connect button listener
+        View connect = view.findViewById(R.id.connect_button);
+        connect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Drawable newBackground;
+
+                //check if the item has already been selected
+                if(choices[7]){
+                    //if so, deselect it
+                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
+                    choices[7] = false;
+                }else{
+                    //if not, highlight it
+                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                    choices[7] = true;
+                }
+                v.setBackground(newBackground);
             }
         });
     }
@@ -212,7 +287,7 @@ public class Initial extends android.support.v4.app.Fragment {
         };
 
         //assign this listener to the seekbar
-        sbar = (SeekBar) parent.findViewById(R.id.seekbar);
+        sbar = (SeekBar) view.findViewById(R.id.seekbar);
         sbar.setOnSeekBarChangeListener(seeklistener);
     }
 
@@ -279,10 +354,13 @@ public class Initial extends android.support.v4.app.Fragment {
         updateActivities(act);
     }
 
+    /**
+     * Draws the score circle proportionally for the screen
+     */
     private void setupMeter(){
-        meterForeground = (ImageView) parent.findViewById(R.id.meterforeground);
-        meterBackground = (ImageView) parent.findViewById(R.id.meterbackground);
-        scoreNumber = (TextView) parent.findViewById(R.id.score_number);
+        meterForeground = (ImageView) view.findViewById(R.id.meterforeground);
+        meterBackground = (ImageView) view.findViewById(R.id.meterbackground);
+        scoreNumber = (TextView) view.findViewById(R.id.score_number);
 
 
         Display display = getActivity().getWindowManager().getDefaultDisplay();
@@ -291,8 +369,8 @@ public class Initial extends android.support.v4.app.Fragment {
         int width = size.x;
         int height = size.y;
 
-        double outerSize = width * .7;
-        double innerSize = width * .65;
+        double outerSize = width * .65;
+        double innerSize = width * .6;
 
         Log.i(TAG,"meter size = "+String.valueOf(outerSize)+","+String.valueOf(innerSize));
 
@@ -374,7 +452,7 @@ public class Initial extends android.support.v4.app.Fragment {
 
         ImageView foreground = new ImageView(getActivity());
         Drawable mDrawable = shape;
-        foreground = (ImageView) parent.findViewById(R.id.meterforeground);
+        foreground = (ImageView) view.findViewById(R.id.meterforeground);
         foreground.setImageDrawable(mDrawable);
 
         return true;
@@ -400,7 +478,7 @@ public class Initial extends android.support.v4.app.Fragment {
         anim.setTarget(arc);
 
         Drawable mDrawable = shape;
-        ImageView foreground = (ImageView) parent.findViewById(R.id.meterforeground);
+        ImageView foreground = (ImageView) view.findViewById(R.id.meterforeground);
         foreground.setImageDrawable(mDrawable);
 
         foreground.getDrawable();

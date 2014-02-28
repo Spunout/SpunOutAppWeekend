@@ -7,9 +7,10 @@
 
     <LinearLayout
         android:id="@+id/activities_menu"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:orientation="vertical"
+        android:background="@drawable/menu_item">
 
         <ImageView
             android:id="@+id/img"

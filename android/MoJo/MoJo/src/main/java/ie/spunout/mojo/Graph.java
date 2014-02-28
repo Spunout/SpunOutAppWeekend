@@ -50,7 +50,7 @@ public class Graph extends Fragment{
         l.addPoint(p);
         p = new LinePoint(10, 4);
         l.addPoint(p);
-        p = new LinePoint(0, 0);
+        p = new LinePoint(1, 0);
         l.addPoint(p);
         l.setColor(Color.parseColor("#FFBB33"));
 

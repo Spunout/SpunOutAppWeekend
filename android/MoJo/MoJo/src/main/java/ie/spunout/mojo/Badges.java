@@ -12,17 +12,17 @@ import android.widget.ListView;
 /**
  * Created by jameswalsh on 16/02/2014.
  */
-public class Badges extends ListFragment {
+public class Badges extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
         //fill the list
-        String[] values = new String[]{"Food Nut", "Sleeper Star", "Athlete", "Wise One", "Chatterbox", "Producer", "Merry Maker", "Social Butterfly"};
+        //String[] values = new String[]{"Food Nut", "Sleeper Star", "Athlete", "Wise One", "Chatterbox", "Producer", "Merry Maker", "Social Butterfly"};
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.badge_list_item, R.id.label, values);
+        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.badge_list_item, R.id.label, values);
 
-        setListAdapter(adapter);
+        //setListAdapter(adapter);
 
         checkBadges();
     }
