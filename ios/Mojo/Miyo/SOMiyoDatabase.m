@@ -127,19 +127,38 @@ static NSString *const kSODatabaseName = @"miyo.db";
 - (NSInteger)getCountForActivity:(NSString *)activity overNumberOfDays:(NSInteger)days
 {
     __block NSInteger activityCount = 0;
+    
+    [self inDatabase:^(FMDatabase *db) {
+        NSString *query = [NSString stringWithFormat:@"SELECT SUM(%@) FROM data ORDER BY timestamp DESC LIMIT ? OFFSET 1;", activity];
+        FMResultSet *resultSet = [db executeQuery:query, [NSNumber numberWithInteger:days]];
+        
+        if ([resultSet next]) {
+            activityCount = [resultSet intForColumnIndex:0];
+        }
+        
+        [resultSet close];
+    }];
+    
+    return activityCount;
+}
+
+- (NSMutableArray *)getCountsForActivity:(NSString *)activity overNumberOfDays:(NSInteger)days
+{
+    NSMutableArray *results = [NSMutableArray array];
 
     [self inDatabase:^(FMDatabase *db) {
         NSString *query = [NSString stringWithFormat:@"SELECT SUM(%@) FROM data ORDER BY timestamp DESC LIMIT ? OFFSET 1;", activity];
         FMResultSet *resultSet = [db executeQuery:query, [NSNumber numberWithInteger:days]];
 
-        if ([resultSet next]) {
-            activityCount = [resultSet intForColumnIndex:0];
+        
+        while ([resultSet next]) {
+            [results addObject:[resultSet resultDictionary]];
         }
 
         [resultSet close];
     }];
 
-    return activityCount;
+    return results;
 }
 
 - (NSInteger)getCurrentLifetimePoints

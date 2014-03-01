@@ -14,6 +14,7 @@
 #import "SOChartHeader.h"
 #import "SOChartFooter.h"
 #import "SOActivityButton.h"
+#import "SOMiyoDatabase.h"
 #include <stdlib.h>
 
 static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionViewCellIdentifier";
@@ -28,8 +29,9 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 27;
 
 @interface SOChartViewController () <JBLineChartViewDelegate, JBLineChartViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource>
 
-@property (nonatomic, strong) NSArray *images;
+@property (nonatomic, strong) NSArray *activities;
 @property (nonatomic, strong) JBLineChartView *lineChartView;
+@property (nonatomic, strong) NSArray *activityCounts;
 
 @end
 
@@ -94,16 +96,16 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 27;
 
     // graph selector buttons
     
-    self.images = @[@"eat", @"sleep", @"exercise", @"learn", @"talk", @"make", @"connect", @"play"];
+    self.activities = @[@"eat", @"sleep", @"exercise", @"learn", @"talk", @"make", @"connect", @"play"];
     SOActivityButton *activityButton;
     double xOffset, yOffset = 0.0;
     
-    for (int i = 0; i < [self.images count]; i++)
+    for (int i = 0; i < [self.activities count]; i++)
     {
-        activityButton = [[SOActivityButton alloc] initWithTitle:[self.images[i] capitalizedString] image:[UIImage imageNamed:self.images[i]]];
+        activityButton = [[SOActivityButton alloc] initWithTitle:[self.activities[i] capitalizedString] image:[UIImage imageNamed:self.activities[i]]];
         activityButton.translatesAutoresizingMaskIntoConstraints = NO;
         activityButton.tag = i;
-        if (i>3) { yOffset = 65.0; xOffset = (([self.images count]-1) - i)*70; } else { xOffset = i*70; }
+        if (i>3) { yOffset = 65.0; xOffset = (([self.activities count]-1) - i)*70; } else { xOffset = i*70; }
         activityButton.frame = CGRectMake(20.0+xOffset, 305.0+yOffset, 70.0, 50.0);
         UITapGestureRecognizer *tapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(legendButtonTapped:)];
         [activityButton addGestureRecognizer:tapped];
@@ -117,6 +119,8 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 27;
 - (void)legendButtonTapped:(id) sender
 {
     UITapGestureRecognizer *gesture = (UITapGestureRecognizer *) sender;
+    
+    self.activityCounts = [[SOMiyoDatabase sharedInstance] getCountsForActivity:self.activities[gesture.view.tag] overNumberOfDays:30];
     
     [self.lineChartView reloadData];
 }
@@ -132,12 +136,12 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 27;
 
 - (NSInteger)numberOfPointsInLineChartView:(JBLineChartView *)lineChartView
 {
-    return 12;
+    return [self.activityCounts count];
 }
 
 - (CGFloat)lineChartView:(JBLineChartView *)lineChartView heightForIndex:(NSInteger)index
 {
-    return arc4random() % 74;
+    return [[NSNumber numberWithInt:self.activityCounts[index]] floatValue];
 }
 
 - (UIColor *)lineColorForLineChartView:(JBLineChartView *)lineChartView

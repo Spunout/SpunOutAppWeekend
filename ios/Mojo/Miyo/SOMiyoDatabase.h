@@ -15,8 +15,8 @@
 - (void)insertOrUpdateMood:(double)mood activities:(NSArray *)activities earnedPoints:(NSInteger)earnedPoints;
 
 - (NSArray *)getLastSelectedActivites;
-
 - (NSInteger)getCountForActivity:(NSString *)activity overNumberOfDays:(NSInteger)days;
+- (NSMutableArray *)getCountsForActivity:(NSString *)activity overNumberOfDays:(NSInteger)days;
 - (NSInteger)getCurrentLifetimePoints;
 - (NSInteger)getCurrentLevel;
 
