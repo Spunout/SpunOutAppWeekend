@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SOBadgesViewController : UITableViewController
-
-@property (assign, nonatomic) NSInteger pageIndex;
+@interface SOBadgesViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource>
 
 @end

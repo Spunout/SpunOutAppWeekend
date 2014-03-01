@@ -18,7 +18,6 @@
 - (NSInteger)getCountForActivity:(NSString *)activity fromDay:(NSInteger)fromDay toDay:(NSInteger)toDay;
 
 - (NSInteger)getCurrentLifetimePoints;
-- (NSInteger)getCurrentLevel;
 
 - (NSDate *)lastUpdateDate;
 

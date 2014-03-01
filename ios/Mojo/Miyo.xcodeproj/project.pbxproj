@@ -36,7 +36,6 @@
 		CD94AA4E18B0D661001FED32 /* SOActivityChart.m in Sources */ = {isa = PBXBuildFile; fileRef = CD94AA4D18B0D661001FED32 /* SOActivityChart.m */; };
 		CD94AA5118B0F49A001FED32 /* SOChartHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = CD94AA5018B0F49A001FED32 /* SOChartHeader.m */; };
 		CD94AA5418B0F7E2001FED32 /* SOChartFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = CD94AA5318B0F7E2001FED32 /* SOChartFooter.m */; };
-		CD94AA5718B10E5A001FED32 /* SOViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CD94AA5618B10E5A001FED32 /* SOViewController.m */; };
 		CDC9790E1893EBFA006E20CC /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDC9790D1893EBFA006E20CC /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
@@ -99,8 +98,6 @@
 		CD94AA5018B0F49A001FED32 /* SOChartHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOChartHeader.m; sourceTree = "<group>"; };
 		CD94AA5218B0F7E2001FED32 /* SOChartFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOChartFooter.h; sourceTree = "<group>"; };
 		CD94AA5318B0F7E2001FED32 /* SOChartFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOChartFooter.m; sourceTree = "<group>"; };
-		CD94AA5518B10E5A001FED32 /* SOViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOViewController.h; sourceTree = "<group>"; };
-		CD94AA5618B10E5A001FED32 /* SOViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOViewController.m; sourceTree = "<group>"; };
 		CDC9790D1893EBFA006E20CC /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -213,8 +210,6 @@
 		8B3FE4611893DD480014945F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				CD94AA5518B10E5A001FED32 /* SOViewController.h */,
-				CD94AA5618B10E5A001FED32 /* SOViewController.m */,
 				CD94AA4618B0D344001FED32 /* SOChartViewController.h */,
 				CD94AA4718B0D344001FED32 /* SOChartViewController.m */,
 				8B3FE45E1893DC480014945F /* SOMainViewController.h */,
@@ -418,7 +413,6 @@
 				8B68EABE18B0F51100375837 /* NSDate+Comparisons.m in Sources */,
 				8B603D9D18B0DCE700E90810 /* FMDatabase+Additions.m in Sources */,
 				8B3FE43C1893DA500014945F /* main.m in Sources */,
-				CD94AA5718B10E5A001FED32 /* SOViewController.m in Sources */,
 				8B3FE473189424350014945F /* UIColor+Miyo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -546,7 +540,7 @@
 				GCC_PREFIX_HEADER = "Miyo/Miyo-Prefix.pch";
 				INFOPLIST_FILE = "Miyo/Miyo-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "64D61969-E389-4F92-8F00-AD1CBD8EE9D3";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -557,14 +551,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Miyo/Miyo-Prefix.pch";
 				INFOPLIST_FILE = "Miyo/Miyo-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "64D61969-E389-4F92-8F00-AD1CBD8EE9D3";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

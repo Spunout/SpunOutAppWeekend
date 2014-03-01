@@ -12,7 +12,5 @@
 
 @interface SOChartViewController : UIViewController
 
-@property (assign, nonatomic) NSInteger pageIndex;
-
 @end
 

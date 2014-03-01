@@ -160,13 +160,6 @@ static NSString *const kSODatabaseName = @"miyo.db";
     return activityCount;
 }
 
-- (NSInteger)getCurrentLevel
-{
-    NSInteger lifetimePoints = [self getCurrentLifetimePoints];
-
-    return log(lifetimePoints) / log(2);
-}
-
 - (NSDate *)lastUpdateDate
 {
     __block NSDate *lastUpdateDate = nil;

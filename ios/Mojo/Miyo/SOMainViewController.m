@@ -47,16 +47,6 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // page control
-    
-    self.pageIndex = 0;
-    
-    UIPageControl *pageControl = [[UIPageControl alloc] init];
-    pageControl.frame = CGRectMake(130.0, 435.0, 60.0, 70.0);
-    pageControl.numberOfPages = 3;
-    pageControl.currentPage = 0;
-    pageControl.translatesAutoresizingMaskIntoConstraints = NO;
 
     NSArray *selectedActivites = [[SOMiyoDatabase sharedInstance] getLastSelectedActivites];
 
@@ -188,7 +178,6 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     [self.view addSubview:self.pointMeterView];
     [self.view addSubview:self.moodLabel];
     [self.view addSubview:self.buttonCollectionView];
-    [self.view addSubview:pageControl];
     [self.view addSubview:spacer1];
     [self.view addSubview:spacer2];
     [self.view addSubview:spacer3];
@@ -196,14 +185,13 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     NSDictionary *views = NSDictionaryOfVariableBindings(_pointMeterView,
                                                          _moodLabel,
                                                          _buttonCollectionView,
-                                                         pageControl,
                                                          spacer1,
                                                          spacer2,
                                                          spacer3);
 
     NSDictionary *metrics = @{@"buttonWidth": @150};
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(50)-[_pointMeterView]-(50)-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(56)-[_pointMeterView]-(56)-|"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];
@@ -216,6 +204,14 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
                                                          multiplier:1.0
                                                            constant:0.0]];
 
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:spacer3
+                                                          attribute:NSLayoutAttributeHeight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:spacer2
+                                                          attribute:NSLayoutAttributeHeight
+                                                         multiplier:1.0
+                                                           constant:0.0]];
+
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:spacer1
                                                           attribute:NSLayoutAttributeHeight
                                                           relatedBy:NSLayoutRelationEqual
@@ -224,15 +220,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
                                                          multiplier:1.0
                                                            constant:0.0]];
 
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:spacer2
-                                                          attribute:NSLayoutAttributeHeight
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:spacer3
-                                                          attribute:NSLayoutAttributeHeight
-                                                         multiplier:1.0
-                                                           constant:0.0]];
-
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(20)-[spacer1]-[_pointMeterView]-[spacer2]-[_moodLabel(17)]-(20)-[_buttonCollectionView(140)]-[spacer3]-[pageControl]|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(20)-[spacer1]-[_pointMeterView]-[spacer2]-[_moodLabel(17)]-[_buttonCollectionView(140)]-[spacer3]|"
                                                                       options:NSLayoutFormatAlignAllCenterX
                                                                       metrics:metrics
                                                                         views:views]];
@@ -282,16 +270,14 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     NSInteger points;
 
     switch (button.tag) {
+        case 0:
         case 1:
-        case 2:
+        case 4:
+        case 7:
             points = 7;
             break;
-        case 7:
-        case 8:
-            points = 5;
-            break;
         default:
-            points = 6;
+            points = 5;
             break;
     }
 
@@ -314,18 +300,18 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     NSInteger points = 0;
 
     for (UIButton *button in self.buttons) {
+
+
         if (button.isSelected) {
             switch (button.tag) {
                 case 0:
                 case 1:
+                case 4:
+                case 7:
                     points += 7;
                     break;
-                case 6:
-                case 7:
-                    points += 5;
-                    break;
                 default:
-                    points += 6;
+                    points += 5;
                     break;
             }
         }

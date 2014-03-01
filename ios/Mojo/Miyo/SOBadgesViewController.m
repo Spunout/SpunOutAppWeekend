@@ -20,20 +20,11 @@ static NSString *kSOBadgeCellIdentifier = @"SOBadgeCellIdentifier";
 
 @implementation SOBadgesViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    self.pageIndex = 2;
+    self.title = @"Badges";
 
     self.tableView.rowHeight = 70;
     self.tableView.backgroundColor = [UIColor miyoBlue];
@@ -44,6 +35,11 @@ static NSString *kSOBadgeCellIdentifier = @"SOBadgeCellIdentifier";
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 
 #pragma mark - Table view data source
@@ -137,6 +133,8 @@ static NSString *kSOBadgeCellIdentifier = @"SOBadgeCellIdentifier";
         cell.showSilver = [[NSUserDefaults standardUserDefaults] boolForKey:@"play-silver"];
         cell.showGold = [[NSUserDefaults standardUserDefaults] boolForKey:@"play-gold"];
     }
+
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
     return cell;
 }

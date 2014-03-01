@@ -11,8 +11,6 @@
 @interface SOAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (nonatomic, strong) IBOutlet UIPageControl *pageControl;
-
 
 + (NSString *)databasePath;
 

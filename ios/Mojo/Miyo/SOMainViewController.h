@@ -10,6 +10,4 @@
 
 @interface SOMainViewController : UIViewController
 
-@property (assign, nonatomic) NSInteger pageIndex;
-
 @end
