@@ -14,6 +14,7 @@
 #import "SOPointMeterView.h"
 #import "SOActivityButton.h"
 #import "SOMiyoDatabase.h"
+#import "SOTutorialViewController.h"
 
 #import "UIColor+Miyo.h"
 
@@ -42,6 +43,13 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     NSArray *selectedActivites = [[SOMiyoDatabase sharedInstance] getLastSelectedActivites];
 
     self.view.backgroundColor = [UIColor miyoBlue];
+
+    UIButton *tutorialButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
+    tutorialButton.frame = CGRectMake(10.0, 30.0, 20.0, 20.0);
+    tutorialButton.tintColor = [UIColor whiteColor];
+    [tutorialButton setTitle:@"Help" forState:UIControlStateNormal];
+    [tutorialButton addTarget:self action:@selector(didTapTutorialButton) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:tutorialButton];
 
     self.pointMeterView = [[SOPointMeterView alloc] init];
     self.pointMeterView.maximumValue = 500;
@@ -229,6 +237,11 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleLightContent;
+}
+
+- (void)didTapTutorialButton
+{
+    [self.tabBarController presentViewController:[[SOTutorialViewController alloc] init] animated:YES completion:nil];
 }
 
 #pragma mark - Collection View Data Source
