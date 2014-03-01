@@ -29,12 +29,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    UIPageControl *pageControl = [[UIPageControl alloc] init];
-    pageControl.frame = CGRectMake(130.0, 435.0, 60.0, 70.0);
-    pageControl.numberOfPages = 4;
-    pageControl.currentPage = 0;
-    pageControl.translatesAutoresizingMaskIntoConstraints = NO;
-    
     self.view.backgroundColor = [UIColor miyoBlue];
     
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(115.0, 20.0, 150.0, 30.0)];
