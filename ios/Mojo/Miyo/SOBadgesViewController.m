@@ -20,26 +20,43 @@ static NSString *kSOBadgeCellIdentifier = @"SOBadgeCellIdentifier";
 
 @implementation SOBadgesViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
     self.pageIndex = 2;
 
-    self.tableView.contentInset = UIEdgeInsetsMake(20.0, 0.0, 0.0, 0.0);
+    UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.text = @"Your Badges";
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+    titleLabel.numberOfLines = 0;
+    titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+
+    self.tableView = [[UITableView alloc] init];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
     self.tableView.rowHeight = 70;
     self.tableView.backgroundColor = [UIColor miyoBlue];
+    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
 
     [self.tableView registerClass:[SOBadgeTableViewCell class] forCellReuseIdentifier:kSOBadgeCellIdentifier];
+
+    [self.view addSubview:titleLabel];
+    [self.view addSubview:self.tableView];
+
+    NSDictionary *views = NSDictionaryOfVariableBindings(titleLabel, _tableView);
+
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_tableView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views]];
+
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(30)-[titleLabel]-(10)-[_tableView]|"
+                                                                      options:NSLayoutFormatAlignAllCenterX
+                                                                      metrics:nil
+                                                                        views:views]];
 }
 
 - (void)didReceiveMemoryWarning
