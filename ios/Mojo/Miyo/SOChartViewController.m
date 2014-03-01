@@ -41,8 +41,20 @@ NSInteger activityCounts[4];
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+<<<<<<< HEAD
 
     self.title = @"Activity Chart";
+=======
+	// Do any additional setup after loading the view.
+    
+    self.pageIndex = 1;
+    
+    UIPageControl *pageControl = [[UIPageControl alloc] init];
+    pageControl.frame = CGRectMake(130.0, 435.0, 60.0, 70.0);
+    pageControl.numberOfPages = 4;
+    pageControl.currentPage = 2;
+    [self.view addSubview:pageControl];
+>>>>>>> master
     
     self.view.backgroundColor = [UIColor miyoBlue];
 

@@ -32,6 +32,12 @@ static NSString *kSOBadgeCellIdentifier = @"SOBadgeCellIdentifier";
     self.tableView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
 
     [self.tableView registerClass:[SOBadgeTableViewCell class] forCellReuseIdentifier:kSOBadgeCellIdentifier];
+    
+    UIPageControl *pageControl = [[UIPageControl alloc] init];
+    pageControl.frame = CGRectMake(130.0, 435.0, 60.0, 70.0);
+    pageControl.numberOfPages = 4;
+    pageControl.currentPage = 3;
+    pageControl.translatesAutoresizingMaskIntoConstraints = NO;
 }
 
 - (void)didReceiveMemoryWarning
@@ -116,7 +122,7 @@ static NSString *kSOBadgeCellIdentifier = @"SOBadgeCellIdentifier";
         cell.showGold = [[NSUserDefaults standardUserDefaults] boolForKey:@"make-gold"];
     }
     else if (indexPath.row == 6) {
-        cell.badgeLabel.text = @"Marry Maker";
+        cell.badgeLabel.text = @"Merry Maker";
         cell.defaultImage = [UIImage imageNamed:@"Connect-Blue"];
         cell.bronzeImage = [UIImage imageNamed:@"Connect-Bronze"];
         cell.silverImage = [UIImage imageNamed:@"Connect-Silver"];
