@@ -59,13 +59,13 @@
     NSArray *activities = @[@"eat", @"sleep", @"exercise", @"learn", @"talk", @"make", @"connect", @"play"];
 
     for (NSString *activity in activities) {
-        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:activity overNumberOfDays:7] > 6) {
+        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:activity fromDay:1 toDay:7] > 6) {
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:[NSString stringWithFormat:@"%@-bronze", activity]];
         }
-        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:activity overNumberOfDays:14] > 12) {
+        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:activity fromDay:1 toDay:14] > 12) {
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:[NSString stringWithFormat:@"%@-silver", activity]];
         }
-        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:activity overNumberOfDays:21] > 18) {
+        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:activity fromDay:1 toDay:21] > 18) {
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:[NSString stringWithFormat:@"%@-gold", activity]];
         }
     }

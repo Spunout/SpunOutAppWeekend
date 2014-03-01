@@ -25,13 +25,12 @@ CGFloat const kJBLineChartViewControllerChartHeaderHeight = 75.0f;
 CGFloat const kJBLineChartViewControllerChartHeaderPadding = 20.0f;
 CGFloat const kJBLineChartViewControllerChartFooterHeight = 20.0f;
 NSInteger const kJBLineChartViewControllerNumChartPoints = 27;
-
+NSInteger activityCounts[4];
 
 @interface SOChartViewController () <JBLineChartViewDelegate, JBLineChartViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource>
 
 @property (nonatomic, strong) NSArray *activities;
 @property (nonatomic, strong) JBLineChartView *lineChartView;
-@property (nonatomic, strong) NSArray *activityCounts;
 
 @end
 
@@ -119,8 +118,14 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 27;
 - (void)legendButtonTapped:(id) sender
 {
     UITapGestureRecognizer *gesture = (UITapGestureRecognizer *) sender;
+    int fromDay, toDay;
     
-    self.activityCounts = [[SOMiyoDatabase sharedInstance] getCountsForActivity:self.activities[gesture.view.tag] overNumberOfDays:30];
+    for (int i = 0; i < 5; i++)
+    {
+        fromDay = i * 7;
+        toDay = (i+1) * 7;
+        activityCounts[i] = [[SOMiyoDatabase sharedInstance] getCountForActivity:self.activities[gesture.view.tag] fromDay:fromDay toDay:toDay];
+    }
     
     [self.lineChartView reloadData];
 }
@@ -136,12 +141,12 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 27;
 
 - (NSInteger)numberOfPointsInLineChartView:(JBLineChartView *)lineChartView
 {
-    return [self.activityCounts count];
+    return sizeof(activityCounts);
 }
 
 - (CGFloat)lineChartView:(JBLineChartView *)lineChartView heightForIndex:(NSInteger)index
 {
-    return [[NSNumber numberWithInt:self.activityCounts[index]] floatValue];
+    return [[NSNumber numberWithInteger:activityCounts[index]] floatValue];
 }
 
 - (UIColor *)lineColorForLineChartView:(JBLineChartView *)lineChartView
