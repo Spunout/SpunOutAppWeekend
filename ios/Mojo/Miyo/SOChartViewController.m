@@ -48,34 +48,14 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 27;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    
-    self.pageIndex = 1;
-    
-    UIPageControl *pageControl = [[UIPageControl alloc] init];
-    pageControl.frame = CGRectMake(130.0, 435.0, 60.0, 70.0);
-    pageControl.numberOfPages = 3;
-    pageControl.currentPage = 1;
-    [self.view addSubview:pageControl];
+
+    self.title = @"Activity Chart";
     
     self.view.backgroundColor = [UIColor miyoBlue];
     
     JBLineChartView *lineChartView = [[JBLineChartView alloc] initWithFrame:CGRectMake(5.0, 20.0, 310.0, 280.0)];
     lineChartView.delegate = self;
     lineChartView.dataSource = self;
-    
-    
-    SOChartHeader *headerView = [[SOChartHeader alloc] initWithFrame:CGRectMake(5.0, ceil(self.view.bounds.size.height * 0.5) - ceil(kJBLineChartViewControllerChartHeaderHeight * 0.5), self.view.bounds.size.width - (5.0 * 2), kJBLineChartViewControllerChartHeaderHeight)];
-    headerView.titleLabel.text = @"Your Activity Chart";
-    headerView.titleLabel.textColor = [UIColor whiteColor];
-    headerView.titleLabel.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.25];
-    headerView.titleLabel.shadowOffset = CGSizeMake(0, 1);
-    headerView.subtitleLabel.text = @"Volume vs. Time";
-    headerView.subtitleLabel.textColor = [UIColor whiteColor];
-    headerView.subtitleLabel.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.25];
-    headerView.subtitleLabel.shadowOffset = CGSizeMake(0, 1);
-    headerView.separatorColor = [UIColor whiteColor];
-    lineChartView.headerView = headerView;
     
     SOChartFooter *footerView = [[SOChartFooter alloc] initWithFrame:CGRectMake(5.0, ceil(self.view.bounds.size.height * 0.5) - ceil(kJBLineChartViewControllerChartFooterHeight * 0.5), self.view.bounds.size.width - (5.0 * 2), kJBLineChartViewControllerChartFooterHeight)];
     footerView.backgroundColor = [UIColor clearColor];
@@ -89,12 +69,12 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 27;
     [self.view addSubview: lineChartView];
     [lineChartView reloadData];
     
-    UIProgressView *levelProgress = [[UIProgressView alloc] initWithFrame:CGRectMake(20.0,450.0,280.0,40.0)];
+    UIProgressView *levelProgress = [[UIProgressView alloc] initWithFrame:CGRectMake(20.0,410.0,280.0,40.0)];
     levelProgress.progressTintColor = [UIColor greenColor];
     [levelProgress setProgress:0.5];
     [self.view addSubview:levelProgress];
     
-    UILabel *levelLabel = [[UILabel alloc] initWithFrame:CGRectMake(30.0, 410.0, 270.0, 50.0)];
+    UILabel *levelLabel = [[UILabel alloc] initWithFrame:CGRectMake(30.0, 370.0, 270.0, 50.0)];
     levelLabel.text = @"YOUR LEVEL PROGRESS";
     levelLabel.textColor = [UIColor whiteColor];
     levelLabel.textAlignment = NSTextAlignmentCenter;

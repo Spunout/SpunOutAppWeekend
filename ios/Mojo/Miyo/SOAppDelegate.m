@@ -9,13 +9,14 @@
 #import <UIKit/UIKit.h>
 
 #import "SOAppDelegate.h"
-#import "SOViewController.h"
 #import "SOMainViewController.h"
 #import "SOChartViewController.h"
+#import "SOBadgesViewController.h"
 #import "SOMiyoDatabase.h"
 
 #import "FMDatabase+Additions.h"
 #import "NSDate+Comparisons.h"
+#import "UIColor+Miyo.h"
 
 #import <CommonCrypto/CommonCrypto.h>
 #import <FMDB/FMDatabase.h>
@@ -34,14 +35,49 @@
 
     [self checkLevel];
     [self checkAchievements];
+    [self resetPointsIfMonday];
+
+    SOMainViewController *mainViewController = [[SOMainViewController alloc] init];
+    mainViewController.tabBarItem.title = @"Log Activities";
+
+    UINavigationController *chartViewController = [[UINavigationController alloc] initWithRootViewController:[[SOChartViewController alloc] init]];
+    chartViewController.navigationBar.translucent = NO;
+    chartViewController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+    chartViewController.tabBarItem.title = @"Activity Chart";
+
+    UINavigationController *badgesViewController = [[UINavigationController alloc] initWithRootViewController:[[SOBadgesViewController alloc] init]];
+    badgesViewController.navigationBar.translucent = NO;
+    badgesViewController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+    badgesViewController.tabBarItem.title = @"Badges";
+
+    UITabBarController *tabBarController = [[UITabBarController alloc] init];
+    tabBarController.tabBar.translucent = NO;
+    tabBarController.tabBar.barStyle = UIBarStyleBlackOpaque;
+    tabBarController.viewControllers = @[mainViewController, chartViewController, badgesViewController];
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
+    self.window.tintColor = [UIColor miyoBlue];
 
-    self.window.rootViewController = [[SOViewController alloc] init];
+    self.window.rootViewController = tabBarController;
+
     [self.window makeKeyAndVisible];
 
-    [self resetPointsIfMonday];
+    [[UITabBar appearance] setTintColor:[UIColor whiteColor]];
+    //[[UITabBar appearance] setBarTintColor:[UIColor colorWithRed:0.15 green:0.64 blue:0.82 alpha:1]];
+    [[UITabBar appearance] setBarTintColor:[UIColor miyoBlue]];
+    [[UITabBar appearance] setSelectedImageTintColor:[UIColor whiteColor]];
+
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithWhite:1.0 alpha:0.5], NSForegroundColorAttributeName, nil]
+                                             forState:UIControlStateNormal];
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]
+                                             forState:UIControlStateSelected];
+
+    [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]];
+    [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
+    //[[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0.15 green:0.64 blue:0.82 alpha:1]];
+    [[UINavigationBar appearance] setBarTintColor:[UIColor miyoBlue]];
+
 
     return YES;
 }
