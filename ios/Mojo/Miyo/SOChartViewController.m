@@ -283,7 +283,7 @@ NSInteger activityCounts[4];
 
 - (NSInteger)numberOfPointsInLineChartView:(JBLineChartView *)lineChartView
 {
-    return sizeof(activityCounts);
+    return 4;
 }
 
 - (CGFloat)lineChartView:(JBLineChartView *)lineChartView heightForIndex:(NSInteger)index
