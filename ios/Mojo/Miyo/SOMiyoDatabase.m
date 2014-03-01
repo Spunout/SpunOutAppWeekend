@@ -129,7 +129,7 @@ static NSString *const kSODatabaseName = @"miyo.db";
     __block NSInteger activityCount = 0;
     
     [self inDatabase:^(FMDatabase *db) {
-        // NSString *query = [NSString stringWithFormat:@"SELECT SUM(%@) FROM data ORDER BY timestamp DESC LIMIT ?,? OFFSET 1;", activity];
+        // NSString *query = [NSString stringWithFormat:@"SELECT SUM(%@) FROM data ORDER BY timestamp DESC LIMIT ? OFFSET 1;", activity];
         NSString *query = [NSString stringWithFormat:@"SELECT SUM(%@) FROM data ORDER BY timestamp DESC LIMIT ?,?;", activity];
         FMResultSet *resultSet = [db executeQuery:query, [NSNumber numberWithInteger:fromDay], [NSNumber numberWithInteger:toDay]];
         

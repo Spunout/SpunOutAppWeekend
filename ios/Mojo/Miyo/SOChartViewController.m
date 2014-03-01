@@ -225,6 +225,7 @@ NSInteger activityCounts[4];
                                                                        metrics:nil
                                                                          views:views]];
     
+
     [self.lineChartView reloadData];
 }
 
@@ -239,8 +240,16 @@ NSInteger activityCounts[4];
         activityCounts[i] = [[SOMiyoDatabase sharedInstance] getCountForActivity:self.activities[sender.tag] fromDay:fromDay toDay:toDay];
     }
     
+    for (NSInteger i = 0; i < self.buttons.count; i++)
+    {
+        [self.buttons[i] setSelected:NO];
+    }
+    
+    [self.buttons[sender.tag] setSelected:YES];
+    
     [self.lineChartView reloadData];
 }
+
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
