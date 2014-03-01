@@ -32,12 +32,11 @@
 {
     [self migrateDatabaseSchema];
 
+    [self checkLevel];
     [self checkAchievements];
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
-    
-//    self.window.rootViewController = [[SOMainViewController alloc] init];
 
     self.window.rootViewController = [[SOViewController alloc] init];
     [self.window makeKeyAndVisible];
@@ -54,19 +53,81 @@
     }
 }
 
+- (void)checkLevel
+{
+    if (![[NSUserDefaults standardUserDefaults] integerForKey:@"current_level"]) {
+        [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:@"current_level"];
+        [[NSUserDefaults standardUserDefaults] setInteger:10 forKey:@"next_level_exp"];
+    }
+    else {
+        NSInteger nextLevelExp = [[NSUserDefaults standardUserDefaults] integerForKey:@"next_level_exp"];
+        NSInteger currentLevel = [[NSUserDefaults standardUserDefaults] integerForKey:@"current_level"];
+        NSInteger lifetimePoints = [[SOMiyoDatabase sharedInstance] getCurrentLifetimePoints];
+
+        if (lifetimePoints >= nextLevelExp) {
+            if (currentLevel >= 22) {
+                nextLevelExp *= 1.2;
+            }
+            else if (currentLevel >= 12) {
+                nextLevelExp *= 1.1;
+            }
+            else {
+                nextLevelExp *= 1.5;
+            }
+
+            [[NSUserDefaults standardUserDefaults] setInteger:nextLevelExp forKey:@"next_level_exp"];
+            [[NSUserDefaults standardUserDefaults] setInteger:++currentLevel forKey:@"current_level"];
+
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Level up!"
+                                                                message:[NSString stringWithFormat:@"Congratulations! You've leveled up since yesterday.\nYou are now on level %zd\nComplete activites and collect points to progress further!", currentLevel]
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        }
+    }
+}
+
 - (void)checkAchievements
 {
     NSArray *activities = @[@"eat", @"sleep", @"exercise", @"learn", @"talk", @"make", @"connect", @"play"];
+    NSArray *fullActivityNames = @[@"Eat Well", @"Slept Well", @"Exercise", @"Learn", @"Talk", @"Make", @"Connect", @"Play"];
+    NSArray *badges = @[@"Food Nut", @"Sleep Star", @"Active Champion", @"Wise One", @"Chatterbox", @"Producer", @"Merry Maker", @"Social Buttterfly"];
 
-    for (NSString *activity in activities) {
+    for (NSInteger i = 0; i < activities.count; i++) {
+        NSString *activity = activities[i];
+        NSString *fullActivityName = fullActivityNames[i];
+        NSString *badge = badges[i];
+
         if ([[SOMiyoDatabase sharedInstance] getCountForActivity:activity overNumberOfDays:7] > 6) {
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:[NSString stringWithFormat:@"%@-bronze", activity]];
+
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"New Badge Unlocked!"
+                                                                message:[NSString stringWithFormat:@"Congratulations, you've unlocked a bronze %@ badge!\nShoot for silver. Complete '%@' 12 days in 2 weeks", badge, fullActivityName]
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
         }
         if ([[SOMiyoDatabase sharedInstance] getCountForActivity:activity overNumberOfDays:14] > 12) {
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:[NSString stringWithFormat:@"%@-silver", activity]];
+
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"New Badge Unlocked!"
+                                                                message:[NSString stringWithFormat:@"Congratulations, you've unlocked a silver %@ badge!\nGo for gold! Complete '%@' 18 days in 3 weeks", badge, fullActivityName]
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
         }
         if ([[SOMiyoDatabase sharedInstance] getCountForActivity:activity overNumberOfDays:21] > 18) {
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:[NSString stringWithFormat:@"%@-gold", activity]];
+
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"New Badge Unlocked!"
+                                                                message:[NSString stringWithFormat:@"Congratulations, you've unlocked a gold %@ badge!", badge]
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
         }
     }
 }
@@ -93,9 +154,9 @@
         NSInteger fileCount = [[[NSFileManager defaultManager] subpathsOfDirectoryAtPath:migrationsPath error:nil] count];
 
         for (NSInteger i = version; i < fileCount; i++) {
-            [db executeUpdateFromFileWithPath:[migrations stringByAppendingString:[NSString stringWithFormat:@"/%d.sql", i+1]]];
+            [db executeUpdateFromFileWithPath:[migrations stringByAppendingString:[NSString stringWithFormat:@"/%zd.sql", i+1]]];
             // FMDB treats all statements as prepared statements so we have to set the version without it
-            NSInteger rc = sqlite3_exec(db.sqliteHandle, [[NSString stringWithFormat:@"PRAGMA user_version = %d", i+1] UTF8String], NULL, NULL, NULL);
+            NSInteger rc = sqlite3_exec(db.sqliteHandle, [[NSString stringWithFormat:@"PRAGMA user_version = %zd", i+1] UTF8String], NULL, NULL, NULL);
             if (rc != SQLITE_OK) {
                 NSLog(@"Failed to update database user version");
             }
