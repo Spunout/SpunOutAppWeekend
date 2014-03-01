@@ -282,16 +282,14 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     NSInteger points;
 
     switch (button.tag) {
+        case 0:
         case 1:
-        case 2:
+        case 4:
+        case 7:
             points = 7;
             break;
-        case 7:
-        case 8:
-            points = 5;
-            break;
         default:
-            points = 6;
+            points = 5;
             break;
     }
 
@@ -314,18 +312,18 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     NSInteger points = 0;
 
     for (UIButton *button in self.buttons) {
+
+
         if (button.isSelected) {
             switch (button.tag) {
                 case 0:
                 case 1:
+                case 4:
+                case 7:
                     points += 7;
                     break;
-                case 6:
-                case 7:
-                    points += 5;
-                    break;
                 default:
-                    points += 6;
+                    points += 5;
                     break;
             }
         }
