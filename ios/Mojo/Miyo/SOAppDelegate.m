@@ -100,10 +100,7 @@
         NSInteger lifetimePoints = [[SOMiyoDatabase sharedInstance] getCurrentLifetimePoints];
 
         if (lifetimePoints >= nextLevelExp) {
-            if (currentLevel >= 22) {
-                nextLevelExp *= 1.2;
-            }
-            else if (currentLevel >= 12) {
+            if (currentLevel >= 10) {
                 nextLevelExp *= 1.1;
             }
             else {
