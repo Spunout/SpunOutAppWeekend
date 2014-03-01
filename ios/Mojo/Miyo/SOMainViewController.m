@@ -31,15 +31,6 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
 @property (nonatomic, strong) NSMutableArray *buttons;
 
-@property (nonatomic, strong) SOActivityButton *eatActivityButton;
-@property (nonatomic, strong) SOActivityButton *sleepActivityButton;
-@property (nonatomic, strong) SOActivityButton *exerciseActivityButton;
-@property (nonatomic, strong) SOActivityButton *learnActivityButton;
-@property (nonatomic, strong) SOActivityButton *talkActivityButton;
-@property (nonatomic, strong) SOActivityButton *makeActivityButton;
-@property (nonatomic, strong) SOActivityButton *playActivityButton;
-@property (nonatomic, strong) SOActivityButton *connectActivityButton;
-
 @end
 
 @implementation SOMainViewController
@@ -86,78 +77,77 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
     self.buttons = [[NSMutableArray alloc] init];
 
-    self.eatActivityButton = [[SOActivityButton alloc] initWithTitle:@"Eat Well" image:[UIImage imageNamed:@"eat"]];
-    self.eatActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.eatActivityButton.tag = 0;
-    [self.buttons addObject:self.eatActivityButton];
+    SOActivityButton *eatActivityButton = [[SOActivityButton alloc] initWithTitle:@"Eat Well" image:[UIImage imageNamed:@"eat"]];
+    eatActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    eatActivityButton.tag = 0;
+    [self.buttons addObject:eatActivityButton];
 
-    [self.eatActivityButton addTarget:self
+    [eatActivityButton addTarget:self
+                          action:@selector(didTapActivityButton:)
+                forControlEvents:UIControlEventTouchUpInside];
+
+    SOActivityButton *sleepActivityButton = [[SOActivityButton alloc] initWithTitle:@"Slept Well" image:[UIImage imageNamed:@"sleep"]];
+    sleepActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    sleepActivityButton.tag = 1;
+    [self.buttons addObject:sleepActivityButton];
+
+    [sleepActivityButton addTarget:self
+                            action:@selector(didTapActivityButton:)
+                  forControlEvents:UIControlEventTouchUpInside];
+
+    SOActivityButton *exerciseActivityButton = [[SOActivityButton alloc] initWithTitle:@"Exercise" image:[UIImage imageNamed:@"exercise"]];
+    exerciseActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    exerciseActivityButton.tag = 2;
+    [self.buttons addObject:exerciseActivityButton];
+
+    [exerciseActivityButton addTarget:self
                                action:@selector(didTapActivityButton:)
                      forControlEvents:UIControlEventTouchUpInside];
 
-    self.sleepActivityButton = [[SOActivityButton alloc] initWithTitle:@"Slept Well" image:[UIImage imageNamed:@"sleep"]];
-    self.sleepActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.sleepActivityButton.tag = 1;
-    [self.buttons addObject:self.sleepActivityButton];
+    SOActivityButton *learnActivityButton = [[SOActivityButton alloc] initWithTitle:@"Learn" image:[UIImage imageNamed:@"learn"]];
+    learnActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    learnActivityButton.tag = 3;
+    [self.buttons addObject:learnActivityButton];
 
-    [self.sleepActivityButton addTarget:self
-                                 action:@selector(didTapActivityButton:)
-                       forControlEvents:UIControlEventTouchUpInside];
+    [learnActivityButton addTarget:self
+                            action:@selector(didTapActivityButton:)
+                  forControlEvents:UIControlEventTouchUpInside];
 
-    self.exerciseActivityButton = [[SOActivityButton alloc] initWithTitle:@"Exercise" image:[UIImage imageNamed:@"exercise"]];
-    self.exerciseActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.exerciseActivityButton.tag = 2;
-    [self.buttons addObject:self.exerciseActivityButton];
+    SOActivityButton *talkActivityButton = [[SOActivityButton alloc] initWithTitle:@"Talk" image:[UIImage imageNamed:@"talk"]];
+    talkActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    talkActivityButton.tag = 4;
+    [self.buttons addObject:talkActivityButton];
 
-    [self.exerciseActivityButton addTarget:self
-                                    action:@selector(didTapActivityButton:)
-                          forControlEvents:UIControlEventTouchUpInside];
+    [talkActivityButton addTarget:self
+                           action:@selector(didTapActivityButton:)
+                 forControlEvents:UIControlEventTouchUpInside];
 
-    self.learnActivityButton = [[SOActivityButton alloc] initWithTitle:@"Learn" image:[UIImage imageNamed:@"learn"]];
-    self.learnActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.learnActivityButton.tag = 3;
-    [self.buttons addObject:self.learnActivityButton];
+    SOActivityButton *makeActivityButton = [[SOActivityButton alloc] initWithTitle:@"Make" image:[UIImage imageNamed:@"make"]];
+    makeActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    makeActivityButton.tag = 5;
+    [self.buttons addObject:makeActivityButton];
 
-    [self.learnActivityButton addTarget:self
-                                 action:@selector(didTapActivityButton:)
-                       forControlEvents:UIControlEventTouchUpInside];
+    [makeActivityButton addTarget:self
+                           action:@selector(didTapActivityButton:)
+                 forControlEvents:UIControlEventTouchUpInside];
 
-    self.talkActivityButton = [[SOActivityButton alloc] initWithTitle:@"Talk" image:[UIImage imageNamed:@"talk"]];
-    self.talkActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.talkActivityButton.tag = 4;
-    [self.buttons addObject:self.talkActivityButton];
+    SOActivityButton *connectActivityButton = [[SOActivityButton alloc] initWithTitle:@"Connect" image:[UIImage imageNamed:@"connect"]];
+    connectActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    connectActivityButton.tag = 6;
+    [self.buttons addObject:connectActivityButton];
 
-    [self.talkActivityButton addTarget:self
-                                action:@selector(didTapActivityButton:)
-                      forControlEvents:UIControlEventTouchUpInside];
+    [connectActivityButton addTarget:self
+                              action:@selector(didTapActivityButton:)
+                    forControlEvents:UIControlEventTouchUpInside];
 
-    self.makeActivityButton = [[SOActivityButton alloc] initWithTitle:@"Make" image:[UIImage imageNamed:@"make"]];
-    self.makeActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.makeActivityButton.tag = 5;
-    [self.buttons addObject:self.makeActivityButton];
-
-    [self.makeActivityButton addTarget:self
-                                action:@selector(didTapActivityButton:)
-                      forControlEvents:UIControlEventTouchUpInside];
-
-    self.connectActivityButton = [[SOActivityButton alloc] initWithTitle:@"Connect" image:[UIImage imageNamed:@"connect"]];
-    self.connectActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.connectActivityButton.tag = 6;
-    [self.buttons addObject:self.connectActivityButton];
-
-    [self.connectActivityButton addTarget:self
-                                   action:@selector(didTapActivityButton:)
-                         forControlEvents:UIControlEventTouchUpInside];
-
-    self.playActivityButton = [[SOActivityButton alloc] initWithTitle:@"Play" image:[UIImage imageNamed:@"play"]];
-    self.playActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.playActivityButton.tag = 7;
-    [self.buttons addObject:self.playActivityButton];
-
-    [self.playActivityButton addTarget:self
-                                action:@selector(didTapActivityButton:)
-                      forControlEvents:UIControlEventTouchUpInside];
-
+    SOActivityButton *playActivityButton = [[SOActivityButton alloc] initWithTitle:@"Play" image:[UIImage imageNamed:@"play"]];
+    playActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+    playActivityButton.tag = 7;
+    [self.buttons addObject:playActivityButton];
+    
+    [playActivityButton addTarget:self
+                           action:@selector(didTapActivityButton:)
+                 forControlEvents:UIControlEventTouchUpInside];
 
     if (selectedActivites) {
         for (NSInteger i = 0; i < self.buttons.count; i++) {

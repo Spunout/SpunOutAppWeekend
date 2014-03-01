@@ -29,6 +29,7 @@ static NSString *kSOBadgeCellIdentifier = @"SOBadgeCellIdentifier";
     self.tableView.rowHeight = 70;
     self.tableView.backgroundColor = [UIColor miyoBlue];
     self.tableView.separatorColor = [UIColor colorWithRed:0.15 green:0.64 blue:0.82 alpha:1];
+    self.tableView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
 
     [self.tableView registerClass:[SOBadgeTableViewCell class] forCellReuseIdentifier:kSOBadgeCellIdentifier];
 }

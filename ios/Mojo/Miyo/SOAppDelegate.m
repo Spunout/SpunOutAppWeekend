@@ -78,7 +78,6 @@
     //[[UINavigationBar appearance] setBarTintColor:[UIColor colorWithRed:0.15 green:0.64 blue:0.82 alpha:1]];
     [[UINavigationBar appearance] setBarTintColor:[UIColor miyoBlue]];
 
-
     return YES;
 }
 
