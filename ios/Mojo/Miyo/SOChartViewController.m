@@ -28,14 +28,8 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 27;
 
 @interface SOChartViewController () <JBLineChartViewDelegate, JBLineChartViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource>
 
-@property (nonatomic, strong) SOActivityButton *eatActivityButton;
-@property (nonatomic, strong) SOActivityButton *sleepActivityButton;
-@property (nonatomic, strong) SOActivityButton *exerciseActivityButton;
-@property (nonatomic, strong) SOActivityButton *learnActivityButton;
-@property (nonatomic, strong) SOActivityButton *talkActivityButton;
-@property (nonatomic, strong) SOActivityButton *makeActivityButton;
-@property (nonatomic, strong) SOActivityButton *playActivityButton;
-@property (nonatomic, strong) SOActivityButton *connectActivityButton;
+@property (nonatomic, strong) NSArray *images;
+@property (nonatomic, strong) JBLineChartView *lineChartView;
 
 @end
 
@@ -56,9 +50,9 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 27;
     
     self.view.backgroundColor = [UIColor miyoBlue];
     
-    JBLineChartView *lineChartView = [[JBLineChartView alloc] initWithFrame:CGRectMake(5.0, 20.0, 310.0, 280.0)];
-    lineChartView.delegate = self;
-    lineChartView.dataSource = self;
+    self.lineChartView = [[JBLineChartView alloc] initWithFrame:CGRectMake(5.0, 20.0, 310.0, 280.0)];
+    self.lineChartView.delegate = self;
+    self.lineChartView.dataSource = self;
     
     
     SOChartHeader *headerView = [[SOChartHeader alloc] initWithFrame:CGRectMake(5.0, ceil(self.view.bounds.size.height * 0.5) - ceil(kJBLineChartViewControllerChartHeaderHeight * 0.5), self.view.bounds.size.width - (5.0 * 2), kJBLineChartViewControllerChartHeaderHeight)];
@@ -71,7 +65,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 27;
     headerView.subtitleLabel.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.25];
     headerView.subtitleLabel.shadowOffset = CGSizeMake(0, 1);
     headerView.separatorColor = [UIColor whiteColor];
-    lineChartView.headerView = headerView;
+    self.lineChartView.headerView = headerView;
     
     SOChartFooter *footerView = [[SOChartFooter alloc] initWithFrame:CGRectMake(5.0, ceil(self.view.bounds.size.height * 0.5) - ceil(kJBLineChartViewControllerChartFooterHeight * 0.5), self.view.bounds.size.width - (5.0 * 2), kJBLineChartViewControllerChartFooterHeight)];
     footerView.backgroundColor = [UIColor clearColor];
@@ -80,17 +74,17 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 27;
     footerView.rightLabel.text = @"Latest";
     footerView.rightLabel.textColor = [UIColor whiteColor];
     footerView.sectionCount = kJBLineChartViewControllerNumChartPoints;
-    lineChartView.footerView = footerView;
+    self.lineChartView.footerView = footerView;
     
-    [self.view addSubview: lineChartView];
-    [lineChartView reloadData];
+    [self.view addSubview: self.lineChartView];
+    [self.lineChartView reloadData];
     
-    UIProgressView *levelProgress = [[UIProgressView alloc] initWithFrame:CGRectMake(20.0,450.0,280.0,40.0)];
+    UIProgressView *levelProgress = [[UIProgressView alloc] initWithFrame:CGRectMake(20.0,460.0,280.0,40.0)];
     levelProgress.progressTintColor = [UIColor greenColor];
     [levelProgress setProgress:0.5];
     [self.view addSubview:levelProgress];
     
-    UILabel *levelLabel = [[UILabel alloc] initWithFrame:CGRectMake(30.0, 410.0, 270.0, 50.0)];
+    UILabel *levelLabel = [[UILabel alloc] initWithFrame:CGRectMake(30.0, 420.0, 270.0, 50.0)];
     levelLabel.text = @"YOUR LEVEL PROGRESS";
     levelLabel.textColor = [UIColor whiteColor];
     levelLabel.textAlignment = NSTextAlignmentCenter;
@@ -100,21 +94,31 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 27;
 
     // graph selector buttons
     
-    NSArray *images = @[@"eat", @"sleep", @"exercise", @"learn", @"talk", @"make", @"connect", @"play"];
+    self.images = @[@"eat", @"sleep", @"exercise", @"learn", @"talk", @"make", @"connect", @"play"];
+    SOActivityButton *activityButton;
     double xOffset, yOffset = 0.0;
     
-    for (int i = 0; i < [images count]; i++)
+    for (int i = 0; i < [self.images count]; i++)
     {
-        self.eatActivityButton = [[SOActivityButton alloc] initWithTitle:@"Eat Well" image:[UIImage imageNamed:images[i]]];
-        self.eatActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-        self.eatActivityButton.tag = 0;
-        if (i>3) { yOffset = 65.0; xOffset = (([images count]-1) - i)*70; } else { xOffset = i*70; }
-        self.eatActivityButton.frame = CGRectMake(15.0+xOffset, 305.0+yOffset, 70.0, 50.0);
-        [self.view addSubview:self.eatActivityButton];
+        activityButton = [[SOActivityButton alloc] initWithTitle:[self.images[i] capitalizedString] image:[UIImage imageNamed:self.images[i]]];
+        activityButton.translatesAutoresizingMaskIntoConstraints = NO;
+        activityButton.tag = i;
+        if (i>3) { yOffset = 65.0; xOffset = (([self.images count]-1) - i)*70; } else { xOffset = i*70; }
+        activityButton.frame = CGRectMake(20.0+xOffset, 305.0+yOffset, 70.0, 50.0);
+        UITapGestureRecognizer *tapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(legendButtonTapped:)];
+        [activityButton addGestureRecognizer:tapped];
+        [self.view addSubview:activityButton];
     }
 
     
     
+}
+
+- (void)legendButtonTapped:(id) sender
+{
+    UITapGestureRecognizer *gesture = (UITapGestureRecognizer *) sender;
+    
+    [self.lineChartView reloadData];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
