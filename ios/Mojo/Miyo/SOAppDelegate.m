@@ -39,16 +39,22 @@
 
     SOMainViewController *mainViewController = [[SOMainViewController alloc] init];
     mainViewController.tabBarItem.title = @"Log Activities";
+    mainViewController.tabBarItem.image = [[UIImage imageNamed:@"LogTab"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    mainViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"LogTab"];
 
     UINavigationController *chartViewController = [[UINavigationController alloc] initWithRootViewController:[[SOChartViewController alloc] init]];
     chartViewController.navigationBar.translucent = NO;
     chartViewController.navigationBar.barStyle = UIBarStyleBlackOpaque;
     chartViewController.tabBarItem.title = @"Activity Chart";
+    chartViewController.tabBarItem.image = [[UIImage imageNamed:@"ActivityChartTab"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    chartViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"ActivityChartTab"];
 
     UINavigationController *badgesViewController = [[UINavigationController alloc] initWithRootViewController:[[SOBadgesViewController alloc] init]];
     badgesViewController.navigationBar.translucent = NO;
     badgesViewController.navigationBar.barStyle = UIBarStyleBlackOpaque;
     badgesViewController.tabBarItem.title = @"Badges";
+    badgesViewController.tabBarItem.image = [[UIImage imageNamed:@"BadgesTab"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    badgesViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"BadgesTab"];
 
     UITabBarController *tabBarController = [[UITabBarController alloc] init];
     tabBarController.tabBar.translucent = NO;
@@ -64,11 +70,10 @@
     [self.window makeKeyAndVisible];
 
     [[UITabBar appearance] setTintColor:[UIColor whiteColor]];
-    //[[UITabBar appearance] setBarTintColor:[UIColor colorWithRed:0.15 green:0.64 blue:0.82 alpha:1]];
     [[UITabBar appearance] setBarTintColor:[UIColor miyoBlue]];
     [[UITabBar appearance] setSelectedImageTintColor:[UIColor whiteColor]];
 
-    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithWhite:1.0 alpha:0.5], NSForegroundColorAttributeName, nil]
+    [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithRed:0.46 green:0.84 blue:0.99 alpha:1], NSForegroundColorAttributeName, nil]
                                              forState:UIControlStateNormal];
     [[UITabBarItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor whiteColor], NSForegroundColorAttributeName, nil]
                                              forState:UIControlStateSelected];
