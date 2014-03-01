@@ -10,6 +10,7 @@ import java.util.GregorianCalendar;
 public class Miyo {
 
     //private variables
+    //these should be set to one to indicate true or zero for false
     private int mood;
     private int eat;
     private int sleep;
@@ -25,7 +26,14 @@ public class Miyo {
 
     // Empty constructor
     public Miyo(){
-
+        eat = 0;
+        sleep = 0;
+        learn = 0;
+        play = 0;
+        exercise = 0;
+        make = 0;
+        connect = 0;
+        talk = 0;
     }
 
     // constructor

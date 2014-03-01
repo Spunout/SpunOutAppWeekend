@@ -36,40 +36,6 @@
 
     </RelativeLayout>
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_weight="0"
-        android:orientation="horizontal"
-        android:gravity="top">
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="5dp"
-            android:src="@drawable/sad_face"
-            android:layout_weight="3"/>
-
-        <SeekBar
-            android:id="@+id/seekbar"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:thumb="@drawable/drag"
-            android:layout_weight="1"
-            android:layout_marginTop="10dp"/>
-
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="5dp"
-            android:src="@drawable/happy_face"
-            android:layout_weight="3"/>
-
-    </LinearLayout>
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="30dp"
@@ -82,7 +48,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_weight="1"
+        android:layout_weight="0"
+        android:layout_margin="10dp"
         android:orientation="horizontal"
         android:gravity="center_horizontal">
 
@@ -166,7 +133,7 @@
                 android:layout_gravity="center"
                 android:textColor="#000000"
                 android:textSize="8dp"
-                android:text="EXERCISE"/>
+                android:text="MOVE"/>
 
         </LinearLayout>
 
@@ -203,8 +170,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginBottom="10dp"
-        android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
+        android:layout_weight="0"
         android:orientation="horizontal"
         android:gravity="center_horizontal">
 

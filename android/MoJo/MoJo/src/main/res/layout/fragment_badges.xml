@@ -134,7 +134,7 @@
                     android:layout_weight="2"
                     android:layout_marginLeft="10dp"
                     android:gravity="center_vertical"
-                    android:text="Athlete"
+                    android:text="Active Champion"
                     android:textColor="@color/white"
                     android:textSize="17sp"
                     android:textStyle="bold"/>
