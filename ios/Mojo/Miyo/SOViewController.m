@@ -13,7 +13,7 @@
 #import "SOChartViewController.h"
 #import "SOBadgesViewController.h"
 
-
+#import "UIColor+Miyo.h"
 
 @interface SOViewController ()
 
@@ -38,7 +38,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+
+    self.view.backgroundColor = [UIColor miyoBlue];
     
     NSMutableArray *viewControllers = [[NSMutableArray alloc] init];
     

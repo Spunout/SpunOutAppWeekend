@@ -35,6 +35,7 @@ static NSString *kSOBadgeCellIdentifier = @"SOBadgeCellIdentifier";
 
     self.pageIndex = 2;
 
+    self.tableView.contentInset = UIEdgeInsetsMake(20.0, 0.0, 0.0, 0.0);
     self.tableView.rowHeight = 70;
     self.tableView.backgroundColor = [UIColor miyoBlue];
 
@@ -137,6 +138,8 @@ static NSString *kSOBadgeCellIdentifier = @"SOBadgeCellIdentifier";
         cell.showSilver = [[NSUserDefaults standardUserDefaults] boolForKey:@"play-silver"];
         cell.showGold = [[NSUserDefaults standardUserDefaults] boolForKey:@"play-gold"];
     }
+
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
     return cell;
 }
