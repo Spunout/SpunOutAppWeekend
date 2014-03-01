@@ -54,8 +54,8 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     
     UIPageControl *pageControl = [[UIPageControl alloc] init];
     pageControl.frame = CGRectMake(130.0, 435.0, 60.0, 70.0);
-    pageControl.numberOfPages = 3;
-    pageControl.currentPage = 0;
+    pageControl.numberOfPages = 4;
+    pageControl.currentPage = 1;
     pageControl.translatesAutoresizingMaskIntoConstraints = NO;
 
     NSArray *selectedActivites = [[SOMiyoDatabase sharedInstance] getLastSelectedActivites];

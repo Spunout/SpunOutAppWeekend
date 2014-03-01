@@ -45,8 +45,8 @@ NSInteger activityCounts[4];
     
     UIPageControl *pageControl = [[UIPageControl alloc] init];
     pageControl.frame = CGRectMake(130.0, 435.0, 60.0, 70.0);
-    pageControl.numberOfPages = 3;
-    pageControl.currentPage = 1;
+    pageControl.numberOfPages = 4;
+    pageControl.currentPage = 2;
     [self.view addSubview:pageControl];
     
     self.view.backgroundColor = [UIColor miyoBlue];

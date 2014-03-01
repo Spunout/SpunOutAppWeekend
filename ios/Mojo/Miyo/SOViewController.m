@@ -12,6 +12,7 @@
 #import "SOMainViewController.h"
 #import "SOChartViewController.h"
 #import "SOBadgesViewController.h"
+#import "SOTutorialViewController.h"
 
 
 
@@ -21,6 +22,7 @@
 @property (nonatomic, strong) SOMainViewController *mainViewController;
 @property (nonatomic, strong) SOChartViewController *chartViewController;
 @property (nonatomic, strong) SOBadgesViewController *badgesViewController;
+@property (nonatomic, strong) SOTutorialViewController *tutorialViewController;
 
 @end
 
@@ -45,6 +47,7 @@
     self.mainViewController = [[SOMainViewController alloc] init];
     self.chartViewController = [[SOChartViewController alloc] init];
     self.badgesViewController = [[SOBadgesViewController alloc] init];
+    self.tutorialViewController = [[SOTutorialViewController alloc] init];
 
     [viewControllers addObject:self.mainViewController];
 
@@ -80,13 +83,15 @@
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
     if (viewController == self.mainViewController) {
-        return nil;
+        return self.tutorialViewController;
     }
     else if (viewController == self.chartViewController) {
         return self.mainViewController;
     }
     else if (viewController == self.badgesViewController) {
         return self.chartViewController;
+    } else if (viewController == self.tutorialViewController) {
+        return nil;
     }
 
     return nil;
@@ -102,6 +107,8 @@
     }
     else if (viewController == self.badgesViewController) {
         return nil;
+    } else if (viewController == self.tutorialViewController) {
+        return self.mainViewController;
     }
 
     return nil;
