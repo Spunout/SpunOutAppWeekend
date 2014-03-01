@@ -1,4 +1,3 @@
-xcodeproj '/Users/jameseggers/Projects/iOS/SpunOutAppWeekend/ios/Mojo/Miyo'
 platform :ios, '7.0'
 pod 'MBProgressHUD', '~> 0.8'
 pod 'JBChartView'

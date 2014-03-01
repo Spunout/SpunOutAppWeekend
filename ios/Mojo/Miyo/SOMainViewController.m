@@ -26,7 +26,6 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 @property (nonatomic, strong) SOPointMeterView *pointMeterView;
 
 @property (nonatomic, strong) UILabel *moodLabel;
-@property (nonatomic, strong) UISlider *moodSlider;
 
 @property (nonatomic, strong) UICollectionView *buttonCollectionView;
 
@@ -57,14 +56,11 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     pageControl.frame = CGRectMake(130.0, 435.0, 60.0, 70.0);
     pageControl.numberOfPages = 3;
     pageControl.currentPage = 0;
-    [self.view addSubview:pageControl];
-    
+    pageControl.translatesAutoresizingMaskIntoConstraints = NO;
+
     NSArray *selectedActivites = [[SOMiyoDatabase sharedInstance] getLastSelectedActivites];
 
     self.view.backgroundColor = [UIColor miyoBlue];
-
-    UIView *pointMeterContainer = [[UIView alloc] init];
-    pointMeterContainer.translatesAutoresizingMaskIntoConstraints = NO;
 
     self.pointMeterView = [[SOPointMeterView alloc] init];
     self.pointMeterView.maximumValue = 500;
@@ -76,24 +72,12 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     self.pointMeterView.translatesAutoresizingMaskIntoConstraints = NO;
 
     self.moodLabel = [[UILabel alloc] init];
-    self.moodLabel.text = @"HOW ARE YOU FEELING TODAY?";
+    self.moodLabel.text = @"WHAT HAVE YOU DONE TODAY?";
     self.moodLabel.textColor = [UIColor whiteColor];
     self.moodLabel.textAlignment = NSTextAlignmentCenter;
     self.moodLabel.font = [UIFont boldSystemFontOfSize:17.0f];
     self.moodLabel.numberOfLines = 0;
     self.moodLabel.translatesAutoresizingMaskIntoConstraints = NO;
-
-    self.moodSlider = [[UISlider alloc] init];
-    self.moodSlider.value = 0.5;
-    self.moodSlider.minimumTrackTintColor = [UIColor whiteColor];
-    self.moodSlider.maximumTrackTintColor = [UIColor miyoLightBlue];
-    self.moodSlider.minimumValueImage = [UIImage imageNamed:@"smiley-sad"];
-    self.moodSlider.maximumValueImage = [UIImage imageNamed:@"smiley-happy"];
-    self.moodSlider.translatesAutoresizingMaskIntoConstraints = NO;
-
-    [self.moodSlider addTarget:self
-                        action:@selector(didAdjustUpMoodSlider:)
-              forControlEvents:UIControlEventTouchUpInside];
 
     UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewLayout.itemSize = CGSizeMake(60.0f, 60.0f);
@@ -192,71 +176,77 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
         }
     }
 
-    [self.view addSubview:pointMeterContainer];
-    [pointMeterContainer addSubview:self.pointMeterView];
-    [self.view addSubview:self.moodLabel];
-    [self.view addSubview:self.moodSlider];
-    [self.view addSubview:self.buttonCollectionView];
+    UIView *spacer1 = [[UIView alloc] init];
+    spacer1.translatesAutoresizingMaskIntoConstraints = NO;
 
-    NSDictionary *views = @{@"pointMeterContainer": pointMeterContainer,
-                            @"pointMeterView": self.pointMeterView,
-                            @"moodLabel": self.moodLabel,
-                            @"moodSlider": self.moodSlider,
-                            @"buttonCollectionView": self.buttonCollectionView};
+    UIView *spacer2 = [[UIView alloc] init];
+    spacer2.translatesAutoresizingMaskIntoConstraints = NO;
+
+    UIView *spacer3 = [[UIView alloc] init];
+    spacer3.translatesAutoresizingMaskIntoConstraints = NO;
+
+    [self.view addSubview:self.pointMeterView];
+    [self.view addSubview:self.moodLabel];
+    [self.view addSubview:self.buttonCollectionView];
+    [self.view addSubview:pageControl];
+    [self.view addSubview:spacer1];
+    [self.view addSubview:spacer2];
+    [self.view addSubview:spacer3];
+
+    NSDictionary *views = NSDictionaryOfVariableBindings(_pointMeterView,
+                                                         _moodLabel,
+                                                         _buttonCollectionView,
+                                                         pageControl,
+                                                         spacer1,
+                                                         spacer2,
+                                                         spacer3);
 
     NSDictionary *metrics = @{@"buttonWidth": @150};
 
-    [pointMeterContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(50)-[pointMeterView]-(50)-|"
-                                                                                options:0
-                                                                                metrics:metrics
-                                                                                  views:views]];
-
-    [pointMeterContainer addConstraint:[NSLayoutConstraint constraintWithItem:self.pointMeterView
-                                                                    attribute:NSLayoutAttributeHeight
-                                                                    relatedBy:NSLayoutRelationEqual
-                                                                       toItem:self.pointMeterView
-                                                                    attribute:NSLayoutAttributeWidth
-                                                                   multiplier:1.0
-                                                                     constant:0.0]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(50)-[_pointMeterView]-(50)-|"
+                                                                      options:0
+                                                                      metrics:metrics
+                                                                        views:views]];
 
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.pointMeterView
-                                                          attribute:NSLayoutAttributeCenterY
+                                                          attribute:NSLayoutAttributeHeight
                                                           relatedBy:NSLayoutRelationEqual
-                                                             toItem:pointMeterContainer
-                                                          attribute:NSLayoutAttributeCenterY
+                                                             toItem:self.pointMeterView
+                                                          attribute:NSLayoutAttributeWidth
                                                          multiplier:1.0
                                                            constant:0.0]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(20)-[pointMeterContainer]-[moodLabel(17)]-(20)-[moodSlider(20)]-(20)-[buttonCollectionView(140)]-(>=10)-|"
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:spacer1
+                                                          attribute:NSLayoutAttributeHeight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:spacer2
+                                                          attribute:NSLayoutAttributeHeight
+                                                         multiplier:1.0
+                                                           constant:0.0]];
+
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:spacer2
+                                                          attribute:NSLayoutAttributeHeight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:spacer3
+                                                          attribute:NSLayoutAttributeHeight
+                                                         multiplier:1.0
+                                                           constant:0.0]];
+
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(20)-[spacer1]-[_pointMeterView]-[spacer2]-[_moodLabel(17)]-(20)-[_buttonCollectionView(140)]-[spacer3]-[pageControl]|"
                                                                       options:NSLayoutFormatAlignAllCenterX
                                                                       metrics:metrics
                                                                         views:views]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[pointMeterContainer]|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(20)-[_moodLabel]-(20)-|"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(20)-[moodLabel]-(20)-|"
-                                                                      options:0
-                                                                      metrics:metrics
-                                                                        views:views]];
-
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(20)-[moodSlider]-(20)-|"
-                                                                      options:0
-                                                                      metrics:metrics
-                                                                        views:views]];
-
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[buttonCollectionView]|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_buttonCollectionView]|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
-
-    
-    
 }
-
-
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
@@ -286,21 +276,6 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 }
 
 #pragma mark - Activity Logging
-
-- (void)didAdjustUpMoodSlider:(UISlider *)slider
-{
-    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:hud];
-    hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkmark"]];
-    hud.mode = MBProgressHUDModeCustomView;
-    hud.labelText = @"Logged";
-    hud.yOffset = -30;
-    [hud show:YES];
-    [hud hide:YES afterDelay:0.75];
-
-    [self logActivites];
-}
-
 
 - (void)didTapActivityButton:(UIButton *)button
 {
@@ -358,7 +333,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
         [selectedActivities addObject:[NSNumber numberWithBool:button.isSelected]];
     }
 
-    [[SOMiyoDatabase sharedInstance] insertOrUpdateMood:self.moodSlider.value
+    [[SOMiyoDatabase sharedInstance] insertOrUpdateMood:0
                                              activities:selectedActivities
                                            earnedPoints:points];
 }
