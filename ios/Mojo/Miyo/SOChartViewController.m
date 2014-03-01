@@ -67,14 +67,19 @@ NSInteger activityCounts[4];
     footerView.backgroundColor = [UIColor clearColor];
     footerView.leftLabel.text = @"Earliest";
     footerView.leftLabel.textColor = [UIColor whiteColor];
+    footerView.leftLabel.font = [UIFont systemFontOfSize:15.0f];
     footerView.rightLabel.text = @"Latest";
     footerView.rightLabel.textColor = [UIColor whiteColor];
+    footerView.rightLabel.font = [UIFont systemFontOfSize:15.0f];
     footerView.sectionCount = kJBLineChartViewControllerNumChartPoints;
     self.lineChartView.footerView = footerView;
 
+    NSInteger currentExp = [[SOMiyoDatabase sharedInstance] getCurrentLifetimePoints];
+    NSInteger nextLevelExp = [[NSUserDefaults standardUserDefaults] integerForKey:@"next_level_exp"];
+
     UIProgressView *levelProgress = [[UIProgressView alloc] init];
     levelProgress.progressTintColor = [UIColor greenColor];
-    [levelProgress setProgress:0.5];
+    [levelProgress setProgress:currentExp / nextLevelExp];
     levelProgress.translatesAutoresizingMaskIntoConstraints = NO;
 
     UILabel *levelLabel = [[UILabel alloc] init];
