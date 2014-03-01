@@ -57,7 +57,7 @@
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
-    self.window.tintColor = [UIColor miyoBlue];
+    self.window.tintColor = [UIColor whiteColor];
 
     self.window.rootViewController = tabBarController;
 
