@@ -1,4 +1,4 @@
-import sqlite3, time, random
+import sqlite3, time, random, sys
 
 
 
@@ -16,12 +16,19 @@ class sampleDataMaker:
 
 		self.current_timestamp = int(round(time.time() * 1000))
 
-	def giveBronzeAchievementsToAll(self):
+	def giveAchievementsToAll(self, level):
 
 		counter = 0
 		lifetime_points = 10
 
-		while counter < 7:
+		if level is "bronze":
+			num_activies = 8
+		elif level is "silver"
+			num_activies = 13
+		elif level is "gold"
+			num_activies is 19
+
+		while counter < num_activies:
 
 			lifetime_points += 10
 			self.c.execute("INSERT INTO data VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (50, 1, 1, 1, 1, 1, 1, 1, 1, self.current_timestamp+random.randint(2,5000), lifetime_points) )
@@ -62,5 +69,5 @@ class sampleDataMaker:
 			counter += 1
 
 o = sampleDataMaker()
-o.giveBronzeAchievementsToAll()
+o.giveBronzeAchievementsToAll("gold")
 
