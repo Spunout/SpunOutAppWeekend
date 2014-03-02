@@ -48,9 +48,9 @@
     
     [self.view addSubview:topText];
    
-    UILabel *text = [[UILabel alloc] initWithFrame:CGRectMake(32.0, 80.0, 290.0, 380.0)];
+    UILabel *text = [[UILabel alloc] initWithFrame:CGRectMake(32.0, 80.0, 290.0, 460.0)];
     text.textColor = [UIColor whiteColor];
-    text.text = @"\n\n\nEat Well - Eat a healthy meal or drink some water. \n\n\nSleep Well - Have a good nights sleep or get a power nap. \n\n\nMove - Do anything that involves moving around (outside if possible). \n\n\nLearn - Complete a work or study task that gets you closer to your goals. \n\n\nTalk - Talk honestly with friends or family. \n\n\nMake - Go wild! Do something artistic or creative. \n\n\nPlay - Have fun! Do an activity that you enjoy. \n\n\nConnect - Do one thing that makes you feel more social";
+    text.text = @"\n\n\nEat Well - Eat a healthy meal or drink some water. \n\n\nSleep Well - Have a good nights sleep or get a power nap. \n\n\nMove - Do anything that involves moving around (outside if possible). \n\n\nLearn - Complete a work or study task that gets you closer to your goals. \n\n\nTalk - Talk honestly with friends or family. \n\n\nMake - Go wild! Do something artistic or creative. \n\n\nPlay - Have fun! Do an activity that you enjoy. \n\n\nConnect - Do one thing that makes you feel more social \n\nYour points are rest every week, and added to your lifetime points.";
     text.font = [UIFont systemFontOfSize:12.0];
     text.lineBreakMode = NSLineBreakByWordWrapping;
     text.numberOfLines = 0;
@@ -78,6 +78,9 @@
     UIImageView *play = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 418.0, 30.0,30.0)];
     play.image = [UIImage imageNamed:@"Play-Gold"];
     [self.view addSubview:play];
+    UIImageView *connect = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 467.0, 30.0,30.0)];
+    connect.image = [UIImage imageNamed:@"Connect-Gold"];
+    [self.view addSubview:connect];
     
 }
 

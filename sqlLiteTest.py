@@ -15,14 +15,14 @@ while counter < weeks_of_data:
 	current_timestamp -= counter * 604800000
 
 	num_inserts = random.randint(2,20)
-	insertsCounter = 0
+	inserts_counter = 0
 
-	while insertsCounter < num_inserts:
+	while inserts_counter < num_inserts:
 		lifetime_points += 50
-		c.execute("INSERT into data VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (50, random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), current_timestamp+random.randint(2,5000), lifetime_points))
+		c.execute("INSERT into data VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (50, 1, random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), current_timestamp+random.randint(2,5000), lifetime_points))
 
-		insertsCounter += 1
+		inserts_counter += 1
 
 	conn.commit()
 
-	counter += 1	
+	counter += 1
