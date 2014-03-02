@@ -56,7 +56,7 @@ NSInteger activityCounts[4];
     self.lineChartView.dataSource = self;
 
     SOChartHeader *headerView = [[SOChartHeader alloc] initWithFrame:CGRectMake(10.0, ceil(self.view.bounds.size.height * 0.5) - ceil(kJBLineChartViewControllerChartHeaderHeight * 0.5), self.view.bounds.size.width - (5.0 * 2), kJBLineChartViewControllerChartHeaderHeight)];
-    headerView.titleLabel.text = @"Volume vs. Time";
+    headerView.titleLabel.text = @"Amount of times you've done an activity (y) vs. time (x)";
     headerView.titleLabel.textColor = [UIColor whiteColor];
     headerView.titleLabel.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.25];
     headerView.titleLabel.shadowOffset = CGSizeMake(0, 1);
@@ -65,10 +65,10 @@ NSInteger activityCounts[4];
 
     SOChartFooter *footerView = [[SOChartFooter alloc] initWithFrame:CGRectMake(10.0, ceil(self.view.bounds.size.height * 0.5) - ceil(kJBLineChartViewControllerChartFooterHeight * 0.5), self.view.bounds.size.width - (5.0 * 2), kJBLineChartViewControllerChartFooterHeight)];
     footerView.backgroundColor = [UIColor clearColor];
-    footerView.leftLabel.text = @"Earliest";
+    footerView.leftLabel.text = @"4 Weeks Ago";
     footerView.leftLabel.textColor = [UIColor whiteColor];
     footerView.leftLabel.font = [UIFont systemFontOfSize:15.0f];
-    footerView.rightLabel.text = @"Latest";
+    footerView.rightLabel.text = @"This Week";
     footerView.rightLabel.textColor = [UIColor whiteColor];
     footerView.rightLabel.font = [UIFont systemFontOfSize:15.0f];
     footerView.sectionCount = kJBLineChartViewControllerNumChartPoints;
@@ -250,9 +250,9 @@ NSInteger activityCounts[4];
     
     for (int i = 0; i < 5; i++)
     {
-        fromDay = i * 7;
+        fromDay = (i) * 7;
         toDay = (i+1) * 7;
-	activityCounts[i] = [[SOMiyoDatabase sharedInstance] getCountForActivity:self.activities[sender.tag] fromDay:fromDay toDay:7];
+        activityCounts[3-i] = [[SOMiyoDatabase sharedInstance] getCountForActivity:self.activities[sender.tag] fromDay:fromDay toDay:7];
     }
     
     for (NSInteger i = 0; i < self.buttons.count; i++)
