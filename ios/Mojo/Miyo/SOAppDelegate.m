@@ -130,7 +130,7 @@
 - (void)checkAchievements
 {
     NSArray *activities = @[@"eat", @"sleep", @"exercise", @"learn", @"talk", @"make", @"connect", @"play"];
-    NSArray *fullActivityNames = @[@"Eat Well", @"Slept Well", @"Exercise", @"Learn", @"Talk", @"Make", @"Connect", @"Play"];
+    NSArray *fullActivityNames = @[@"Eat Well", @"Sleep Well", @"Move", @"Learn", @"Talk", @"Make", @"Connect", @"Play"];
     NSArray *badges = @[@"Food Nut", @"Sleep Star", @"Active Champion", @"Wise One", @"Chatterbox", @"Producer", @"Merry Maker", @"Social Buttterfly"];
 
     for (NSInteger i = 0; i < activities.count; i++) {

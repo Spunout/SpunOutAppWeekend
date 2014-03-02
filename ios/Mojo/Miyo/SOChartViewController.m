@@ -116,7 +116,7 @@ NSInteger activityCounts[4];
                           action:@selector(legendButtonTapped:)
                 forControlEvents:UIControlEventTouchUpInside];
 
-    SOActivityButton *sleepActivityButton = [[SOActivityButton alloc] initWithTitle:@"Slept Well" image:[UIImage imageNamed:@"sleep"]];
+    SOActivityButton *sleepActivityButton = [[SOActivityButton alloc] initWithTitle:@"Sleep Well" image:[UIImage imageNamed:@"sleep"]];
     sleepActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
     sleepActivityButton.tag = 1;
     [self.buttons addObject:sleepActivityButton];
@@ -125,7 +125,7 @@ NSInteger activityCounts[4];
                             action:@selector(legendButtonTapped:)
                   forControlEvents:UIControlEventTouchUpInside];
 
-    SOActivityButton *exerciseActivityButton = [[SOActivityButton alloc] initWithTitle:@"Exercise" image:[UIImage imageNamed:@"exercise"]];
+    SOActivityButton *exerciseActivityButton = [[SOActivityButton alloc] initWithTitle:@"Move" image:[UIImage imageNamed:@"exercise"]];
     exerciseActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
     exerciseActivityButton.tag = 2;
     [self.buttons addObject:exerciseActivityButton];
