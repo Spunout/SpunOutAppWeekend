@@ -72,7 +72,7 @@ static NSString *kSOBadgeCellIdentifier = @"SOBadgeCellIdentifier";
         cell.showGold = [[NSUserDefaults standardUserDefaults] boolForKey:@"eat-gold"];
     }
     else if (indexPath.row == 1) {
-        cell.badgeLabel.text = @"Sleeper Star";
+        cell.badgeLabel.text = @"Sleep Star";
         cell.defaultImage = [UIImage imageNamed:@"Sleep-Blue"];
         cell.bronzeImage = [UIImage imageNamed:@"Sleep-Bronze"];
         cell.silverImage = [UIImage imageNamed:@"Sleep-Silver"];
@@ -82,7 +82,7 @@ static NSString *kSOBadgeCellIdentifier = @"SOBadgeCellIdentifier";
         cell.showGold = [[NSUserDefaults standardUserDefaults] boolForKey:@"sleep-gold"];
     }
     else if (indexPath.row == 2) {
-        cell.badgeLabel.text = @"Athlete";
+        cell.badgeLabel.text = @"Active Champion";
         cell.defaultImage = [UIImage imageNamed:@"Exercise-Blue"];
         cell.bronzeImage = [UIImage imageNamed:@"Exercise-Bronze"];
         cell.silverImage = [UIImage imageNamed:@"Exercise-Silver"];
