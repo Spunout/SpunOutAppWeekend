@@ -31,6 +31,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    DLog(@"Database Path: %@", [SOAppDelegate databasePath]);
+
     [self migrateDatabaseSchema];
 
     [self checkLevel];
