@@ -241,7 +241,9 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
 - (void)didTapTutorialButton
 {
-    [self.tabBarController presentViewController:[[SOTutorialViewController alloc] init] animated:YES completion:nil];
+    [self.tabBarController presentViewController:[[UINavigationController alloc] initWithRootViewController:[[SOTutorialViewController alloc] init]]
+                                        animated:YES
+                                      completion:nil];
 }
 
 #pragma mark - Collection View Data Source
