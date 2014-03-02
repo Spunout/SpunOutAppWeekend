@@ -23,7 +23,7 @@
 
 @interface SOAppDelegate () <UIAlertViewDelegate>
 
-@property (nonatomic, strong) NSURL *redirectURL;
+@property (nonatomic, strong) NSMutableArray *redirectURLs;
 
 @end
 
@@ -106,8 +106,10 @@
         [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"first_launch_date"];
     }
     else if (![lastAlertDate isToday] && [firstLaunchDate isNewWeek]) {
+        self.redirectURLs = [NSMutableArray array];
+
         if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"eat" fromDay:1 toDay:7] < 4) {
-            self.redirectURL = [NSURL URLWithString:@"http://spunout.ie/eatingtips"];
+            [self.redirectURLs addObject:[NSURL URLWithString:@"http://spunout.ie/eatingtips"]];
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Activity Information"
                                                                 message:@"How are you doing with your activities? Want to find some information on activities"
                                                                delegate:self
@@ -115,8 +117,8 @@
                                                       otherButtonTitles:@"Yes", nil];
             [alertView show];
         }
-        else if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"sleep" fromDay:1 toDay:7] < 4) {
-            self.redirectURL = [NSURL URLWithString:@"http://spunout.ie/sleepingtips"];
+        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"sleep" fromDay:1 toDay:7] < 4) {
+            [self.redirectURLs addObject:[NSURL URLWithString:@"http://spunout.ie/sleepingtips"]];
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Activity Information"
                                                                 message:@"How are you doing with your activities? Want to find some information on activities"
                                                                delegate:self
@@ -124,8 +126,8 @@
                                                       otherButtonTitles:@"Yes", nil];
             [alertView show];
         }
-        else if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"exercise" fromDay:1 toDay:7] < 4) {
-            self.redirectURL = [NSURL URLWithString:@"http://spunout.ie/movingtips"];
+        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"exercise" fromDay:1 toDay:7] < 4) {
+            [self.redirectURLs addObject:[NSURL URLWithString:@"http://spunout.ie/movingtips"]];
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Activity Information"
                                                                 message:@"How are you doing with your activities? Want to find some information on activities"
                                                                delegate:self
@@ -133,8 +135,8 @@
                                                       otherButtonTitles:@"Yes", nil];
             [alertView show];
         }
-        else if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"learn" fromDay:1 toDay:7] < 4) {
-            self.redirectURL = [NSURL URLWithString:@"http://spunout.ie/learningtips"];
+        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"learn" fromDay:1 toDay:7] < 4) {
+            [self.redirectURLs addObject:[NSURL URLWithString:@"http://spunout.ie/learningtips"]];
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Activity Information"
                                                                 message:@"How are you doing with your activities? Want to find some information on activities"
                                                                delegate:self
@@ -142,8 +144,8 @@
                                                       otherButtonTitles:@"Yes", nil];
             [alertView show];
         }
-        else if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"talk" fromDay:1 toDay:7] < 4) {
-            self.redirectURL = [NSURL URLWithString:@"http://spunout.ie/talkingtips"];
+        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"talk" fromDay:1 toDay:7] < 4) {
+            [self.redirectURLs addObject:[NSURL URLWithString:@"http://spunout.ie/talkingtips"]];
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Activity Information"
                                                                 message:@"How are you doing with your activities? Want to find some information on activities"
                                                                delegate:self
@@ -151,8 +153,8 @@
                                                       otherButtonTitles:@"Yes", nil];
             [alertView show];
         }
-        else if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"make" fromDay:1 toDay:7] < 4) {
-            self.redirectURL = [NSURL URLWithString:@"http://spunout.ie/makingtips"];
+        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"make" fromDay:1 toDay:7] < 4) {
+            [self.redirectURLs addObject:[NSURL URLWithString:@"http://spunout.ie/makingtips"]];
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Activity Information"
                                                                 message:@"How are you doing with your activities? Want to find some information on activities"
                                                                delegate:self
@@ -160,8 +162,8 @@
                                                       otherButtonTitles:@"Yes", nil];
             [alertView show];
         }
-        else if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"play" fromDay:1 toDay:7] < 4) {
-            self.redirectURL = [NSURL URLWithString:@"http://spunout.ie/playingtips"];
+        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"play" fromDay:1 toDay:7] < 4) {
+            [self.redirectURLs addObject:[NSURL URLWithString:@"http://spunout.ie/playingtips"]];
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Activity Information"
                                                                 message:@"How are you doing with your activities? Want to find some information on activities"
                                                                delegate:self
@@ -169,8 +171,8 @@
                                                       otherButtonTitles:@"Yes", nil];
             [alertView show];
         }
-        else if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"connect" fromDay:1 toDay:7] < 4) {
-            self.redirectURL = [NSURL URLWithString:@"http://spunout.ie/connectingtips"];
+        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"connect" fromDay:1 toDay:7] < 4) {
+            [self.redirectURLs addObject:[NSURL URLWithString:@"http://spunout.ie/connectingtips"]];
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Activity Information"
                                                                 message:@"How are you doing with your activities? Want to find some information on activities"
                                                                delegate:self
@@ -218,7 +220,8 @@
     [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"last_activity_alert_date"];
 
     if (buttonIndex == 1) {
-        [[UIApplication sharedApplication] openURL:self.redirectURL];
+        NSURL *url = self.redirectURLs[arc4random() % self.redirectURLs.count];
+        [[UIApplication sharedApplication] openURL:url];
     }
 }
 
