@@ -172,6 +172,8 @@
             [alertView show];
         }
     }
+
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -195,7 +197,8 @@
         NSString *fullActivityName = fullActivityNames[i];
         NSString *badge = badges[i];
 
-        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:activity fromDay:1 toDay:7] > 6) {
+        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:activity fromDay:1 toDay:7] > 6
+            && ![[NSUserDefaults standardUserDefaults] boolForKey:[NSString stringWithFormat:@"%@-bronze", activity]]) {
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:[NSString stringWithFormat:@"%@-bronze", activity]];
 
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"New Badge Unlocked!"
@@ -205,7 +208,8 @@
                                                       otherButtonTitles:nil];
             [alertView show];
         }
-        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:activity fromDay:1 toDay:14] > 12) {
+        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:activity fromDay:1 toDay:14] > 12
+            && ![[NSUserDefaults standardUserDefaults] boolForKey:[NSString stringWithFormat:@"%@-silver", activity]]) {
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:[NSString stringWithFormat:@"%@-silver", activity]];
 
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"New Badge Unlocked!"
@@ -215,7 +219,8 @@
                                                       otherButtonTitles:nil];
             [alertView show];
         }
-        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:activity fromDay:1 toDay:21] > 18) {
+        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:activity fromDay:1 toDay:21] > 18
+            && ![[NSUserDefaults standardUserDefaults] boolForKey:[NSString stringWithFormat:@"%@-gold", activity]]) {
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:[NSString stringWithFormat:@"%@-gold", activity]];
 
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"New Badge Unlocked!"
@@ -226,6 +231,8 @@
             [alertView show];
         }
     }
+
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark - Miyo Database
