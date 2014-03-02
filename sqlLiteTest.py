@@ -21,9 +21,9 @@ class sampleDataMaker:
 
 		if level is "bronze":
 			num_activies = 8
-		elif level is "silver"
+		elif level is "silver":
 			num_activies = 13
-		elif level is "gold"
+		elif level is "gold":
 			num_activies is 19
 
 		while counter < num_activies:
@@ -34,26 +34,25 @@ class sampleDataMaker:
 		self.conn.commit()
 
 	def addRandomData(self):
-		self.weeks_of_data = 4
+		weeks_of_data = 4
 		counter = 0
 		lifetime_points = 10
 
 		while counter < weeks_of_data:
 
-			current_timestamp -= counter * 604800000
+			self.current_timestamp -= counter * 604800000
 
 			num_inserts = random.randint(2,20)
 			inserts_counter = 0
 
-			if counter == 1:
+			if counter == 0:
+				eat = 0
+			elif counter == 1:
 				eat = 1
-
-			elif counter == 2: 
+			elif counter == 2:
 				eat = 0
 			elif counter == 3:
-				eat = 1 
-			else:
-				eat = 0
+				eat = 1
 
 			while inserts_counter < 7:
 				lifetime_points += 50
@@ -67,5 +66,5 @@ class sampleDataMaker:
 			counter += 1
 
 o = sampleDataMaker()
-o.giveBronzeAchievementsToAll("gold")
-
+#o.giveBronzeAchievementsToAll("gold")
+o.addRandomData()
