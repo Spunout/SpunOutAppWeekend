@@ -1,34 +1,71 @@
 import sqlite3, time, random, sys
 
-if len(sys.argv) != 2:
-    exit()
+class sampleDataMaker:
 
-print "Opening Database at path: " + sys.argv[1]
-conn = sqlite3.connect(sys.argv[1])
-c = conn.cursor()
+	def __init__(self):
 
-current_timestamp = int(round(time.time() * 1000))
+		if len(sys.argv) != 2:
+   			exit()
 
-weeks_of_data = 4
-counter = 0
-lifetime_points = 10
+		print "Opening Database at path: " + sys.argv[1]
+		self.conn = sqlite3.connect(sys.argv[1])
 
-while counter < weeks_of_data:
-    current_timestamp -= counter * 604800000
+		self.c = self.conn.cursor()
 
-    num_inserts = random.randint(2, 20)
-    insertsCounter = 0
+		self.current_timestamp = int(round(time.time() * 1000))
 
-    num_inserts = random.randint(2,20)
-    inserts_counter = 0
+	def giveAchievementsToAll(self, level):
 
-    while inserts_counter < num_inserts:
-        lifetime_points += 50
-        c.execute("INSERT into data VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (50, 1, random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), current_timestamp+random.randint(2,5000), lifetime_points))
+		counter = 0
+		lifetime_points = 10
 
-        inserts_counter += 1
+		if level is "bronze":
+			num_activies = 8
+		elif level is "silver"
+			num_activies = 13
+		elif level is "gold"
+			num_activies is 19
 
-    counter += 1
+		while counter < num_activies:
 
-print "Successfully added test data"
->>>>>>> Updated test script to take database path as parameter
+			lifetime_points += 10
+			self.c.execute("INSERT INTO data VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (50, 1, 1, 1, 1, 1, 1, 1, 1, self.current_timestamp+random.randint(2,5000), lifetime_points) )
+			counter += 1
+		self.conn.commit()
+
+	def addRandomData(self):
+		self.weeks_of_data = 4
+		counter = 0
+		lifetime_points = 10
+
+		while counter < weeks_of_data:
+
+			current_timestamp -= counter * 604800000
+
+			num_inserts = random.randint(2,20)
+			inserts_counter = 0
+
+			if counter == 1:
+				eat = 1
+
+			elif counter == 2: 
+				eat = 0
+			elif counter == 3:
+				eat = 1 
+			else:
+				eat = 0
+
+			while inserts_counter < 7:
+				lifetime_points += 50
+				self.c.execute("INSERT INTO data VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (50, eat, eat, random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), self.current_timestamp+random.randint(2,5000), lifetime_points) )
+
+
+				inserts_counter += 1
+
+			self.conn.commit()
+
+			counter += 1
+
+o = sampleDataMaker()
+o.giveBronzeAchievementsToAll("gold")
+
