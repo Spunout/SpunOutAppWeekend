@@ -47,7 +47,7 @@
     UILabel *topText = [[UILabel alloc] init];
     topText.textColor = [UIColor whiteColor];
     topText.font = [UIFont systemFontOfSize:15.0];
-    topText.text = @"Complete real life activites and log them in Miyo to gain Health Points.";
+    topText.text = @"Complete real life activites and log them in Miyo to gain Health Points. Your Health Points reset every week so keep coming back to enter your activities!";
     topText.lineBreakMode = NSLineBreakByWordWrapping;
     topText.numberOfLines = 0;
 
@@ -269,7 +269,7 @@
                                                                       metrics:metrics
                                                                         views:views]];
 
-    [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[connectText]-(textSpacing)-[playText]-(textSpacing)-|"
+    [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[connectText]-(textSpacing)-[playText]-(40)-|"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];

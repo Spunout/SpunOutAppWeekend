@@ -100,11 +100,12 @@
 - (void)checkLowUsage
 {
     NSDate *firstLaunchDate =[[NSUserDefaults standardUserDefaults] objectForKey:@"first_launch_date"];
+    NSDate *lastAlertDate =[[NSUserDefaults standardUserDefaults] objectForKey:@"last_activity_alert_date"];
 
     if (!firstLaunchDate) {
         [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"first_launch_date"];
     }
-    else if ([[NSDate date] isNewWeek]) {
+    else if (![lastAlertDate isToday] && [firstLaunchDate isNewWeek]) {
         if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"eat" fromDay:1 toDay:7] < 4) {
             self.redirectURL = [NSURL URLWithString:@"http://spunout.ie/eatingtips"];
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Activity Information"
@@ -209,6 +210,15 @@
                                                       otherButtonTitles:nil];
             [alertView show];
         }
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"last_activity_alert_date"];
+
+    if (buttonIndex == 1) {
+        [[UIApplication sharedApplication] openURL:self.redirectURL];
     }
 }
 
