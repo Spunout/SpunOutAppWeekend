@@ -237,7 +237,7 @@ NSInteger activityCounts[4];
     {
         fromDay = i * 7;
         toDay = (i+1) * 7;
-        activityCounts[i] = [[SOMiyoDatabase sharedInstance] getCountForActivity:self.activities[sender.tag] fromDay:fromDay toDay:toDay];
+	activityCounts[i] = [[SOMiyoDatabase sharedInstance] getCountForActivity:self.activities[sender.tag] fromDay:fromDay toDay:7];
     }
     
     for (NSInteger i = 0; i < self.buttons.count; i++)
