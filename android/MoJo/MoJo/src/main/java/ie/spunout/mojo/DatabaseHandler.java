@@ -46,6 +46,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.i(TAG, "creating the table");
+
+        //CREATE TABLE test (numbers INTEGER);
         String CREATE_MIYO_TABLE = "CREATE TABLE " + TABLE_MIYO + "("
                 + KEY_TIMESTAMP + " INTEGER PRIMARY KEY,"
                 + KEY_MOOD + " REAL,"+ KEY_EAT + " INTEGER,"
@@ -53,9 +55,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_PLAY + " INTEGER," + KEY_EXERCISE + " INTEGER,"
                 + KEY_MAKE + " INTEGER," + KEY_CONNECT + " INTEGER,"
                 + KEY_TALK + " INTEGER," + KEY_LIFE_TIME_POINTS + " INTEGER" + ")";
+        Log.i(TAG, CREATE_MIYO_TABLE);
         db.execSQL(CREATE_MIYO_TABLE);
-
-        addFirstMiyo(db);
     }
 
     // Upgrading database
@@ -68,7 +69,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Adding new activity record
     public void addMiyo(Miyo miyo) {
         SQLiteDatabase dbw = this.getWritableDatabase();
-        SQLiteDatabase dbr = this.getReadableDatabase();
+
+        Log.i(TAG, "Logging miyo instance to the database: "+miyo.toString());
+
+        //set the timestamp for the entry
+        miyo.setTimestamp();
 
         ContentValues values = new ContentValues();
         values.put(KEY_TIMESTAMP, miyo.getTimestamp());
@@ -87,14 +92,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Inserting Row
         Long today = getTodayEntryOrZero();
         if ( today > 0){
-           // deleteMiyo(today);
+           deleteMiyo(today);
         }
         dbw.insert(TABLE_MIYO, null, values);
+        dbw.close();
     }
 
     // Adding new activity record
-    public void addFirstMiyo(SQLiteDatabase db) {
+    public void addFirstMiyo() {
         Miyo miyo = new Miyo();
+        SQLiteDatabase dbw = this.getWritableDatabase();
 
         Log.i(TAG,"adding the first item to the table");
 
@@ -111,7 +118,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_TALK, miyo.getTalk());
         values.put(KEY_LIFE_TIME_POINTS, 0);
 
-        db.insert(TABLE_MIYO, null, values);
+        dbw.insert(TABLE_MIYO, null, values);
+        dbw.close();
     }
 
     // get Miyo instance
@@ -121,22 +129,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_MIYO, new String[] { KEY_TIMESTAMP, KEY_MOOD,
                 KEY_EAT, KEY_SLEEP, KEY_LEARN, KEY_PLAY, KEY_EXERCISE, KEY_MAKE, KEY_CONNECT, KEY_TALK, KEY_LIFE_TIME_POINTS}, KEY_TIMESTAMP + "=?",
                 new String[] { String.valueOf(timestamp) }, null, null, null, null);
-        if (cursor != null)
+
+        Miyo miyo;
+        if (cursor != null){
             cursor.moveToFirst();
 
-        Miyo miyo = new Miyo(Integer.parseInt(cursor.getString(1)), Integer.parseInt(cursor.getString(2)), Integer.parseInt(cursor.getString(3)), Integer.parseInt(cursor.getString(4)),
-                                              Integer.parseInt(cursor.getString(5)), Integer.parseInt(cursor.getString(6)), Integer.parseInt(cursor.getString(7)),
-                                              Integer.parseInt(cursor.getString(8)),Integer.parseInt(cursor.getString(9)), Integer.parseInt(cursor.getString(10)));
-        // return miyo
+            miyo = new Miyo(
+                Integer.parseInt(cursor.getString(1)), Integer.parseInt(cursor.getString(2)),
+                Integer.parseInt(cursor.getString(3)), Integer.parseInt(cursor.getString(4)),
+                Integer.parseInt(cursor.getString(5)), Integer.parseInt(cursor.getString(6)),
+                Integer.parseInt(cursor.getString(7)), Integer.parseInt(cursor.getString(8)),
+                Integer.parseInt(cursor.getString(9)), Integer.parseInt(cursor.getString(10))
+            );
+        }else{
+            miyo = new Miyo();
+        }
         return miyo;
     }
 
     // Deleting single record
-    public void deleteMiyo(Miyo miyo) {
+    public void deleteMiyo(Long timestamp) {
         SQLiteDatabase db = this.getWritableDatabase();
+        Log.i(TAG, "deleting an entry from the table");
         db.delete(TABLE_MIYO, KEY_TIMESTAMP + " = ?",
-                new String[] { String.valueOf(miyo.getTimestamp()) });
-        db.close();
+                new String[] { String.valueOf(timestamp) });
     }
 
     /**
@@ -180,12 +196,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cal.set(Calendar.SECOND, 0);                 // set second in minute
         cal.set(Calendar.MILLISECOND, 0);            // set millis in second
         Long zeroedDate = cal.getTimeInMillis();     // computes today floored
+        Log.i(TAG, zeroedDate.toString());
 
         Long ret = Long.valueOf(0);
 
         String[] args = {zeroedDate.toString()};
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT "+KEY_TIMESTAMP+" FROM "+TABLE_MIYO+" WHERE timestamp >= ?",
                 args
@@ -196,6 +213,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             int index = cursor.getColumnIndex(KEY_TIMESTAMP);
             ret = cursor.getLong(index);
         }
+        Log.i(TAG, "the timestamp of the item to be deleted is: "+ret.toString());
         return ret;
     }
 
@@ -203,72 +221,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return getRecentLTP(1);
     }
 
+    /**
+     * gets the lifetime points value for yesterday
+     * @param offset
+     * the number of days back to get values from
+     * @return
+     */
     public long getRecentLTP(int offset)
     {
         String offset_s = Integer.toString(offset);
         SQLiteDatabase db = this.getReadableDatabase();
         String[] args = new String[0];
         //TODO: removed DESCENDING from the sql query as it isn't supported
+        //select life_time_points from miyo order by timestamp limit 2 offset 1
         String query = "SELECT "+KEY_LIFE_TIME_POINTS+" FROM "+TABLE_MIYO+" ORDER BY "+KEY_TIMESTAMP+" LIMIT 2 OFFSET "+offset_s+"";
-        Cursor cursor = db.rawQuery(
-                query, args
-        );
+        Cursor cursor = db.rawQuery(query, args);
         cursor.moveToFirst();
+
+        if(cursor.getCount() == 0){
+            return 0;
+        }
 
         return Integer.parseInt(cursor.getString(0));
     }
-
-
-/*    public badges(){
-        checkBadge(KEY_EAT);
-        checkBadge(KEY_SLEEP);
-        checkBadge(KEY_LEARN);
-        checkBadge(KEY_PLAY);
-        checkBadge(KEY_EXERCISE);
-        checkBadge(KEY_MAKE);
-        checkBadge(KEY_CONNECT);
-        checkBadge(KEY_TALK);
-    }
-*/
-/*
-    public checkBadge(String action)
-    {
-        //demo of how to get from local storage
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        //getType should be the type of what you're getting back eg. getInt
-        //the second parameter is the default value if none is found
-        int currentlevel = sharedPref.getInt(action, 0);
-
-        switch(currentlevel){
-            case 2:
-                if( getNumberOf( action, 21) > 18){
-                    sharedPref.setInt(action, 3);
-                } break;
-            case 1:
-                if( getNumberOf( action, 14) > 12){
-                    sharedPref.setInt(action, 2);
-                } break;
-            case 0:
-                if( getNumberOf( action, 7) > 6){
-                    sharedPref.setInt(action, 1);
-                } break;
-        }
-    }
-*/
-
-/*    public int checkLevel(int current_level)
-    {
-        long ltp = getRecentLTP(0); //get todays ltp value
-        if(current_level != (levels.length-1)) //not at max level
-        {
-            while(ltp > levels[current_level+1]) //check next level's ltp points
-            {
-                current_level++;
-            }
-        }
-        return current_level;
-    }
-*/
 
     public void calculateLTP(Miyo miyo)
     {

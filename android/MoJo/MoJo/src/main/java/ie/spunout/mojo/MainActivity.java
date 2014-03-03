@@ -57,6 +57,12 @@ public class MainActivity extends FragmentActivity {
         //load the first fragment (initial)
         mViewPager.setCurrentItem(0);
 
+        //check if the user has leveled up
+        checkLevel();
+
+        //check if any badges have been awarded
+        //badges();
+
     }
 
     @Override
@@ -151,8 +157,9 @@ public class MainActivity extends FragmentActivity {
             //store the initial score
             editor.putInt("current_points", 150);
 
-            //set the initial level to zero
+            //initialise the level and points to level 2
             editor.putInt("current_level", 1);
+            editor.putInt("points_to_next_level", 30);
 
             //set all the badge levels to 0
             editor.putInt("badge_eat", 0);
@@ -166,6 +173,12 @@ public class MainActivity extends FragmentActivity {
 
             //commit these changes to memory
             editor.commit();
+
+            //create the database
+            dh.addFirstMiyo();
+
+            //open the instructions dialog
+            openInstructions();
         }else{
             Log.i(TAG, "returning to the app");
             //check for new badges
@@ -174,10 +187,90 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
+    public void checkLevel(){
+        Log.i(TAG, "checking level");
+        SharedPreferences prefs = this.getPreferences(MODE_PRIVATE);
+        //get the current level
+        Integer currentLevel = prefs.getInt("current_level", 0);
+        Integer pointsToNext = prefs.getInt("points_to_next_level", 0);
+        //TODO: add a check for the default value
+        Long currentLTP = dh.getRecentLTP();
+        Log.i(TAG, "current LTP is: "+currentLTP.toString());
+        Log.i(TAG, "points required are: "+pointsToNext.toString());
+        //TODO: make sure that call is returning what it should be
+        if(currentLTP > pointsToNext){
+            Log.i(TAG, "levelling up");
+            //advance to the next level
+            SharedPreferences.Editor editor = prefs.edit();
+            currentLevel++;
+            editor.putInt("current_level", currentLevel);
+            if(currentLevel <= 10){
+                Log.i(TAG, "level less than ten");
+                Double temp = 1.5 * pointsToNext.doubleValue();
+                pointsToNext = temp.intValue();
+            }else{
+                Double temp = 1.1 * pointsToNext.doubleValue();
+                pointsToNext = temp.intValue();
+            }
+            editor.putInt("points_to_next_level", pointsToNext);
+            editor.commit();
+            //display the dialog
+            openLevelUp();
+        }
+    }
+
     public void openInstructions(){
         FragmentManager fm = getSupportFragmentManager();
         Instructions instructionsDialog = new Instructions();
         instructionsDialog.show(fm, "Sample");
+    }
+
+    public void openLevelUp(){
+        FragmentManager fm = getSupportFragmentManager();
+        LevelUp levelDialog = new LevelUp();
+        levelDialog.show(fm, "Sample");
+    }
+
+    public void badges(){
+        Log.i(TAG, "checking for any new badges");
+        checkBadge("badge_eat");
+        checkBadge("badge_sleep");
+        checkBadge("badge_learn");
+        checkBadge("badge_play");
+        checkBadge("badge_exercise");
+        checkBadge("badge_make");
+        checkBadge("badge_connect");
+        checkBadge("badge_talk");
+    }
+
+    public void checkBadge(String action)
+    {
+        //demo of how to get from local storage
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = sharedPref.edit();
+        //getType should be the type of what you're getting back eg. getInt
+        //the second parameter is the default value if none is found
+        int currentlevel = sharedPref.getInt(action, 0);
+
+        switch(currentlevel){
+            case 2:
+                if( dh.getNumberOf(action, 21) > 18){
+                    edit.putInt(action, 3);
+                    Log.i(TAG, "New gold Badge awarded");
+                } break;
+            case 1:
+                if( dh.getNumberOf(action, 14) > 12){
+                    edit.putInt(action, 2);
+                    Log.i(TAG, "New silver Badge awarded");
+                } break;
+            case 0:
+                if( dh.getNumberOf(action, 7) > 6){
+                    edit.putInt(action, 1);
+                    Log.i(TAG, "New bronze Badge awarded");
+                } break;
+        }
+
+        edit.commit();
     }
 
 }

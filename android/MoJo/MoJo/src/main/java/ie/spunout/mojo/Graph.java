@@ -1,5 +1,7 @@
 package ie.spunout.mojo;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -7,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import ie.spunout.mojo.graph.Line;
 import ie.spunout.mojo.graph.LineGraph;
@@ -18,11 +22,12 @@ import ie.spunout.mojo.graph.LinePoint;
 public class Graph extends Fragment{
     private View view;
     private boolean[] choices = {false,false,false,false,false,false,false,false,};
+    DatabaseHandler dh;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
+        dh = new DatabaseHandler(getActivity());
     }
 
     @Override
@@ -30,8 +35,7 @@ public class Graph extends Fragment{
         view = inflater.inflate(R.layout.fragment_graphs, container, false);
         setupOnClicks();
         setupGraph();
-
-
+        setupProgressBar();
         return view;
     }
 
@@ -224,5 +228,24 @@ public class Graph extends Fragment{
                 v.setBackground(newBackground);
             }
         });
+    }
+
+    /**
+     * Sets the level number at the top of the page and
+     * sets the value of the progress bar
+     */
+    private void setupProgressBar(){
+        //set the level number
+        SharedPreferences prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
+        Integer level = prefs.getInt("current_level", 0);
+        TextView levelNumber = (TextView) view.findViewById(R.id.level_number);
+        levelNumber.setText(level.toString());
+
+        //set the value for the progress bar
+        Integer max = prefs.getInt("points_to_next_level", 0);
+        Long points = dh.getRecentLTP();
+        ProgressBar bar = (ProgressBar) view.findViewById(R.id.progressBar);
+        bar.setMax(max);
+        bar.setProgress(points.intValue());
     }
 }

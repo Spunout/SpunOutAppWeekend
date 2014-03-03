@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.ArcShape;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -53,20 +54,9 @@ public class Initial extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_initial, container, false);
-
-        //get the view activity
-        //view = getActivity();
-
-        //hide the action bar
-        //abar = getActionBar();
-        //abar.hide();
-        //abar.setDisplayHomeAsUpEnabled(true);
+        scoreNumber = (TextView) view.findViewById(R.id.score_number);
 
         //TODO: make sure all of these are in the right order
-
-        //hide the overlay menu
-        //menu = findViewById(R.id.hideable);
-        //menu.setVisibility(View.INVISIBLE);
 
         //TODO the start point is 150
 
@@ -75,12 +65,15 @@ public class Initial extends Fragment {
         //attach onclick methods to the activity buttons
         setupOnClicks();
 
+        //setup the score
+        setupScore();
+
         //set the size of the meter
         setupMeter();
+        drawCircle();
 
-        //get the score view items
-        score = 100;
-        scoreNumber.setText(String.valueOf(score));
+        //load miyo
+        loadMiyo();
 
         return view;
     }
@@ -102,12 +95,14 @@ public class Initial extends Fragment {
                     newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
                     miyo.setEat(0);
                     //log the change in the database
-                    Log.i(TAG, "Logging miyo instance to the database: "+miyo.toString());
                     dh.addMiyo(miyo);
+                    updatePoints(-7);
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
                     miyo.setEat(1);
+                    dh.addMiyo(miyo);
+                    updatePoints(7);
                 }
                 v.setBackground(newBackground);
 
@@ -128,10 +123,14 @@ public class Initial extends Fragment {
                     //if so, deselect it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
                     miyo.setSleep(0);
+                    dh.addMiyo(miyo);
+                    updatePoints(-7);
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
                     miyo.setSleep(1);
+                    dh.addMiyo(miyo);
+                    updatePoints(7);
                 }
                 v.setBackground(newBackground);
             }
@@ -149,10 +148,14 @@ public class Initial extends Fragment {
                     //if so, deselect it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
                     miyo.setExercise(0);
+                    dh.addMiyo(miyo);
+                    updatePoints(-5);
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
                     miyo.setExercise(1);
+                    dh.addMiyo(miyo);
+                    updatePoints(5);
                 }
                 v.setBackground(newBackground);
             }
@@ -170,10 +173,14 @@ public class Initial extends Fragment {
                     //if so, deselect it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
                     miyo.setLearn(0);
+                    dh.addMiyo(miyo);
+                    updatePoints(-5);
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
                     miyo.setLearn(1);
+                    dh.addMiyo(miyo);
+                    updatePoints(5);
                 }
                 v.setBackground(newBackground);
             }
@@ -191,10 +198,14 @@ public class Initial extends Fragment {
                     //if so, deselect it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
                     miyo.setTalk(0);
+                    dh.addMiyo(miyo);
+                    updatePoints(-7);
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
                     miyo.setTalk(1);
+                    dh.addMiyo(miyo);
+                    updatePoints(7);
                 }
                 v.setBackground(newBackground);
             }
@@ -212,10 +223,14 @@ public class Initial extends Fragment {
                     //if so, deselect it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
                     miyo.setMake(0);
+                    dh.addMiyo(miyo);
+                    updatePoints(-5);
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
                     miyo.setMake(1);
+                    dh.addMiyo(miyo);
+                    updatePoints(5);
                 }
                 v.setBackground(newBackground);
             }
@@ -233,10 +248,14 @@ public class Initial extends Fragment {
                     //if so, deselect it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
                     miyo.setPlay(0);
+                    dh.addMiyo(miyo);
+                    updatePoints(-5);
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
                     miyo.setPlay(1);
+                    dh.addMiyo(miyo);
+                    updatePoints(5);
                 }
                 v.setBackground(newBackground);
             }
@@ -254,14 +273,66 @@ public class Initial extends Fragment {
                     //if so, deselect it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
                     miyo.setConnect(0);
+                    dh.addMiyo(miyo);
+                    updatePoints(-7);
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
                     miyo.setConnect(1);
+                    dh.addMiyo(miyo);
+                    updatePoints(7);
                 }
                 v.setBackground(newBackground);
             }
         });
+    }
+
+    private void loadMiyo(){
+        Long timestamp = dh.getTodayEntryOrZero();
+        miyo = dh.getMiyo(timestamp);
+        Drawable newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+
+        View eat = view.findViewById(R.id.eat_button);
+        //set the buttons
+        if(miyo.getEat() == 1){
+            eat.setBackground(newBackground);
+        }
+        View sleep = view.findViewById(R.id.sleep_button);
+        //set the buttons
+        if(miyo.getSleep() == 1){
+            sleep.setBackground(newBackground);
+        }
+        View move = view.findViewById(R.id.exercise_button);
+        //set the buttons
+        if(miyo.getExercise() == 1){
+            move.setBackground(newBackground);
+        }
+        View learn = view.findViewById(R.id.learn_button);
+        //set the buttons
+        if(miyo.getLearn() == 1){
+            learn.setBackground(newBackground);
+        }
+        View talk = view.findViewById(R.id.talk_button);
+        //set the buttons
+        if(miyo.getTalk() == 1){
+            talk.setBackground(newBackground);
+        }
+        View make = view.findViewById(R.id.make_button);
+        //set the buttons
+        if(miyo.getMake() == 1){
+            make.setBackground(newBackground);
+        }
+        View play = view.findViewById(R.id.play_button);
+        //set the buttons
+        if(miyo.getPlay() == 1){
+            play.setBackground(newBackground);
+        }
+        View connect = view.findViewById(R.id.connect_button);
+        //set the buttons
+        if(miyo.getConnect() == 1){
+            connect.setBackground(newBackground);
+        }
+
     }
 
     /**
@@ -270,7 +341,6 @@ public class Initial extends Fragment {
     private void setupMeter(){
         meterForeground = (ImageView) view.findViewById(R.id.meterforeground);
         meterBackground = (ImageView) view.findViewById(R.id.meterbackground);
-        scoreNumber = (TextView) view.findViewById(R.id.score_number);
 
 
         Display display = getActivity().getWindowManager().getDefaultDisplay();
@@ -292,18 +362,11 @@ public class Initial extends Fragment {
         scoreNumber.getLayoutParams().width = (int)outerSize;
     }
 
-    private void incrementScore(){
-        score++;
-        //update the score in the view
+    private void setupScore(){
+        SharedPreferences prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
+        //get the score view items
+        score = prefs.getInt("current_points", 150);
         scoreNumber.setText(String.valueOf(score));
-        setPoints();
-        /**
-        try{
-            wait(1000);
-        }catch (Exception e){
-            e.printStackTrace();
-        }*/
-
     }
 
     public boolean firstOpenOfTheDay() {
@@ -362,8 +425,24 @@ public class Initial extends Fragment {
         return true;
     }
 
+    /**
+     * Stores the new value of points locally and in shared prefs
+     * and redraws the circle with the new value
+     * @param change    the amout to change points by
+     */
+    public void updatePoints(int change){
+        SharedPreferences prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        score += change;
+
+        editor.putInt("current_points", score);
+        editor.commit();
+        drawCircle();
+        scoreNumber.setText(String.valueOf(score));
+    }
+
     //draws the meter circle
-    public boolean setPoints(){
+    public boolean drawCircle(){
         //calculate the score as a 0-1 double
         double scoreScale = (double) score/500;
 

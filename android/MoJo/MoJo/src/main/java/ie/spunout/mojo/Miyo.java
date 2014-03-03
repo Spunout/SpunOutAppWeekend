@@ -26,6 +26,7 @@ public class Miyo {
 
     // Empty constructor
     public Miyo(){
+        mood = 0;
         eat = 0;
         sleep = 0;
         learn = 0;
@@ -34,6 +35,8 @@ public class Miyo {
         make = 0;
         connect = 0;
         talk = 0;
+        life_time_points = 0;
+        setTimestamp();
     }
 
     // constructor

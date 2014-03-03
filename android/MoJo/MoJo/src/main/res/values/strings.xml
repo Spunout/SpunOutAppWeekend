@@ -6,7 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="slider_title">How are you feeling?</string>
     <string name="icons_title">What have you done today?</string>
-    <string name="instructions_p1">Complete real life activites and log them in Miyo to gain Health Points</string>
+    <string name="instructions_p1">Complete real life activites and log them in Miyo to gain Health Points. \n\nYour Health Points reset every week so keep coming back to enter your activities!</string>
     <string name="instructions_eat">Eat a healthy meal or drink some water</string>
     <string name="instructions_sleep">Have a good nights sleep or get a power nap</string>
     <string name="instructions_exercise">Do anything that involves moving around (outside if possible)</string>
@@ -20,7 +20,23 @@
     <string name="instructions_badges2">Gain any Silver Badge by completing any acitivity for 12 days in 2 weeks</string>
     <string name="instructions_badges3">Gain any Gold Badge by completing any activity for 18 days in 3 weeks</string>
     <string name="instructions_contact">Find out more about Spunout.ie by going to</string>
-    <string name="about_link">http://spunout.ie/about</string>
+    <string name="about_link">http://spunout.ie/miyo</string>
+    <string name="badge_copy">Congratulations, you\'ve unlocked a (bronze/silver/gold) (badge name) badge!</string>
+    <string name="badge_p2_bronze">Shoot for silver. Complete \'(activity)\' 12 days in 2 weeks</string>
+    <string name="level_p1">Congratulations! You\'ve leveled up since yesterday.</string>
+    <string name="level_p2">You are now on level</string>
+    <string name="level_p3">Complete activites and collect Health Points points to progress in Miyo!</string>
+    <string name="low_use_p1">How are you doing with your activities? Want to find some information on activities</string>
+    <string-array name="spunout_links">
+        <item>spunout.ie/eatingtips</item>
+        <item>spunout.ie/sleepingtips</item>
+        <item>spunout.ie/movingtips</item>
+        <item>spunout.ie/learningtips</item>
+        <item>spunout.ie/talkingtips</item>
+        <item>spunout.ie/makeingtips</item>
+        <item>spunout.ie/playingtips</item>
+        <item>spunout.ie/connectingtips</item>
+    </string-array>
     <string-array name="button_labels">
         <item>EAT WELL</item>
         <item>SLEEP WELL</item>
