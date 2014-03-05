@@ -14,6 +14,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
+import android.text.LoginFilter;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -61,7 +62,10 @@ public class MainActivity extends FragmentActivity {
         checkLevel();
 
         //check if any badges have been awarded
-        //badges();
+        allBadges();
+
+        //check for any low usage
+        allLowUse();
 
     }
 
@@ -162,14 +166,14 @@ public class MainActivity extends FragmentActivity {
             editor.putInt("points_to_next_level", 30);
 
             //set all the badge levels to 0
-            editor.putInt("badge_eat", 0);
-            editor.putInt("badge_sleep", 0);
-            editor.putInt("badge_exercise", 0);
-            editor.putInt("badge_learn", 0);
-            editor.putInt("badge_talk", 0);
-            editor.putInt("badge_make", 0);
-            editor.putInt("badge_play", 0);
-            editor.putInt("badge_connect", 0);
+            editor.putInt("eat", 0);
+            editor.putInt("sleep", 0);
+            editor.putInt("exercise", 0);
+            editor.putInt("learn", 0);
+            editor.putInt("talk", 0);
+            editor.putInt("make", 0);
+            editor.putInt("play", 0);
+            editor.putInt("connect", 0);
 
             //commit these changes to memory
             editor.commit();
@@ -187,23 +191,28 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
+    public void openInstructions(){
+        FragmentManager fm = getSupportFragmentManager();
+        Instructions instructionsDialog = new Instructions();
+        instructionsDialog.show(fm, "Sample");
+    }
+
     public void checkLevel(){
         Log.i(TAG, "checking level");
         SharedPreferences prefs = this.getPreferences(MODE_PRIVATE);
         //get the current level
         Integer currentLevel = prefs.getInt("current_level", 0);
         Integer pointsToNext = prefs.getInt("points_to_next_level", 0);
-        //TODO: add a check for the default value
         Long currentLTP = dh.getRecentLTP();
         Log.i(TAG, "current LTP is: "+currentLTP.toString());
         Log.i(TAG, "points required are: "+pointsToNext.toString());
-        //TODO: make sure that call is returning what it should be
         if(currentLTP > pointsToNext){
             Log.i(TAG, "levelling up");
             //advance to the next level
             SharedPreferences.Editor editor = prefs.edit();
             currentLevel++;
             editor.putInt("current_level", currentLevel);
+
             if(currentLevel <= 10){
                 Log.i(TAG, "level less than ten");
                 Double temp = 1.5 * pointsToNext.doubleValue();
@@ -211,6 +220,7 @@ public class MainActivity extends FragmentActivity {
             }else{
                 Double temp = 1.1 * pointsToNext.doubleValue();
                 pointsToNext = temp.intValue();
+                Log.i(TAG, "level greater than ten");
             }
             editor.putInt("points_to_next_level", pointsToNext);
             editor.commit();
@@ -219,58 +229,82 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    public void openInstructions(){
-        FragmentManager fm = getSupportFragmentManager();
-        Instructions instructionsDialog = new Instructions();
-        instructionsDialog.show(fm, "Sample");
-    }
-
     public void openLevelUp(){
         FragmentManager fm = getSupportFragmentManager();
         LevelUp levelDialog = new LevelUp();
         levelDialog.show(fm, "Sample");
     }
 
-    public void badges(){
+    public void allBadges(){
         Log.i(TAG, "checking for any new badges");
-        checkBadge("badge_eat");
-        checkBadge("badge_sleep");
-        checkBadge("badge_learn");
-        checkBadge("badge_play");
-        checkBadge("badge_exercise");
-        checkBadge("badge_make");
-        checkBadge("badge_connect");
-        checkBadge("badge_talk");
+        checkBadge("eat");
+        checkBadge("sleep");
+        checkBadge("learn");
+        checkBadge("play");
+        checkBadge("exercise");
+        checkBadge("make");
+        checkBadge("connect");
+        checkBadge("talk");
     }
 
-    public void checkBadge(String action)
-    {
-        //demo of how to get from local storage
+    public void checkBadge(String action){
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor edit = sharedPref.edit();
-        //getType should be the type of what you're getting back eg. getInt
-        //the second parameter is the default value if none is found
-        int currentlevel = sharedPref.getInt(action, 0);
-
-        switch(currentlevel){
-            case 2:
-                if( dh.getNumberOf(action, 21) > 18){
-                    edit.putInt(action, 3);
-                    Log.i(TAG, "New gold Badge awarded");
-                } break;
-            case 1:
-                if( dh.getNumberOf(action, 14) > 12){
-                    edit.putInt(action, 2);
-                    Log.i(TAG, "New silver Badge awarded");
-                } break;
-            case 0:
-                if( dh.getNumberOf(action, 7) > 6){
-                    edit.putInt(action, 1);
-                    Log.i(TAG, "New bronze Badge awarded");
-                } break;
+        int currentBadge = sharedPref.getInt(action, 0);
+        if(currentBadge == 3){
+            Log.i(TAG, action+"no change");
+            return;
         }
 
-        edit.commit();
+        //add one for easier manipulation
+        currentBadge += 1;
+        int timesDone = dh.getNumberOf(action, (currentBadge*7));
+        Log.i(TAG, action+" was done "+timesDone+" times");
+        if(timesDone > (currentBadge*6)){
+            //the user has earned a new badge
+            SharedPreferences.Editor edit = sharedPref.edit();
+            //give them then new badge
+            Log.i(TAG,"New Badge awarded");
+            edit.putInt(action, currentBadge);
+            edit.commit();
+            //display the dialog to award them the badge
+            openBadgeAward();
+        }
     }
 
+    private void openBadgeAward(){
+        FragmentManager fm = getSupportFragmentManager();
+        BadgeAwarded badgeDialog = new BadgeAwarded();
+        badgeDialog.show(fm, "Sample");
+    }
+
+    public void allLowUse(){
+        Log.i(TAG, "checking for any low usage");
+        checkLowUse("eat");
+        checkLowUse("sleep");
+        checkLowUse("learn");
+        checkLowUse("play");
+        checkLowUse("exercise");
+        checkLowUse("make");
+        checkLowUse("connect");
+        checkLowUse("talk");
+    }
+
+
+    /**
+     * Checks if the user isn't doing any activity much
+     * less than four times in a week is considered bad
+     */
+    public void checkLowUse(String action){
+        int timesDone = dh.getNumberOf(action, 7);
+        if(timesDone < 4){
+            //this is considered low use
+            openLowUse();
+        }
+    }
+
+    public void openLowUse(){
+        FragmentManager fm = getSupportFragmentManager();
+        LowUse lowUseDialog = new LowUse();
+        lowUseDialog.show(fm, "Sample");
+    }
 }

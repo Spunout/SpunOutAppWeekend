@@ -165,25 +165,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      */
     public int getNumberOf(String action, int days){
         int millisperday = 86400000;//1000*60*60*24
-        String strCount = "";
+        //String strCount = "";
         int count = 0;
         Calendar cal = new GregorianCalendar();
         Long r = cal.getTimeInMillis()-(millisperday*days);
         String range = r.toString();
+        Log.i(TAG, "range is values greater than "+range);
 
         String[] args = {action.toLowerCase(), range};
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(
-                "SELECT COUNT(*) FROM "+TABLE_MIYO+" WHERE ? = 1 AND "+KEY_TIMESTAMP+" <= ?",
+                "SELECT * FROM "+TABLE_MIYO+" WHERE ? = 1 AND "+KEY_TIMESTAMP+" >= ?",
                 args
         );
 
-        while( cursor.moveToFirst() ){
-            strCount = cursor.getString(cursor.getColumnIndex("COUNT(*)"));
-        }
+        cursor.moveToFirst();
+        do{
+            //strCount = cursor.getString(cursor.getColumnIndex("COUNT(*)"));
+            count++;
+            Log.i(TAG, "cursor item "+count);
+        }while(cursor.moveToNext());
         db.close();
-        count = Integer.valueOf(strCount).intValue();
+        //count = Integer.valueOf(strCount).intValue();
         return count;
     }
 
