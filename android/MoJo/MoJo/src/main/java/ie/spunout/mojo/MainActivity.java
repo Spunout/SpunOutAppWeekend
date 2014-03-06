@@ -67,6 +67,7 @@ public class MainActivity extends FragmentActivity {
         //check for any low usage
         allLowUse();
 
+        checkIfStartOfWeek();
     }
 
     @Override
@@ -175,6 +176,9 @@ public class MainActivity extends FragmentActivity {
             editor.putInt("play", 0);
             editor.putInt("connect", 0);
 
+            //insert the first week timer
+            editor.putLong("week_timer", System.currentTimeMillis());
+
             //commit these changes to memory
             editor.commit();
 
@@ -256,7 +260,7 @@ public class MainActivity extends FragmentActivity {
         }
 
         //add one for easier manipulation
-        currentBadge += 1;
+        currentBadge++;
         int timesDone = dh.getNumberOf(action, (currentBadge*7));
         Log.i(TAG, action+" was done "+timesDone+" times");
         if(timesDone > (currentBadge*6)){
@@ -267,44 +271,63 @@ public class MainActivity extends FragmentActivity {
             edit.putInt(action, currentBadge);
             edit.commit();
             //display the dialog to award them the badge
-            openBadgeAward();
+            openBadgeAward(action, currentBadge);
         }
     }
 
-    private void openBadgeAward(){
+    private void openBadgeAward(String action, int level){
+        Bundle b = new Bundle();
+        b.putString("action", action);
+        b.putInt("level", level);
+
         FragmentManager fm = getSupportFragmentManager();
         BadgeAwarded badgeDialog = new BadgeAwarded();
+        badgeDialog.setArguments(b);
         badgeDialog.show(fm, "Sample");
     }
 
     public void allLowUse(){
         Log.i(TAG, "checking for any low usage");
-        checkLowUse("eat");
-        checkLowUse("sleep");
-        checkLowUse("learn");
-        checkLowUse("play");
-        checkLowUse("exercise");
-        checkLowUse("make");
-        checkLowUse("connect");
-        checkLowUse("talk");
-    }
+        boolean check = false;
+        check |= checkLowUse("eat");
+        check |= checkLowUse("sleep");
+        check |= checkLowUse("learn");
+        check |= checkLowUse("play");
+        check |= checkLowUse("exercise");
+        check |= checkLowUse("make");
+        check |= checkLowUse("connect");
+        check |= checkLowUse("talk");
 
+        if (check){
+            openLowUse();
+        }
+    }
 
     /**
      * Checks if the user isn't doing any activity much
      * less than four times in a week is considered bad
      */
-    public void checkLowUse(String action){
+    public boolean checkLowUse(String action){
         int timesDone = dh.getNumberOf(action, 7);
-        if(timesDone < 4){
-            //this is considered low use
-            openLowUse();
-        }
+        return (timesDone < 4);
     }
 
     public void openLowUse(){
         FragmentManager fm = getSupportFragmentManager();
         LowUse lowUseDialog = new LowUse();
         lowUseDialog.show(fm, "Sample");
+    }
+
+    private void checkIfStartOfWeek(){
+        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        Long currentTime = System.currentTimeMillis();
+        Long aWeekAgo = currentTime-(604800000);
+        if(prefs.getLong("week_timer", 0) < aWeekAgo){
+            SharedPreferences.Editor edit = prefs.edit();
+            edit.putLong("week_timer", System.currentTimeMillis());
+            edit.putInt("current_score", 150);
+            edit.commit();
+            Log.i(TAG, "resetting the score as a week has passed");
+        }
     }
 }

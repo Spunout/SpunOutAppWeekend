@@ -48,6 +48,7 @@
                     android:textStyle="bold"/>
 
                 <ImageView
+                    android:id="@+id/eat_bronze"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -57,6 +58,7 @@
                     android:src="@drawable/eat_blue"/>
 
                 <ImageView
+                    android:id="@+id/eat_silver"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -66,6 +68,7 @@
                     android:src="@drawable/eat_blue"/>
 
                 <ImageView
+                    android:id="@+id/eat_gold"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -94,6 +97,7 @@
                     android:textStyle="bold"/>
 
                 <ImageView
+                    android:id="@+id/sleep_bronze"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -103,6 +107,7 @@
                     android:src="@drawable/sleep_blue"/>
 
                 <ImageView
+                    android:id="@+id/sleep_silver"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -112,6 +117,7 @@
                     android:src="@drawable/sleep_blue"/>
 
                 <ImageView
+                    android:id="@+id/sleep_gold"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -140,6 +146,7 @@
                     android:textStyle="bold"/>
 
                 <ImageView
+                    android:id="@+id/move_bronze"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -149,6 +156,7 @@
                     android:src="@drawable/exercise_blue"/>
 
                 <ImageView
+                    android:id="@+id/move_silver"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -158,6 +166,7 @@
                     android:src="@drawable/exercise_blue"/>
 
                 <ImageView
+                    android:id="@+id/move_gold"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -186,6 +195,7 @@
                     android:textStyle="bold"/>
 
                 <ImageView
+                    android:id="@+id/learn_bronze"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -195,6 +205,7 @@
                     android:src="@drawable/learn_blue"/>
 
                 <ImageView
+                    android:id="@+id/learn_silver"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -204,6 +215,7 @@
                     android:src="@drawable/learn_blue"/>
 
                 <ImageView
+                    android:id="@+id/learn_gold"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -232,6 +244,7 @@
                     android:textStyle="bold"/>
 
                 <ImageView
+                    android:id="@+id/talk_bronze"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -241,6 +254,7 @@
                     android:src="@drawable/talk_blue"/>
 
                 <ImageView
+                    android:id="@+id/talk_silver"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -250,6 +264,7 @@
                     android:src="@drawable/talk_blue"/>
 
                 <ImageView
+                    android:id="@+id/talk_gold"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -278,6 +293,7 @@
                     android:textStyle="bold"/>
 
                 <ImageView
+                    android:id="@+id/make_bronze"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -287,6 +303,7 @@
                     android:src="@drawable/make_blue"/>
 
                 <ImageView
+                    android:id="@+id/make_silver"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -296,6 +313,7 @@
                     android:src="@drawable/make_blue"/>
 
                 <ImageView
+                    android:id="@+id/make_gold"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -324,6 +342,7 @@
                     android:textStyle="bold"/>
 
                 <ImageView
+                    android:id="@+id/play_bronze"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -333,6 +352,7 @@
                     android:src="@drawable/play_blue"/>
 
                 <ImageView
+                    android:id="@+id/play_silver"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -342,6 +362,7 @@
                     android:src="@drawable/play_blue"/>
 
                 <ImageView
+                    android:id="@+id/play_gold"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -370,6 +391,7 @@
                     android:textStyle="bold"/>
 
                 <ImageView
+                    android:id="@+id/connect_bronze"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -379,6 +401,7 @@
                     android:src="@drawable/connect_blue"/>
 
                 <ImageView
+                    android:id="@+id/connect_silver"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
@@ -388,6 +411,7 @@
                     android:src="@drawable/connect_blue"/>
 
                 <ImageView
+                    android:id="@+id/connect_gold"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"

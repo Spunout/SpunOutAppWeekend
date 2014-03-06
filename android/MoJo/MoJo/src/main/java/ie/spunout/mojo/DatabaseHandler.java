@@ -1,9 +1,11 @@
 package ie.spunout.mojo;
 
+import android.app.ActionBar;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -95,7 +97,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
            deleteMiyo(today);
         }
         dbw.insert(TABLE_MIYO, null, values);
-        dbw.close();
     }
 
     // Adding new activity record
@@ -119,16 +120,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_LIFE_TIME_POINTS, 0);
 
         dbw.insert(TABLE_MIYO, null, values);
-        dbw.close();
     }
 
     // get Miyo instance
     public Miyo getMiyo(long timestamp) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_MIYO, new String[] { KEY_TIMESTAMP, KEY_MOOD,
-                KEY_EAT, KEY_SLEEP, KEY_LEARN, KEY_PLAY, KEY_EXERCISE, KEY_MAKE, KEY_CONNECT, KEY_TALK, KEY_LIFE_TIME_POINTS}, KEY_TIMESTAMP + "=?",
-                new String[] { String.valueOf(timestamp) }, null, null, null, null);
+        String qry = "SELECT * FROM MIYO WHERE timestamp = ?";
+        String[] args = {Long.valueOf(timestamp).toString()};
+        Cursor cursor = db.rawQuery(qry, args);
 
         Miyo miyo;
         if (cursor != null){
@@ -144,6 +144,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }else{
             miyo = new Miyo();
         }
+        cursor.close();
         return miyo;
     }
 
@@ -163,30 +164,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      *
      * @return the number of times action has happened in the past days
      */
-    public int getNumberOf(String action, int days){
-        int millisperday = 86400000;//1000*60*60*24
-        //String strCount = "";
+    public int getNumberOf(String action, long days){
+        long millisperday = 86400000;//1000*60*60*24
         int count = 0;
         Calendar cal = new GregorianCalendar();
-        Long r = cal.getTimeInMillis()-(millisperday*days);
+        long currentTime = cal.getTimeInMillis();
+        Log.i(TAG,"current time is "+currentTime);
+        Long r = currentTime - (millisperday*days);
         String range = r.toString();
         Log.i(TAG, "range is values greater than "+range);
 
-        String[] args = {action.toLowerCase(), range};
+        String[] args = { range};
+        String qry = "SELECT * FROM "+TABLE_MIYO+" WHERE "+action.toLowerCase()+" = 1 AND "+KEY_TIMESTAMP+" >= ?";
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(
-                "SELECT * FROM "+TABLE_MIYO+" WHERE ? = 1 AND "+KEY_TIMESTAMP+" >= ?",
-                args
-        );
+        Cursor cursor = db.rawQuery(qry,args);
 
+        Log.i(TAG,"number of items returned is "+cursor.getCount());
         cursor.moveToFirst();
         do{
             //strCount = cursor.getString(cursor.getColumnIndex("COUNT(*)"));
             count++;
             Log.i(TAG, "cursor item "+count);
         }while(cursor.moveToNext());
-        db.close();
+        cursor.close();
         //count = Integer.valueOf(strCount).intValue();
         return count;
     }
@@ -211,12 +212,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 "SELECT "+KEY_TIMESTAMP+" FROM "+TABLE_MIYO+" WHERE timestamp >= ?",
                 args
         );
-        cursor.moveToNext();
+        Log.i(TAG, "number of items in cursor is "+cursor.getCount());
         if (cursor.getCount() != 0){
             cursor.moveToFirst();
             int index = cursor.getColumnIndex(KEY_TIMESTAMP);
             ret = cursor.getLong(index);
         }
+        cursor.close();
         Log.i(TAG, "the timestamp of the item to be deleted is: "+ret.toString());
         return ret;
     }
@@ -245,8 +247,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if(cursor.getCount() == 0){
             return 0;
         }
+        int value = Integer.parseInt(cursor.getString(0));
+        cursor.close();
 
-        return Integer.parseInt(cursor.getString(0));
+        return value;
     }
 
     public void calculateLTP(Miyo miyo)

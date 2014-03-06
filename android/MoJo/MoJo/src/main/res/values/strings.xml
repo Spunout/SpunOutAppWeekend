@@ -21,7 +21,7 @@
     <string name="instructions_badges3">Gain any Gold Badge by completing any activity for 18 days in 3 weeks</string>
     <string name="instructions_contact">Find out more about Spunout.ie by going to</string>
     <string name="about_link">http://spunout.ie/miyo</string>
-    <string name="badge_copy">Congratulations, you\'ve unlocked a (bronze/silver/gold) (badge name) badge!</string>
+    <string name="badge_copy">Congratulations, you\'ve unlocked a new * badge!</string>
     <string name="badge_p2_bronze">Shoot for silver. Complete \'(activity)\' 12 days in 2 weeks</string>
     <string name="level_p1">Congratulations! You\'ve leveled up since yesterday.</string>
     <string name="level_p2">You are now on level</string>

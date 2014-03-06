@@ -289,50 +289,53 @@ public class Initial extends Fragment {
 
     private void loadMiyo(){
         Long timestamp = dh.getTodayEntryOrZero();
-        miyo = dh.getMiyo(timestamp);
-        Drawable newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+        if(timestamp == 0){
+            miyo = new Miyo();
+        }else{
+            miyo = dh.getMiyo(timestamp);
+            Drawable newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
 
-        View eat = view.findViewById(R.id.eat_button);
-        //set the buttons
-        if(miyo.getEat() == 1){
-            eat.setBackground(newBackground);
+            View eat = view.findViewById(R.id.eat_button);
+            //set the buttons
+            if(miyo.getEat() == 1){
+                eat.setBackground(newBackground);
+            }
+            View sleep = view.findViewById(R.id.sleep_button);
+            //set the buttons
+            if(miyo.getSleep() == 1){
+                sleep.setBackground(newBackground);
+            }
+            View move = view.findViewById(R.id.exercise_button);
+            //set the buttons
+            if(miyo.getExercise() == 1){
+                move.setBackground(newBackground);
+            }
+            View learn = view.findViewById(R.id.learn_button);
+            //set the buttons
+            if(miyo.getLearn() == 1){
+                learn.setBackground(newBackground);
+            }
+            View talk = view.findViewById(R.id.talk_button);
+            //set the buttons
+            if(miyo.getTalk() == 1){
+                talk.setBackground(newBackground);
+            }
+            View make = view.findViewById(R.id.make_button);
+            //set the buttons
+            if(miyo.getMake() == 1){
+                make.setBackground(newBackground);
+            }
+            View play = view.findViewById(R.id.play_button);
+            //set the buttons
+            if(miyo.getPlay() == 1){
+                play.setBackground(newBackground);
+            }
+            View connect = view.findViewById(R.id.connect_button);
+            //set the buttons
+            if(miyo.getConnect() == 1){
+                connect.setBackground(newBackground);
+            }
         }
-        View sleep = view.findViewById(R.id.sleep_button);
-        //set the buttons
-        if(miyo.getSleep() == 1){
-            sleep.setBackground(newBackground);
-        }
-        View move = view.findViewById(R.id.exercise_button);
-        //set the buttons
-        if(miyo.getExercise() == 1){
-            move.setBackground(newBackground);
-        }
-        View learn = view.findViewById(R.id.learn_button);
-        //set the buttons
-        if(miyo.getLearn() == 1){
-            learn.setBackground(newBackground);
-        }
-        View talk = view.findViewById(R.id.talk_button);
-        //set the buttons
-        if(miyo.getTalk() == 1){
-            talk.setBackground(newBackground);
-        }
-        View make = view.findViewById(R.id.make_button);
-        //set the buttons
-        if(miyo.getMake() == 1){
-            make.setBackground(newBackground);
-        }
-        View play = view.findViewById(R.id.play_button);
-        //set the buttons
-        if(miyo.getPlay() == 1){
-            play.setBackground(newBackground);
-        }
-        View connect = view.findViewById(R.id.connect_button);
-        //set the buttons
-        if(miyo.getConnect() == 1){
-            connect.setBackground(newBackground);
-        }
-
     }
 
     /**

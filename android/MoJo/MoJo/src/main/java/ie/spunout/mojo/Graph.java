@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,10 @@ import ie.spunout.mojo.graph.LinePoint;
 public class Graph extends Fragment{
     private View view;
     private boolean[] choices = {false,false,false,false,false,false,false,false,};
+    private View[] buttons = new View[8];
+    private int currentlySelected = 0;
     DatabaseHandler dh;
+    private static final String TAG = "Miyo";   //log tag
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -33,28 +37,62 @@ public class Graph extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){
         view = inflater.inflate(R.layout.fragment_graphs, container, false);
+        setupButtons();
         setupOnClicks();
-        setupGraph();
         setupProgressBar();
         return view;
     }
 
-    private void setupGraph(){
+    private void drawGraph(String activity){
+        int [] weeks = getGraphData(activity);
+
         Line l = new Line();
-        LinePoint p = new LinePoint(0, 5);
-        l.addPoint(p);
-        p = new LinePoint(8, 8);
-        l.addPoint(p);
-        p = new LinePoint(10, 4);
-        l.addPoint(p);
-        p = new LinePoint(1, 0);
-        l.addPoint(p);
+        for (int i = 0; i < weeks.length; i++){
+            LinePoint p = new LinePoint(i, weeks[3-i]);
+            l.addPoint(p);
+        }
         l.setColor(Color.parseColor("#FFBB33"));
 
         LineGraph li = (LineGraph) view.findViewById(R.id.graph);
+        li.removeAllLines();
         li.addLine(l);
-        li.setRangeY(0, 10);
+        li.setRangeY(0, 7);
         li.setLineToFill(0);
+    }
+
+    /**
+     * this will get the data for the graph for each activity
+     * @param activity      this is the label of the activity
+     *                      the data should be for
+     */
+    private int[] getGraphData(String activity){
+        //week 0 is the most recent week
+        int[] weeks = new int[4];
+        //this is the accumulative difference in values over the weeks
+        int diff = 0;
+        int value;
+
+        for(int i = 1; i <= weeks.length; i++){
+            //calculate the number of times done that week
+            value = dh.getNumberOf(activity, (i*7));
+            weeks[i-1] = value - diff;
+            Log.i(TAG, activity+" for week "+i+" is "+(value-diff));
+            diff = value;
+        }
+
+        return weeks;
+    }
+
+    private void setupButtons(){
+        //load all the button views
+        buttons[0] = view.findViewById(R.id.eat_button);
+        buttons[1] = view.findViewById(R.id.sleep_button);
+        buttons[2] = view.findViewById(R.id.exercise_button);
+        buttons[3] = view.findViewById(R.id.learn_button);
+        buttons[4] = view.findViewById(R.id.talk_button);
+        buttons[5] = view.findViewById(R.id.make_button);
+        buttons[6] = view.findViewById(R.id.play_button);
+        buttons[7] = view.findViewById(R.id.connect_button);
     }
 
     /**
@@ -66,19 +104,16 @@ public class Graph extends Fragment{
         eat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Drawable newBackground;
-
                 //check if the item has already been selected
-                if(choices[0]){
-                    //if so, deselect it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
-                    choices[0] = false;
-                }else{
-                    //if not, highlight it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                if(!choices[0]){
+                    //if not deselect the previous button and highlight this one
+                    buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
+                    v.setBackground(getResources().getDrawable(R.drawable.menu_item_highlighted));
+                    choices[currentlySelected] = false;
+                    currentlySelected = 0;
                     choices[0] = true;
+                    drawGraph("eat");
                 }
-                v.setBackground(newBackground);
             }
         });
 
@@ -87,19 +122,16 @@ public class Graph extends Fragment{
         sleep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Drawable newBackground;
-
                 //check if the item has already been selected
-                if(choices[1]){
-                    //if so, deselect it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
-                    choices[1] = false;
-                }else{
-                    //if not, highlight it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                if(!choices[1]){
+                    //if not deselect the previous button and highlight this one
+                    buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
+                    v.setBackground(getResources().getDrawable(R.drawable.menu_item_highlighted));
+                    choices[currentlySelected] = false;
+                    currentlySelected = 1;
                     choices[1] = true;
+                    drawGraph("sleep");
                 }
-                v.setBackground(newBackground);
             }
         });
 
@@ -108,19 +140,16 @@ public class Graph extends Fragment{
         exercise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Drawable newBackground;
-
                 //check if the item has already been selected
-                if(choices[2]){
-                    //if so, deselect it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
-                    choices[2] = false;
-                }else{
-                    //if not, highlight it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                if(!choices[2]){
+                    //if not deselect the previous button and highlight this one
+                    buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
+                    v.setBackground(getResources().getDrawable(R.drawable.menu_item_highlighted));
+                    choices[currentlySelected] = false;
+                    currentlySelected = 2;
                     choices[2] = true;
+                    drawGraph("exercise");
                 }
-                v.setBackground(newBackground);
             }
         });
 
@@ -129,19 +158,16 @@ public class Graph extends Fragment{
         learn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Drawable newBackground;
-
                 //check if the item has already been selected
-                if(choices[3]){
-                    //if so, deselect it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
-                    choices[3] = false;
-                }else{
-                    //if not, highlight it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                if(!choices[3]){
+                    //if not deselect the previous button and highlight this one
+                    buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
+                    v.setBackground(getResources().getDrawable(R.drawable.menu_item_highlighted));
+                    choices[currentlySelected] = false;
+                    currentlySelected = 3;
                     choices[3] = true;
+                    drawGraph("learn");
                 }
-                v.setBackground(newBackground);
             }
         });
 
@@ -150,19 +176,15 @@ public class Graph extends Fragment{
         talk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Drawable newBackground;
-
-                //check if the item has already been selected
-                if(choices[4]){
-                    //if so, deselect it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
-                    choices[4] = false;
-                }else{
-                    //if not, highlight it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                if(!choices[4]){
+                    //if not deselect the previous button and highlight this one
+                    buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
+                    v.setBackground(getResources().getDrawable(R.drawable.menu_item_highlighted));
+                    choices[currentlySelected] = false;
+                    currentlySelected = 4;
                     choices[4] = true;
+                    drawGraph("talk");
                 }
-                v.setBackground(newBackground);
             }
         });
 
@@ -171,19 +193,15 @@ public class Graph extends Fragment{
         make.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Drawable newBackground;
-
-                //check if the item has already been selected
-                if(choices[5]){
-                    //if so, deselect it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
-                    choices[5] = false;
-                }else{
-                    //if not, highlight it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                if(!choices[5]){
+                    //if not deselect the previous button and highlight this one
+                    buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
+                    v.setBackground(getResources().getDrawable(R.drawable.menu_item_highlighted));
+                    choices[currentlySelected] = false;
+                    currentlySelected = 5;
                     choices[5] = true;
+                    drawGraph("make");
                 }
-                v.setBackground(newBackground);
             }
         });
 
@@ -192,19 +210,15 @@ public class Graph extends Fragment{
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Drawable newBackground;
-
-                //check if the item has already been selected
-                if(choices[6]){
-                    //if so, deselect it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
-                    choices[6] = false;
-                }else{
-                    //if not, highlight it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                if(!choices[6]){
+                    //if not deselect the previous button and highlight this one
+                    buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
+                    v.setBackground(getResources().getDrawable(R.drawable.menu_item_highlighted));
+                    choices[currentlySelected] = false;
+                    currentlySelected = 6;
                     choices[6] = true;
+                    drawGraph("play");
                 }
-                v.setBackground(newBackground);
             }
         });
 
@@ -213,19 +227,15 @@ public class Graph extends Fragment{
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Drawable newBackground;
-
-                //check if the item has already been selected
-                if(choices[7]){
-                    //if so, deselect it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
-                    choices[7] = false;
-                }else{
-                    //if not, highlight it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                if(!choices[7]){
+                    //if not deselect the previous button and highlight this one
+                    buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
+                    v.setBackground(getResources().getDrawable(R.drawable.menu_item_highlighted));
+                    choices[currentlySelected] = false;
+                    currentlySelected = 7;
                     choices[7] = true;
+                    drawGraph("connect");
                 }
-                v.setBackground(newBackground);
             }
         });
     }
@@ -248,4 +258,5 @@ public class Graph extends Fragment{
         bar.setMax(max);
         bar.setProgress(points.intValue());
     }
+
 }
