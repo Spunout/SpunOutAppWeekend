@@ -106,7 +106,7 @@
 
     UILabel *talkText = [[UILabel alloc] init];
     talkText.textColor = [UIColor whiteColor];
-    talkText.text = @"Talk - Talk honestly with friends or family";
+    talkText.text = @"Talk - Talk & connect with friends or family and get something off your chest if you need to";
     talkText.font = [UIFont systemFontOfSize:16.0];
     talkText.lineBreakMode = NSLineBreakByWordWrapping;
     talkText.numberOfLines = 0;
@@ -130,7 +130,7 @@
 
     UILabel *connectText = [[UILabel alloc] init];
     connectText.textColor = [UIColor whiteColor];
-    connectText.text = @"Connect - Do one thing that makes you feel more social";
+    connectText.text = @"Connect - Make a plan to meet up with a friend in the next day or two";
     connectText.font = [UIFont systemFontOfSize:16.0];
     connectText.lineBreakMode = NSLineBreakByWordWrapping;
     connectText.numberOfLines = 0;
