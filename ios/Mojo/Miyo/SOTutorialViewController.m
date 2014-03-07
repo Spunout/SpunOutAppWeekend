@@ -49,7 +49,7 @@
     UILabel *topText = [[UILabel alloc] init];
     topText.textColor = [UIColor whiteColor];
     topText.font = [UIFont systemFontOfSize:16.0];
-    topText.text = @"Complete real life activites and log them in Miyo to gain Health Points.\n\nYour Health Points reset every week so keep coming back to enter your activities!";
+    topText.text = @"Complete real life activites and log them in MiYo to gain Health Points.\n\nYour Health Points reset every week so keep coming back to enter your activities!";
     topText.textAlignment = NSTextAlignmentCenter;
     topText.lineBreakMode = NSLineBreakByWordWrapping;
     topText.numberOfLines = 0;

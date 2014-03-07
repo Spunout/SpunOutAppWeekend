@@ -24,6 +24,8 @@
 @interface SOAppDelegate () <UIAlertViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *redirectURLs;
+@property (nonatomic, strong) NSMutableArray *activityInformationNames;
+@property (nonatomic, strong) NSURL *selectedInformationURL;
 
 @end
 
@@ -110,31 +112,44 @@
 
         if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"eat" fromDay:1 toDay:7] < 4) {
             [self.redirectURLs addObject:[NSURL URLWithString:@"http://spunout.ie/eatingtips"]];
+            [self.activityInformationNames addObject:@"Eat Well"];
         }
         if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"sleep" fromDay:1 toDay:7] < 4) {
             [self.redirectURLs addObject:[NSURL URLWithString:@"http://spunout.ie/sleepingtips"]];
+            [self.activityInformationNames addObject:@"Sleep Well"];
         }
         if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"exercise" fromDay:1 toDay:7] < 4) {
             [self.redirectURLs addObject:[NSURL URLWithString:@"http://spunout.ie/movingtips"]];
+            [self.activityInformationNames addObject:@"Move"];
         }
         if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"learn" fromDay:1 toDay:7] < 4) {
             [self.redirectURLs addObject:[NSURL URLWithString:@"http://spunout.ie/learningtips"]];
+            [self.activityInformationNames addObject:@"Learn"];
         }
         if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"talk" fromDay:1 toDay:7] < 4) {
             [self.redirectURLs addObject:[NSURL URLWithString:@"http://spunout.ie/talkingtips"]];
+            [self.activityInformationNames addObject:@"Talk"];
         }
         if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"make" fromDay:1 toDay:7] < 4) {
             [self.redirectURLs addObject:[NSURL URLWithString:@"http://spunout.ie/makingtips"]];
+            [self.activityInformationNames addObject:@"Make"];
         }
         if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"play" fromDay:1 toDay:7] < 4) {
             [self.redirectURLs addObject:[NSURL URLWithString:@"http://spunout.ie/playingtips"]];
+            [self.activityInformationNames addObject:@"Play"];
         }
         if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"connect" fromDay:1 toDay:7] < 4) {
             [self.redirectURLs addObject:[NSURL URLWithString:@"http://spunout.ie/connectingtips"]];
+            [self.activityInformationNames addObject:@"Connect"];
         }
 
+        NSInteger index = arc4random() % self.redirectURLs.count;
+
+        NSString *selectedActivity = self.activityInformationNames[index];
+        self.selectedInformationURL = self.redirectURLs[index];
+
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Activity Information"
-                                                            message:@"How are you doing with your activities? Want to find some information on activities"
+                                                            message:[NSString stringWithFormat:@"You seem to be finding it difficult to %@? Would you like some information on %@?", selectedActivity, selectedActivity]
                                                            delegate:self
                                                   cancelButtonTitle:@"No Thanks"
                                                   otherButtonTitles:@"Yes", nil];
@@ -165,7 +180,7 @@
             [[NSUserDefaults standardUserDefaults] setInteger:++currentLevel forKey:@"current_level"];
 
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Level up!"
-                                                                message:[NSString stringWithFormat:@"Congratulations! You've leveled up since yesterday.\nYou are now on level %zd\nComplete activites and collect points to progress further!", currentLevel]
+                                                                message:[NSString stringWithFormat:@"Congratulations! You've leveled up since yesterday.\nYou are now on level %zd\nComplete activites and collect Health Points to progress in MiYo!", currentLevel]
                                                                delegate:nil
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:nil];
@@ -181,8 +196,7 @@
     [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"last_activity_alert_date"];
 
     if (buttonIndex == 1) {
-        NSURL *url = self.redirectURLs[arc4random() % self.redirectURLs.count];
-        [[UIApplication sharedApplication] openURL:url];
+        [[UIApplication sharedApplication] openURL:self.selectedInformationURL];
     }
 }
 
@@ -190,7 +204,7 @@
 {
     NSArray *activities = @[@"eat", @"sleep", @"exercise", @"learn", @"talk", @"make", @"connect", @"play"];
     NSArray *fullActivityNames = @[@"Eat Well", @"Sleep Well", @"Move", @"Learn", @"Talk", @"Make", @"Connect", @"Play"];
-    NSArray *badges = @[@"Food Nut", @"Sleep Star", @"Active Champion", @"Wise One", @"Chatterbox", @"Producer", @"Merry Maker", @"Social Buttterfly"];
+    NSArray *badges = @[@"Food Nut", @"Sleep Star", @"Active Champion", @"Wise Owl", @"Chatterbox", @"Producer", @"Play Maker", @"Social Buttterfly"];
 
     for (NSInteger i = 0; i < activities.count; i++) {
         NSString *activity = activities[i];
@@ -202,7 +216,7 @@
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:[NSString stringWithFormat:@"%@-bronze", activity]];
 
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"New Badge Unlocked!"
-                                                                message:[NSString stringWithFormat:@"Congratulations, you've unlocked a bronze %@ badge!\nShoot for silver. Complete '%@' 12 days in 2 weeks", badge, fullActivityName]
+                                                                message:[NSString stringWithFormat:@"Congratulations, you've unlocked a bronze %@ badge!\nShoot for silver. Complete '%@' 12 days over 2 weeks", badge, fullActivityName]
                                                                delegate:nil
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:nil];
@@ -213,7 +227,7 @@
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:[NSString stringWithFormat:@"%@-silver", activity]];
 
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"New Badge Unlocked!"
-                                                                message:[NSString stringWithFormat:@"Congratulations, you've unlocked a silver %@ badge!\nGo for gold! Complete '%@' 18 days in 3 weeks", badge, fullActivityName]
+                                                                message:[NSString stringWithFormat:@"Congratulations, you've unlocked a silver %@ badge!\nGo for gold! Complete '%@' 18 days over 3 weeks", badge, fullActivityName]
                                                                delegate:nil
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:nil];
@@ -224,7 +238,7 @@
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:[NSString stringWithFormat:@"%@-gold", activity]];
 
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"New Badge Unlocked!"
-                                                                message:[NSString stringWithFormat:@"Congratulations, you've unlocked a gold %@ badge!", badge]
+                                                                message:[NSString stringWithFormat:@"Congratulations, you've unlocked a gold %@ badge! When it comes to '%@' you're at the top of your game.", badge, fullActivityName]
                                                                delegate:nil
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:nil];
