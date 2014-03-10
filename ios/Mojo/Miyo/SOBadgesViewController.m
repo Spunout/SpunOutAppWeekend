@@ -92,7 +92,7 @@ static NSString *kSOBadgeCellIdentifier = @"SOBadgeCellIdentifier";
         cell.showGold = [[NSUserDefaults standardUserDefaults] boolForKey:@"exercise-gold"];
     }
     else if (indexPath.row == 3) {
-        cell.badgeLabel.text = @"Wise One";
+        cell.badgeLabel.text = @"Wise Owl";
         cell.defaultImage = [UIImage imageNamed:@"Learn-Blue"];
         cell.bronzeImage = [UIImage imageNamed:@"Learn-Bronze"];
         cell.silverImage = [UIImage imageNamed:@"Learn-Silver"];
@@ -122,17 +122,7 @@ static NSString *kSOBadgeCellIdentifier = @"SOBadgeCellIdentifier";
         cell.showGold = [[NSUserDefaults standardUserDefaults] boolForKey:@"make-gold"];
     }
     else if (indexPath.row == 6) {
-        cell.badgeLabel.text = @"Merry Maker";
-        cell.defaultImage = [UIImage imageNamed:@"Connect-Blue"];
-        cell.bronzeImage = [UIImage imageNamed:@"Connect-Bronze"];
-        cell.silverImage = [UIImage imageNamed:@"Connect-Silver"];
-        cell.goldImage = [UIImage imageNamed:@"Connect-Gold"];
-        cell.showBronze = [[NSUserDefaults standardUserDefaults] boolForKey:@"connect-bronze"];
-        cell.showSilver = [[NSUserDefaults standardUserDefaults] boolForKey:@"connect-silver"];
-        cell.showGold = [[NSUserDefaults standardUserDefaults] boolForKey:@"connect-gold"];
-    }
-    else if (indexPath.row == 7) {
-        cell.badgeLabel.text = @"Social Butterfly";
+        cell.badgeLabel.text = @"Play Maker";
         cell.defaultImage = [UIImage imageNamed:@"Play-Blue"];
         cell.bronzeImage = [UIImage imageNamed:@"Play-Bronze"];
         cell.silverImage = [UIImage imageNamed:@"Play-Silver"];
@@ -140,6 +130,16 @@ static NSString *kSOBadgeCellIdentifier = @"SOBadgeCellIdentifier";
         cell.showBronze = [[NSUserDefaults standardUserDefaults] boolForKey:@"play-bronze"];
         cell.showSilver = [[NSUserDefaults standardUserDefaults] boolForKey:@"play-silver"];
         cell.showGold = [[NSUserDefaults standardUserDefaults] boolForKey:@"play-gold"];
+    }
+    else if (indexPath.row == 7) {
+        cell.badgeLabel.text = @"Social Butterfly";
+        cell.defaultImage = [UIImage imageNamed:@"Connect-Blue"];
+        cell.bronzeImage = [UIImage imageNamed:@"Connect-Bronze"];
+        cell.silverImage = [UIImage imageNamed:@"Connect-Silver"];
+        cell.goldImage = [UIImage imageNamed:@"Connect-Gold"];
+        cell.showBronze = [[NSUserDefaults standardUserDefaults] boolForKey:@"connect-bronze"];
+        cell.showSilver = [[NSUserDefaults standardUserDefaults] boolForKey:@"connect-silver"];
+        cell.showGold = [[NSUserDefaults standardUserDefaults] boolForKey:@"connect-gold"];
     }
 
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
