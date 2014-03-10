@@ -12,6 +12,10 @@
 
 - (BOOL)isToday
 {
+    if (!self) {
+        return NO;
+    }
+
     NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay
                                                                        fromDate:self];
     NSDateComponents *todayComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay
@@ -25,14 +29,18 @@
 
 - (BOOL)isNewWeek
 {
+    if (!self) {
+        return NO;
+    }
+
     NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitWeekOfYear
                                                                        fromDate:self];
     NSDateComponents *todayComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitWeekOfYear
                                                                         fromDate:[NSDate date]];
 
     return dateComponents.era == todayComponents.era
-    && dateComponents.year == todayComponents.year
-    && dateComponents.month == todayComponents.month;
+    && dateComponents.yearForWeekOfYear == todayComponents.yearForWeekOfYear
+    && dateComponents.weekOfYear != todayComponents.weekOfYear;
 }
 
 @end

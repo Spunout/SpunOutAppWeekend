@@ -23,8 +23,8 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 CGFloat const kJBLineChartViewControllerChartHeight = 250.0f;
 CGFloat const kJBLineChartViewControllerChartHeaderHeight = 75.0f;
 CGFloat const kJBLineChartViewControllerChartHeaderPadding = 20.0f;
-CGFloat const kJBLineChartViewControllerChartFooterHeight = 20.0f;
-NSInteger const kJBLineChartViewControllerNumChartPoints = 27;
+CGFloat const kJBLineChartViewControllerChartFooterHeight = 25.0f;
+NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
 NSInteger activityCounts[4];
 
 @interface SOChartViewController () <JBLineChartViewDelegate, JBLineChartViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource>
@@ -56,7 +56,7 @@ NSInteger activityCounts[4];
     self.lineChartView.dataSource = self;
 
     SOChartHeader *headerView = [[SOChartHeader alloc] initWithFrame:CGRectMake(10.0, ceil(self.view.bounds.size.height * 0.5) - ceil(kJBLineChartViewControllerChartHeaderHeight * 0.5), self.view.bounds.size.width - (5.0 * 2), kJBLineChartViewControllerChartHeaderHeight)];
-    headerView.titleLabel.text = @"Amount of times you've done an activity (y) vs. time (x)";
+    headerView.titleLabel.text = @"Activities Over Time";
     headerView.titleLabel.textColor = [UIColor whiteColor];
     headerView.titleLabel.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.25];
     headerView.titleLabel.shadowOffset = CGSizeMake(0, 1);

@@ -6,15 +6,18 @@ PODS:
     - FMDB/common
   - JBChartView (1.1.5)
   - MBProgressHUD (0.8)
+  - TTTAttributedLabel (1.8.1)
 
 DEPENDENCIES:
   - FMDB (~> 2.2)
   - JBChartView
   - MBProgressHUD (~> 0.8)
+  - TTTAttributedLabel (~> 1.8.1)
 
 SPEC CHECKSUMS:
   FMDB: 97472cfacf0d9e445e915704fb43b4b142799c36
   JBChartView: 8c349166787e239d9e0f2ad50e14bc57eac7b964
   MBProgressHUD: 2bbc6f470111daf7f3eaa4eb12b8cbf01c4c0622
+  TTTAttributedLabel: 3a571d73e055f4a79c304240598e4bfd199238e4
 
 COCOAPODS: 0.29.0
