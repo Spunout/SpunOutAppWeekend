@@ -107,7 +107,7 @@
     if (!firstLaunchDate) {
         [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"first_launch_date"];
     }
-    else if (![lastAlertDate isToday] && firstLaunchDate && [firstLaunchDate isNewWeek]) {
+    else if (![lastAlertDate isToday] && [firstLaunchDate isNewWeek]) {
         self.redirectURLs = [NSMutableArray array];
 
         if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"eat" fromDay:1 toDay:7] < 4) {
