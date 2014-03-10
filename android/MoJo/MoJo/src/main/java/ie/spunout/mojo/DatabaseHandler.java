@@ -233,12 +233,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * the number of days back to get values from
      * @return
      */
-    public long getRecentLTP(int offset)
-    {
+    public long getRecentLTP(int offset){
         String offset_s = Integer.toString(offset);
         SQLiteDatabase db = this.getReadableDatabase();
         String[] args = new String[0];
-        //TODO: removed DESCENDING from the sql query as it isn't supported
         //select life_time_points from miyo order by timestamp limit 2 offset 1
         String query = "SELECT "+KEY_LIFE_TIME_POINTS+" FROM "+TABLE_MIYO+" ORDER BY "+KEY_TIMESTAMP+" LIMIT 2 OFFSET "+offset_s+"";
         Cursor cursor = db.rawQuery(query, args);
@@ -253,9 +251,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return value;
     }
 
-    public void calculateLTP(Miyo miyo)
-    {
+    public void calculateLTP(Miyo miyo){
         int ltp =  (int)getRecentLTP();//yesterday's score OR zero
+        Log.i(TAG,"initial lifetime points = "+ltp);
         ltp += (miyo.getEat()*7);
         ltp += (miyo.getSleep()*7);
         ltp += (miyo.getLearn()*5);
@@ -265,6 +263,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ltp += (miyo.getConnect()*6);
         ltp += (miyo.getTalk()*6);
         miyo.setLifeTimePoints(ltp);
+        Log.i(TAG,"final lifetime points = "+ltp);
     }
 
 }

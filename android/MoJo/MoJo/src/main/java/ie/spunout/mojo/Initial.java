@@ -56,11 +56,9 @@ public class Initial extends Fragment {
         view = inflater.inflate(R.layout.fragment_initial, container, false);
         scoreNumber = (TextView) view.findViewById(R.id.score_number);
 
+        drawIcons();
+
         //TODO: make sure all of these are in the right order
-
-        //TODO the start point is 150
-
-        //TODO make the size of the circle dynamic, check screen size and scale
 
         //attach onclick methods to the activity buttons
         setupOnClicks();
@@ -87,12 +85,15 @@ public class Initial extends Fragment {
         eat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ImageView eatImage = (ImageView) v.findViewById(R.id.eat_img);
                 Drawable newBackground;
+                Drawable newIcon;
 
                 //check if the item has already been selected
                 if(miyo.getEat() == 1){
                     //if so, deselect it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
+                    newIcon = getResources().getDrawable(R.drawable.eat_g);
                     miyo.setEat(0);
                     //log the change in the database
                     dh.addMiyo(miyo);
@@ -100,11 +101,13 @@ public class Initial extends Fragment {
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                    newIcon = getResources().getDrawable(R.drawable.eat_w);
                     miyo.setEat(1);
                     dh.addMiyo(miyo);
                     updatePoints(7);
                 }
                 v.setBackground(newBackground);
+                eatImage.setImageDrawable(newIcon);
 
                 //store the new state of the activities
 
@@ -116,23 +119,28 @@ public class Initial extends Fragment {
         sleep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ImageView eatImage = (ImageView) v.findViewById(R.id.sleep_img);
                 Drawable newBackground;
+                Drawable newIcon;
 
                 //check if the item has already been selected
                 if(miyo.getSleep() == 1){
                     //if so, deselect it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
+                    newIcon = getResources().getDrawable(R.drawable.sleep_g);
                     miyo.setSleep(0);
                     dh.addMiyo(miyo);
                     updatePoints(-7);
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                    newIcon = getResources().getDrawable(R.drawable.sleep_w);
                     miyo.setSleep(1);
                     dh.addMiyo(miyo);
                     updatePoints(7);
                 }
                 v.setBackground(newBackground);
+                eatImage.setImageDrawable(newIcon);
             }
         });
 
@@ -141,23 +149,28 @@ public class Initial extends Fragment {
         exercise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ImageView eatImage = (ImageView) v.findViewById(R.id.exercise_img);
                 Drawable newBackground;
+                Drawable newIcon;
 
                 //check if the item has already been selected
                 if(miyo.getExercise() == 1){
                     //if so, deselect it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
+                    newIcon = getResources().getDrawable(R.drawable.exercise_g);
                     miyo.setExercise(0);
                     dh.addMiyo(miyo);
                     updatePoints(-5);
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                    newIcon = getResources().getDrawable(R.drawable.exercise_w);
                     miyo.setExercise(1);
                     dh.addMiyo(miyo);
                     updatePoints(5);
                 }
                 v.setBackground(newBackground);
+                eatImage.setImageDrawable(newIcon);
             }
         });
 
@@ -166,23 +179,28 @@ public class Initial extends Fragment {
         learn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ImageView eatImage = (ImageView) v.findViewById(R.id.learn_img);
                 Drawable newBackground;
+                Drawable newIcon;
 
                 //check if the item has already been selected
                 if(miyo.getLearn() == 1){
                     //if so, deselect it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
+                    newIcon = getResources().getDrawable(R.drawable.learn_g);
                     miyo.setLearn(0);
                     dh.addMiyo(miyo);
                     updatePoints(-5);
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                    newIcon = getResources().getDrawable(R.drawable.learn_w);
                     miyo.setLearn(1);
                     dh.addMiyo(miyo);
                     updatePoints(5);
                 }
                 v.setBackground(newBackground);
+                eatImage.setImageDrawable(newIcon);
             }
         });
 
@@ -191,23 +209,28 @@ public class Initial extends Fragment {
         talk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ImageView eatImage = (ImageView) v.findViewById(R.id.talk_img);
                 Drawable newBackground;
+                Drawable newIcon;
 
                 //check if the item has already been selected
                 if(miyo.getTalk() == 1){
                     //if so, deselect it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
+                    newIcon = getResources().getDrawable(R.drawable.talk_g);
                     miyo.setTalk(0);
                     dh.addMiyo(miyo);
                     updatePoints(-7);
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                    newIcon = getResources().getDrawable(R.drawable.talk_w);
                     miyo.setTalk(1);
                     dh.addMiyo(miyo);
                     updatePoints(7);
                 }
                 v.setBackground(newBackground);
+                eatImage.setImageDrawable(newIcon);
             }
         });
 
@@ -216,23 +239,28 @@ public class Initial extends Fragment {
         make.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ImageView eatImage = (ImageView) v.findViewById(R.id.make_img);
                 Drawable newBackground;
+                Drawable newIcon;
 
                 //check if the item has already been selected
                 if(miyo.getMake() == 1){
                     //if so, deselect it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
+                    newIcon = getResources().getDrawable(R.drawable.make_g);
                     miyo.setMake(0);
                     dh.addMiyo(miyo);
                     updatePoints(-5);
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                    newIcon = getResources().getDrawable(R.drawable.make_w);
                     miyo.setMake(1);
                     dh.addMiyo(miyo);
                     updatePoints(5);
                 }
                 v.setBackground(newBackground);
+                eatImage.setImageDrawable(newIcon);
             }
         });
 
@@ -241,23 +269,28 @@ public class Initial extends Fragment {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ImageView eatImage = (ImageView) v.findViewById(R.id.play_img);
                 Drawable newBackground;
+                Drawable newIcon;
 
                 //check if the item has already been selected
                 if(miyo.getPlay() == 1){
                     //if so, deselect it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
+                    newIcon = getResources().getDrawable(R.drawable.play_g);
                     miyo.setPlay(0);
                     dh.addMiyo(miyo);
                     updatePoints(-5);
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                    newIcon = getResources().getDrawable(R.drawable.play_w);
                     miyo.setPlay(1);
                     dh.addMiyo(miyo);
                     updatePoints(5);
                 }
                 v.setBackground(newBackground);
+                eatImage.setImageDrawable(newIcon);
             }
         });
 
@@ -266,23 +299,28 @@ public class Initial extends Fragment {
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ImageView eatImage = (ImageView) v.findViewById(R.id.connect_img);
                 Drawable newBackground;
+                Drawable newIcon;
 
                 //check if the item has already been selected
                 if(miyo.getConnect() == 1){
                     //if so, deselect it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
+                    newIcon = getResources().getDrawable(R.drawable.connect_g);
                     miyo.setConnect(0);
                     dh.addMiyo(miyo);
                     updatePoints(-7);
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                    newIcon = getResources().getDrawable(R.drawable.connect_w);
                     miyo.setConnect(1);
                     dh.addMiyo(miyo);
                     updatePoints(7);
                 }
                 v.setBackground(newBackground);
+                eatImage.setImageDrawable(newIcon);
             }
         });
     }
@@ -294,46 +332,87 @@ public class Initial extends Fragment {
         }else{
             miyo = dh.getMiyo(timestamp);
             Drawable newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+            View v;
+            ImageView image;
 
-            View eat = view.findViewById(R.id.eat_button);
+            v = view.findViewById(R.id.eat_button);
+            image = (ImageView) view.findViewById(R.id.eat_img);
             //set the buttons
             if(miyo.getEat() == 1){
-                eat.setBackground(newBackground);
+                v.setBackground(newBackground);
+                image.setImageDrawable(getResources().getDrawable(R.drawable.eat_w));
+            }else{
+                image.setImageDrawable(getResources().getDrawable(R.drawable.eat_g));
             }
-            View sleep = view.findViewById(R.id.sleep_button);
+
+            v = view.findViewById(R.id.sleep_button);
+            image = (ImageView) view.findViewById(R.id.sleep_img);
             //set the buttons
             if(miyo.getSleep() == 1){
-                sleep.setBackground(newBackground);
+                v.setBackground(newBackground);
+                image.setImageDrawable(getResources().getDrawable(R.drawable.sleep_w));
+            }else{
+                image.setImageDrawable(getResources().getDrawable(R.drawable.sleep_g));
             }
-            View move = view.findViewById(R.id.exercise_button);
+
+            v = view.findViewById(R.id.exercise_button);
+            image = (ImageView) view.findViewById(R.id.exercise_img);
             //set the buttons
             if(miyo.getExercise() == 1){
-                move.setBackground(newBackground);
+                v.setBackground(newBackground);
+                image.setImageDrawable(getResources().getDrawable(R.drawable.exercise_w));
+            }else{
+                image.setImageDrawable(getResources().getDrawable(R.drawable.exercise_g));
             }
-            View learn = view.findViewById(R.id.learn_button);
+
+            v = view.findViewById(R.id.learn_button);
+            image = (ImageView) view.findViewById(R.id.learn_img);
             //set the buttons
             if(miyo.getLearn() == 1){
-                learn.setBackground(newBackground);
+                v.setBackground(newBackground);
+                image.setImageDrawable(getResources().getDrawable(R.drawable.learn_w));
+            }else{
+                image.setImageDrawable(getResources().getDrawable(R.drawable.learn_g));
             }
-            View talk = view.findViewById(R.id.talk_button);
+
+            v = view.findViewById(R.id.talk_button);
+            image = (ImageView) view.findViewById(R.id.talk_img);
             //set the buttons
             if(miyo.getTalk() == 1){
-                talk.setBackground(newBackground);
+                v.setBackground(newBackground);
+                image.setImageDrawable(getResources().getDrawable(R.drawable.talk_w));
+            }else{
+                image.setImageDrawable(getResources().getDrawable(R.drawable.talk_g));
             }
-            View make = view.findViewById(R.id.make_button);
+
+            v = view.findViewById(R.id.make_button);
+            image = (ImageView) view.findViewById(R.id.make_img);
             //set the buttons
             if(miyo.getMake() == 1){
-                make.setBackground(newBackground);
+                v.setBackground(newBackground);
+                image.setImageDrawable(getResources().getDrawable(R.drawable.make_w));
+            }else{
+                image.setImageDrawable(getResources().getDrawable(R.drawable.make_g));
             }
-            View play = view.findViewById(R.id.play_button);
+
+            v = view.findViewById(R.id.play_button);
+            image = (ImageView) view.findViewById(R.id.play_img);
             //set the buttons
             if(miyo.getPlay() == 1){
-                play.setBackground(newBackground);
+                v.setBackground(newBackground);
+                image.setImageDrawable(getResources().getDrawable(R.drawable.play_w));
+            }else{
+                image.setImageDrawable(getResources().getDrawable(R.drawable.play_g));
             }
-            View connect = view.findViewById(R.id.connect_button);
+
+            v = view.findViewById(R.id.connect_button);
+            image = (ImageView) view.findViewById(R.id.connect_img);
             //set the buttons
             if(miyo.getConnect() == 1){
-                connect.setBackground(newBackground);
+                v.setBackground(newBackground);
+                image.setImageDrawable(getResources().getDrawable(R.drawable.connect_w));
+            }else{
+                image.setImageDrawable(getResources().getDrawable(R.drawable.connect_g));
             }
         }
     }
@@ -405,27 +484,6 @@ public class Initial extends Fragment {
         Calendar now = DateToCalendar(today);
         int penalty= now.DAY_OF_WEEK-cal.DAY_OF_WEEK-1;
         return penalty*15;
-    }
-
-    //TODO decide which of these is correct
-    public boolean alternateSetPoints(int score) {
-
-        float fraction = score/500;
-        double start;
-        float end;
-        start = -90;
-        end = 360 * fraction;
-        ShapeDrawable shape = new ShapeDrawable(new ArcShape((float) start, (float) end));
-        shape.setIntrinsicHeight(350);
-        shape.setIntrinsicWidth(350);
-        shape.getPaint().setColor(Color.LTGRAY);
-
-        ImageView foreground = new ImageView(getActivity());
-        Drawable mDrawable = shape;
-        foreground = (ImageView) view.findViewById(R.id.meterforeground);
-        foreground.setImageDrawable(mDrawable);
-
-        return true;
     }
 
     /**
@@ -539,5 +597,12 @@ public class Initial extends Fragment {
                 }
             }
         }
+    }
+
+    /**
+     * set the icons on the action buttons
+     */
+    public void drawIcons(){
+        //
     }
 }

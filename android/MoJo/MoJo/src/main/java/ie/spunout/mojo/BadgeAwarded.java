@@ -41,20 +41,17 @@ public class BadgeAwarded extends DialogFragment {
 
         switch(level){
             case 1:
-                text1.replace("*","Bronze");
-                view1.setText(text1);
+                view1.setText("Congratulations, you've unlocked a new Bronze badge!");
 
                 view2.setText("Complete this activity 12 times in 2 weeks to achieve a Silver");
                 break;
             case 2:
-                text1.replace("*","Silver");
-                view1.setText(text1);
+                view1.setText("Congratulations, you've unlocked a new Silver badge!");
 
                 view2.setText("Complete this activity 18 times in 3 weeks to achieve a Gold");
                 break;
             case 3:
-                text1.replace("*","Gold");
-                view1.setText(text1);
+                view1.setText("Congratulations, you've unlocked a new Gold badge!");
 
                 view2.setText("");
                 break;

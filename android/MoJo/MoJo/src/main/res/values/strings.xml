@@ -26,16 +26,24 @@
     <string name="level_p1">Congratulations! You\'ve leveled up since yesterday.</string>
     <string name="level_p2">You are now on level</string>
     <string name="level_p3">Complete activites and collect Health Points points to progress in Miyo!</string>
-    <string name="low_use_p1">How are you doing with your activities? Want to find some information on activities</string>
+    <string name="low_use_p1">How are you doing with your activities, Would you like some information on how to improve?</string>
+    <string name="link_eat">spunout.ie/eatingtips</string>
+    <string name="link_sleep">spunout.ie/sleepingtips</string>
+    <string name="link_move">spunout.ie/movingtips</string>
+    <string name="link_learn">spunout.ie/learningtips</string>
+    <string name="link_talk">spunout.ie/talkingtips</string>
+    <string name="link_make">spunout.ie/makeingtips</string>
+    <string name="link_play">spunout.ie/playingtips</string>
+    <string name="link_connect">spunout.ie/connectingtips</string>
     <string-array name="spunout_links">
-        <item>spunout.ie/eatingtips</item>
-        <item>spunout.ie/sleepingtips</item>
-        <item>spunout.ie/movingtips</item>
-        <item>spunout.ie/learningtips</item>
-        <item>spunout.ie/talkingtips</item>
-        <item>spunout.ie/makeingtips</item>
-        <item>spunout.ie/playingtips</item>
-        <item>spunout.ie/connectingtips</item>
+        <item>@string/link_eat</item>
+        <item>@string/link_sleep</item>
+        <item>@string/link_move</item>
+        <item>@string/link_learn</item>
+        <item>@string/link_talk</item>
+        <item>@string/link_make</item>
+        <item>@string/link_play</item>
+        <item>@string/link_connect</item>
     </string-array>
     <string-array name="button_labels">
         <item>EAT WELL</item>

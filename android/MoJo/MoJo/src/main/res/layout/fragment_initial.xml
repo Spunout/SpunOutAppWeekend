@@ -64,7 +64,7 @@
             android:background="@drawable/menu_item">
 
             <ImageView
-                android:id="@+id/img"
+                android:id="@+id/eat_img"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="#000000"
-                android:textSize="8dp"
+                android:textSize="9dp"
                 android:text="EAT WELL"/>
 
         </LinearLayout>
@@ -92,7 +92,7 @@
             android:background="@drawable/menu_item">
 
             <ImageView
-                android:id="@+id/img"
+                android:id="@+id/sleep_img"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
@@ -104,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="#000000"
-                android:textSize="8dp"
+                android:textSize="9dp"
                 android:text="SLEEP WELL"/>
 
         </LinearLayout>
@@ -120,7 +120,7 @@
             android:background="@drawable/menu_item">
 
             <ImageView
-                android:id="@+id/img"
+                android:id="@+id/exercise_img"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
@@ -132,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="#000000"
-                android:textSize="8dp"
+                android:textSize="9sp"
                 android:text="MOVE"/>
 
         </LinearLayout>
@@ -148,7 +148,7 @@
             android:background="@drawable/menu_item">
 
             <ImageView
-                android:id="@+id/img"
+                android:id="@+id/learn_img"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
@@ -160,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="#000000"
-                android:textSize="8dp"
+                android:textSize="9dp"
                 android:text="LEARN"/>
 
         </LinearLayout>
@@ -187,7 +187,7 @@
             android:background="@drawable/menu_item">
 
             <ImageView
-                android:id="@+id/img"
+                android:id="@+id/talk_img"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
@@ -199,7 +199,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="#000000"
-                android:textSize="8dp"
+                android:textSize="9dp"
                 android:text="TALK"/>
 
         </LinearLayout>
@@ -215,7 +215,7 @@
             android:background="@drawable/menu_item">
 
             <ImageView
-                android:id="@+id/img"
+                android:id="@+id/make_img"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
@@ -227,7 +227,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="#000000"
-                android:textSize="8dp"
+                android:textSize="9dp"
                 android:text="MAKE"/>
 
         </LinearLayout>
@@ -243,7 +243,7 @@
             android:background="@drawable/menu_item">
 
             <ImageView
-                android:id="@+id/img"
+                android:id="@+id/play_img"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
@@ -255,7 +255,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="#000000"
-                android:textSize="8dp"
+                android:textSize="9dp"
                 android:text="PLAY"/>
 
         </LinearLayout>
@@ -271,7 +271,7 @@
             android:background="@drawable/menu_item">
 
             <ImageView
-                android:id="@+id/img"
+                android:id="@+id/connect_img"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
@@ -283,7 +283,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="#000000"
-                android:textSize="8dp"
+                android:textSize="9dp"
                 android:text="CONNECT"/>
 
         </LinearLayout>

@@ -8,4 +8,12 @@
     <color name="white">#ffff</color>
     <color name="splashBlue">#06addf</color>
     <color name="backgroundBlue">#0094CA</color>
+    <color name="button_blue">#4BB4B1</color>
+    <color name="button_purple">#C161A2</color>
+    <color name="button_green">#82C674</color>
+    <color name="button_beige">#F7AA94</color>
+    <color name="button_lilac">#AD96C7</color>
+    <color name="button_orange">#F38E1F</color>
+    <color name="button_pink">#F7B8CB</color>
+    <color name="button_red">#F05F7F</color>
 </resources>

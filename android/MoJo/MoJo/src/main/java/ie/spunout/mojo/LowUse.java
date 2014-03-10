@@ -21,6 +21,11 @@ public class LowUse extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.dialog_low_use, container);
+        Bundle b = getArguments();
+
+        String[] links = getResources().getStringArray(R.array.spunout_links);
+        TextView text = (TextView) v.findViewById(R.id.low_use_link);
+        text.setText(links[b.getInt("action")]);
 
         getDialog().setTitle("Need Some Help?");
 

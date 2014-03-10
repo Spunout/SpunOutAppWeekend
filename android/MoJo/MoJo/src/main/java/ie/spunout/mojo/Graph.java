@@ -108,7 +108,7 @@ public class Graph extends Fragment{
                 if(!choices[0]){
                     //if not deselect the previous button and highlight this one
                     buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
-                    v.setBackground(getResources().getDrawable(R.drawable.menu_item_highlighted));
+                    v.setBackground(getResources().getDrawable(R.drawable.eat_highlighted));
                     choices[currentlySelected] = false;
                     currentlySelected = 0;
                     choices[0] = true;
@@ -126,7 +126,7 @@ public class Graph extends Fragment{
                 if(!choices[1]){
                     //if not deselect the previous button and highlight this one
                     buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
-                    v.setBackground(getResources().getDrawable(R.drawable.menu_item_highlighted));
+                    v.setBackground(getResources().getDrawable(R.drawable.sleep_highlighted));
                     choices[currentlySelected] = false;
                     currentlySelected = 1;
                     choices[1] = true;
@@ -144,7 +144,7 @@ public class Graph extends Fragment{
                 if(!choices[2]){
                     //if not deselect the previous button and highlight this one
                     buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
-                    v.setBackground(getResources().getDrawable(R.drawable.menu_item_highlighted));
+                    v.setBackground(getResources().getDrawable(R.drawable.move_highlighted));
                     choices[currentlySelected] = false;
                     currentlySelected = 2;
                     choices[2] = true;
@@ -162,7 +162,7 @@ public class Graph extends Fragment{
                 if(!choices[3]){
                     //if not deselect the previous button and highlight this one
                     buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
-                    v.setBackground(getResources().getDrawable(R.drawable.menu_item_highlighted));
+                    v.setBackground(getResources().getDrawable(R.drawable.learn_highlight));
                     choices[currentlySelected] = false;
                     currentlySelected = 3;
                     choices[3] = true;
@@ -179,7 +179,7 @@ public class Graph extends Fragment{
                 if(!choices[4]){
                     //if not deselect the previous button and highlight this one
                     buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
-                    v.setBackground(getResources().getDrawable(R.drawable.menu_item_highlighted));
+                    v.setBackground(getResources().getDrawable(R.drawable.talk_highlighted));
                     choices[currentlySelected] = false;
                     currentlySelected = 4;
                     choices[4] = true;
@@ -196,7 +196,7 @@ public class Graph extends Fragment{
                 if(!choices[5]){
                     //if not deselect the previous button and highlight this one
                     buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
-                    v.setBackground(getResources().getDrawable(R.drawable.menu_item_highlighted));
+                    v.setBackground(getResources().getDrawable(R.drawable.make_highlighted));
                     choices[currentlySelected] = false;
                     currentlySelected = 5;
                     choices[5] = true;
@@ -213,7 +213,7 @@ public class Graph extends Fragment{
                 if(!choices[6]){
                     //if not deselect the previous button and highlight this one
                     buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
-                    v.setBackground(getResources().getDrawable(R.drawable.menu_item_highlighted));
+                    v.setBackground(getResources().getDrawable(R.drawable.play_highlighted));
                     choices[currentlySelected] = false;
                     currentlySelected = 6;
                     choices[6] = true;
@@ -230,7 +230,7 @@ public class Graph extends Fragment{
                 if(!choices[7]){
                     //if not deselect the previous button and highlight this one
                     buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
-                    v.setBackground(getResources().getDrawable(R.drawable.menu_item_highlighted));
+                    v.setBackground(getResources().getDrawable(R.drawable.connect_highlighted));
                     choices[currentlySelected] = false;
                     currentlySelected = 7;
                     choices[7] = true;

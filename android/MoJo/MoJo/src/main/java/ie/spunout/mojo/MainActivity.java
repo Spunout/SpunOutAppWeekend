@@ -288,18 +288,18 @@ public class MainActivity extends FragmentActivity {
 
     public void allLowUse(){
         Log.i(TAG, "checking for any low usage");
-        boolean check = false;
-        check |= checkLowUse("eat");
-        check |= checkLowUse("sleep");
-        check |= checkLowUse("learn");
-        check |= checkLowUse("play");
-        check |= checkLowUse("exercise");
-        check |= checkLowUse("make");
-        check |= checkLowUse("connect");
-        check |= checkLowUse("talk");
+        int check = -1;
+        check = checkLowUse("connect")? 7:check;
+        check = checkLowUse("exercise")? 6:check;
+        check = checkLowUse("learn")? 5:check;
+        check = checkLowUse("make")? 4:check;
+        check = checkLowUse("play")? 3:check;
+        check = checkLowUse("talk")? 2:check;
+        check = checkLowUse("sleep")? 1:check;
+        check = checkLowUse("eat")? 0:check;
 
-        if (check){
-            openLowUse();
+        if (check > -1){
+            openLowUse(check);
         }
     }
 
@@ -312,9 +312,13 @@ public class MainActivity extends FragmentActivity {
         return (timesDone < 4);
     }
 
-    public void openLowUse(){
+    public void openLowUse(int action){
+        Bundle b = new Bundle();
+        b.putInt("action",action);
+
         FragmentManager fm = getSupportFragmentManager();
         LowUse lowUseDialog = new LowUse();
+        lowUseDialog.setArguments(b);
         lowUseDialog.show(fm, "Sample");
     }
 
