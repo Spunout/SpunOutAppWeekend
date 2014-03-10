@@ -58,7 +58,7 @@
 
     UILabel *eatText = [[UILabel alloc] init];
     eatText.textColor = [UIColor whiteColor];
-    eatText.text = @"Eat Well - Eat a healthy meal or drink some water.";
+    eatText.text = @"Eat Well - Eat a healthy meal and drink some water.";
     eatText.font = [UIFont systemFontOfSize:16.0];
     eatText.lineBreakMode = NSLineBreakByWordWrapping;
     eatText.numberOfLines = 0;
