@@ -15,6 +15,7 @@
 #import "SOActivityButton.h"
 #import "SOMiyoDatabase.h"
 #import "SOTutorialViewController.h"
+#import "SOAppDelegate.h"
 
 #import "UIColor+Miyo.h"
 
@@ -232,6 +233,21 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    BOOL tutorialDate = [[NSUserDefaults standardUserDefaults] boolForKey:@"shown_tutorial"];
+    if (!tutorialDate) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES
+                                                forKey:@"shown_tutorial"];
+
+        [self.tabBarController presentViewController:[[UINavigationController alloc] initWithRootViewController:[[SOTutorialViewController alloc] init]]
+                                            animated:YES
+                                          completion:nil];
+    }
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle

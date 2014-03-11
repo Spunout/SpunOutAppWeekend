@@ -12,6 +12,7 @@
 #import "SOMainViewController.h"
 #import "SOChartViewController.h"
 #import "SOBadgesViewController.h"
+#import "SOTutorialViewController.h"
 #import "SOMiyoDatabase.h"
 
 #import "FMDatabase+Additions.h"
