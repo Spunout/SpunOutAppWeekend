@@ -24,7 +24,7 @@ class sampleDataMaker:
 		elif level is "silver":
 			num_activies = 13
 		elif level is "gold":
-			num_activies is 19
+			num_activies = 19
 
 		while counter < num_activies:
 
@@ -66,5 +66,5 @@ class sampleDataMaker:
 			counter += 1
 
 o = sampleDataMaker()
-#o.giveBronzeAchievementsToAll("gold")
+o.giveAchievementsToAll("gold")
 o.addRandomData()
