@@ -18,7 +18,7 @@
 		8B3FE44A1893DA500014945F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3FE42F1893DA500014945F /* Foundation.framework */; };
 		8B3FE44B1893DA500014945F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B3FE4331893DA500014945F /* UIKit.framework */; };
 		8B3FE4531893DA500014945F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8B3FE4511893DA500014945F /* InfoPlist.strings */; };
-		8B3FE4551893DA500014945F /* MojoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE4541893DA500014945F /* MojoTests.m */; };
+		8B3FE4551893DA500014945F /* MiYoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE4541893DA500014945F /* MiYoTests.m */; };
 		8B3FE4601893DC480014945F /* SOMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE45F1893DC480014945F /* SOMainViewController.m */; };
 		8B3FE4641893DDCB0014945F /* SOPointMeterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE4631893DDCB0014945F /* SOPointMeterView.m */; };
 		8B3FE473189424350014945F /* UIColor+Miyo.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B3FE472189424350014945F /* UIColor+Miyo.m */; };
@@ -64,9 +64,9 @@
 		8B3FE4411893DA500014945F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8B3FE4471893DA500014945F /* MiYo.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MiYo.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B3FE4481893DA500014945F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		8B3FE4501893DA500014945F /* MiyoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MiyoTests-Info.plist"; sourceTree = "<group>"; };
+		8B3FE4501893DA500014945F /* MiYoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MiYoTests-Info.plist"; sourceTree = "<group>"; };
 		8B3FE4521893DA500014945F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		8B3FE4541893DA500014945F /* MojoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MojoTests.m; sourceTree = "<group>"; };
+		8B3FE4541893DA500014945F /* MiYoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MiYoTests.m; sourceTree = "<group>"; };
 		8B3FE45E1893DC480014945F /* SOMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOMainViewController.h; sourceTree = "<group>"; };
 		8B3FE45F1893DC480014945F /* SOMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SOMainViewController.m; sourceTree = "<group>"; };
 		8B3FE4621893DDCB0014945F /* SOPointMeterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SOPointMeterView.h; sourceTree = "<group>"; };
@@ -195,7 +195,7 @@
 		8B3FE44E1893DA500014945F /* MiYoTests */ = {
 			isa = PBXGroup;
 			children = (
-				8B3FE4541893DA500014945F /* MojoTests.m */,
+				8B3FE4541893DA500014945F /* MiYoTests.m */,
 				8B3FE44F1893DA500014945F /* Supporting Files */,
 			);
 			path = MiYoTests;
@@ -204,7 +204,7 @@
 		8B3FE44F1893DA500014945F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				8B3FE4501893DA500014945F /* MiyoTests-Info.plist */,
+				8B3FE4501893DA500014945F /* MiYoTests-Info.plist */,
 				8B3FE4511893DA500014945F /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -427,7 +427,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B3FE4551893DA500014945F /* MojoTests.m in Sources */,
+				8B3FE4551893DA500014945F /* MiYoTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -585,7 +585,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "MojoTests/MiyoTests-Info.plist";
+				INFOPLIST_FILE = "MIyoTests/MiYoTests-Info.plist";
 				PRODUCT_NAME = MiYo;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -604,7 +604,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Mojo/Mojo-Prefix.pch";
-				INFOPLIST_FILE = "MojoTests/MiyoTests-Info.plist";
+				INFOPLIST_FILE = "MIyoTests/MiYoTests-Info.plist";
 				PRODUCT_NAME = MiYo;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -674,7 +674,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Mojo/Mojo-Prefix.pch";
-				INFOPLIST_FILE = "MojoTests/MiyoTests-Info.plist";
+				INFOPLIST_FILE = "MIyoTests/MiYoTests-Info.plist";
 				PRODUCT_NAME = MiYo;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;

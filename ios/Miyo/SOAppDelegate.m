@@ -12,6 +12,7 @@
 #import "SOMainViewController.h"
 #import "SOChartViewController.h"
 #import "SOBadgesViewController.h"
+#import "SOTutorialViewController.h"
 #import "SOMiyoDatabase.h"
 
 #import "FMDatabase+Additions.h"
@@ -94,8 +95,10 @@
 
 - (void)resetPointsIfMonday
 {
-    if ([[[SOMiyoDatabase sharedInstance] lastUpdateDate] isNewWeek]) {
+    NSDate *lastResetDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"last_reset_date"];
+    if ([[[SOMiyoDatabase sharedInstance] lastUpdateDate] isNewWeek] && ![lastResetDate isToday]) {
         [[NSUserDefaults standardUserDefaults] setInteger:150 forKey:@"score"];
+        [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"last_reset_date"];
     }
 }
 
