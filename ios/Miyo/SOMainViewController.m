@@ -58,7 +58,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     self.pointMeterView.maximumValue = 500;
     self.pointMeterView.minimumValue = 0;
     if (![[NSUserDefaults standardUserDefaults] integerForKey:@"score"]) {
-        [[NSUserDefaults standardUserDefaults] setInteger:150 forKey:@"score"];
+        [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"score"];
     }
     self.pointMeterView.currentValue = [[NSUserDefaults standardUserDefaults] integerForKey:@"score"];
     self.pointMeterView.translatesAutoresizingMaskIntoConstraints = NO;
