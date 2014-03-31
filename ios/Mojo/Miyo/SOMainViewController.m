@@ -27,6 +27,10 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 @property (nonatomic, strong) SOPointMeterView *pointMeterView;
 
 @property (nonatomic, strong) UILabel *moodLabel;
+@property (nonatomic, strong) UILabel *logLabel;
+
+@property (nonatomic, strong) UISlider *activitySlider;
+@property (nonatomic, strong) UIView *logActivitiesButton;
 
 @property (nonatomic, strong) UICollectionView *buttonCollectionView;
 
@@ -60,6 +64,27 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     self.pointMeterView.currentValue = [[NSUserDefaults standardUserDefaults] integerForKey:@"score"];
     self.pointMeterView.translatesAutoresizingMaskIntoConstraints = NO;
 
+    self.activitySlider = [[UISlider alloc] initWithFrame:CGRectMake(20, 350, 270,30)];
+    [self.view addSubview: self.activitySlider];
+    [self.activitySlider setHidden:YES];
+    
+    self.logActivitiesButton = [[UIView alloc] initWithFrame:CGRectMake(20, 400, 270, 100)];
+    self.logActivitiesButton.backgroundColor = [UIColor whiteColor];
+    UITapGestureRecognizer *logActivitiesButtonTapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(logActivitiesButtonTapped:)];
+    [self.logActivitiesButton addGestureRecognizer:logActivitiesButtonTapped];
+    
+    [self.view addSubview:self.logActivitiesButton];
+    [self.logActivitiesButton setHidden:YES];
+    
+    self.logLabel = [[UILabel alloc] init];
+    
+    self.logLabel.text = @"Log";
+    self.logLabel.textColor =  [UIColor miyoBlue];
+    self.logLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+    self.logLabel.frame = CGRectMake(150, 430, 100, 50);
+    [self.view addSubview:self.logLabel];
+    [self.logLabel setHidden:YES];
+    
     self.moodLabel = [[UILabel alloc] init];
     self.moodLabel.text = @"WHAT HAVE YOU DONE TODAY?";
     self.moodLabel.textColor = [UIColor whiteColor];
@@ -67,6 +92,8 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     self.moodLabel.font = [UIFont boldSystemFontOfSize:17.0f];
     self.moodLabel.numberOfLines = 0;
     self.moodLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    
 
     UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewLayout.itemSize = CGSizeMake(60.0f, 60.0f);
@@ -272,31 +299,51 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
 - (void)didTapActivityButton:(UIButton *)button
 {
+    [[NSUserDefaults standardUserDefaults] setInteger:button.tag forKey:@"currentButtonTag"];
+    [[NSUserDefaults standardUserDefaults] setBool:button.isSelected forKey:@"currentButtonSelected"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self.buttonCollectionView setHidden:YES];
+    [self.activitySlider setHidden:NO];
+    [self.logActivitiesButton setHidden:NO];
+    [self.logLabel setHidden:NO];
+    self.moodLabel.text = [NSString stringWithFormat:@"How well did you %@?", button.titleLabel.text];
+}
+
+- (IBAction)logActivitiesButtonTapped:(UITapGestureRecognizer *)recognizer {
+    
+    NSInteger buttonTag = [[NSUserDefaults standardUserDefaults] integerForKey:@"currentButtonTag"];
+    BOOL buttonSelected = [[NSUserDefaults standardUserDefaults] boolForKey:@"currentButtonSelected"];
     NSInteger points;
 
-    switch (button.tag) {
+    switch (buttonTag) {
         case 0:
         case 1:
         case 4:
         case 7:
-            points = 7;
+            points = 7.0f * self.activitySlider.value;
             break;
         default:
-            points = 5;
+            points = 5.0f * self.activitySlider.value;
             break;
     }
 
-    if (button.isSelected) {
+    if (buttonSelected) {
         self.pointMeterView.currentValue += points;
     }
     else {
         self.pointMeterView.currentValue -= points;
     }
 
-    [[NSUserDefaults standardUserDefaults] setInteger:self.pointMeterView.currentValue forKey:@"score"];
+    [[NSUserDefaults standardUserDefaults] setFloat:self.pointMeterView.currentValue forKey:@"score"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     [self logActivites];
+    
+    [self.buttonCollectionView setHidden:NO];
+    [self.activitySlider setHidden:YES];
+    [self.logActivitiesButton setHidden:YES];
+    [self.logLabel setHidden:YES];
 }
 
 - (void)logActivites
@@ -313,10 +360,10 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
                 case 1:
                 case 4:
                 case 7:
-                    points += 7;
+                    points += 7 * self.activitySlider.value;
                     break;
                 default:
-                    points += 5;
+                    points += 5 * self.activitySlider.value;
                     break;
             }
         }
