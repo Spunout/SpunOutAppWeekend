@@ -63,11 +63,11 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     self.pointMeterView.currentValue = [[NSUserDefaults standardUserDefaults] integerForKey:@"score"];
     self.pointMeterView.translatesAutoresizingMaskIntoConstraints = NO;
 
-    self.activitySlider = [[UISlider alloc] initWithFrame:CGRectMake(20, 350, 270,30)];
+    self.activitySlider = [[UISlider alloc] initWithFrame:CGRectMake(20, 290, 270,30)];
     [self.view addSubview: self.activitySlider];
     [self.activitySlider setHidden:YES];
     
-    self.logActivitiesButton = [[UIView alloc] initWithFrame:CGRectMake(20, 400, 270, 100)];
+    self.logActivitiesButton = [[UIView alloc] initWithFrame:CGRectMake(20, 330, 270, 100)];
     self.logActivitiesButton.backgroundColor = [UIColor whiteColor];
     UITapGestureRecognizer *logActivitiesButtonTapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(logActivitiesButtonTapped:)];
     [self.logActivitiesButton addGestureRecognizer:logActivitiesButtonTapped];
