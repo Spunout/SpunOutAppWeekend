@@ -8,11 +8,11 @@
 
 #import <XCTest/XCTest.h>
 
-@interface MojoTests : XCTestCase
+@interface MiYoTests : XCTestCase
 
 @end
 
-@implementation MojoTests
+@implementation MiYoTests
 
 - (void)setUp
 {

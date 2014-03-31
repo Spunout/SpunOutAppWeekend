@@ -15,6 +15,7 @@
 #import "SOActivityButton.h"
 #import "SOMiyoDatabase.h"
 #import "SOTutorialViewController.h"
+#import "SOAppDelegate.h"
 
 #import "UIColor+Miyo.h"
 
@@ -43,8 +44,6 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    NSArray *selectedActivites = [[SOMiyoDatabase sharedInstance] getLastSelectedActivites];
 
     self.view.backgroundColor = [UIColor miyoBlue];
 
@@ -184,13 +183,6 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
                            action:@selector(didTapActivityButton:)
                  forControlEvents:UIControlEventTouchUpInside];
 
-    if (selectedActivites) {
-        for (NSInteger i = 0; i < self.buttons.count; i++) {
-            SOActivityButton *button = self.buttons[i];
-            button.selected = [(NSNumber *)selectedActivites[i] boolValue];
-        }
-    }
-
     UIView *spacer1 = [[UIView alloc] init];
     spacer1.translatesAutoresizingMaskIntoConstraints = NO;
 
@@ -259,6 +251,30 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    BOOL tutorialDate = [[NSUserDefaults standardUserDefaults] boolForKey:@"shown_tutorial"];
+    if (!tutorialDate) {
+        [[NSUserDefaults standardUserDefaults] setBool:YES
+                                                forKey:@"shown_tutorial"];
+
+        [self.tabBarController presentViewController:[[UINavigationController alloc] initWithRootViewController:[[SOTutorialViewController alloc] init]]
+                                            animated:YES
+                                          completion:nil];
+    }
+
+    NSArray *selectedActivites = [[SOMiyoDatabase sharedInstance] getLastSelectedActivites];
+
+    if (selectedActivites) {
+        for (NSInteger i = 0; i < self.buttons.count; i++) {
+            SOActivityButton *button = self.buttons[i];
+            button.selected = [(NSNumber *)selectedActivites[i] boolValue];
+        }
+    }
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
