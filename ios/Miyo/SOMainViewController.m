@@ -323,7 +323,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     [self.activitySlider setHidden:NO];
     [self.logActivitiesButton setHidden:NO];
     [self.logLabel setHidden:NO];
-    self.moodLabel.text = [NSString stringWithFormat:@"How well did you %@?", button.titleLabel.text];
+    self.moodLabel.text = [[NSString stringWithFormat:@"How well did you %@?", [button.titleLabel.text stringByReplacingOccurrencesOfString: @" WELL" withString:@""]] lowercaseString];
 }
 
 - (IBAction)logActivitiesButtonTapped:(UITapGestureRecognizer *)recognizer {
@@ -360,6 +360,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     [self.activitySlider setHidden:YES];
     [self.logActivitiesButton setHidden:YES];
     [self.logLabel setHidden:YES];
+    self.moodLabel.text = @"WHAT HAVE YOU DONE TODAY?";
 }
 
 - (void)logActivites
