@@ -51,17 +51,9 @@ NSInteger activityCounts[4];
     scrollView.translatesAutoresizingMaskIntoConstraints = NO;
     
     self.lineChartView = [[JBLineChartView alloc] init];
-    self.lineChartView.frame = CGRectMake(10.0, 5.0, self.view.bounds.size.width - 20.0, 250.0);
+    self.lineChartView.frame = CGRectMake(10.0, 5.0, self.view.bounds.size.width - 20.0, 170.0);
     self.lineChartView.delegate = self;
     self.lineChartView.dataSource = self;
-
-    SOChartHeader *headerView = [[SOChartHeader alloc] initWithFrame:CGRectMake(10.0, ceil(self.view.bounds.size.height * 0.5) - ceil(kJBLineChartViewControllerChartHeaderHeight * 0.5), self.view.bounds.size.width - (5.0 * 2), kJBLineChartViewControllerChartHeaderHeight)];
-    headerView.titleLabel.text = @"Activities Over Time";
-    headerView.titleLabel.textColor = [UIColor whiteColor];
-    headerView.titleLabel.shadowColor = [UIColor colorWithWhite:1.0 alpha:0.25];
-    headerView.titleLabel.shadowOffset = CGSizeMake(0, 1);
-    headerView.separatorColor = [UIColor whiteColor];
-    self.lineChartView.headerView = headerView;
 
     SOChartFooter *footerView = [[SOChartFooter alloc] initWithFrame:CGRectMake(10.0, ceil(self.view.bounds.size.height * 0.5) - ceil(kJBLineChartViewControllerChartFooterHeight * 0.5), self.view.bounds.size.width - (5.0 * 2), kJBLineChartViewControllerChartFooterHeight)];
     footerView.backgroundColor = [UIColor clearColor];
@@ -74,30 +66,32 @@ NSInteger activityCounts[4];
     footerView.sectionCount = kJBLineChartViewControllerNumChartPoints;
     self.lineChartView.footerView = footerView;
 
+
     NSInteger currentExp = [[SOMiyoDatabase sharedInstance] getCurrentLifetimePoints];
     NSInteger nextLevelExp = [[NSUserDefaults standardUserDefaults] integerForKey:@"next_level_exp"];
-    NSInteger currentLevel = [[NSUserDefaults standardUserDefaults] integerForKey:@"level"];
+    NSInteger currentLevel = [[NSUserDefaults standardUserDefaults] integerForKey:@"current_level"];
 
     UIProgressView *levelProgress = [[UIProgressView alloc] init];
     levelProgress.progressTintColor = [UIColor greenColor];
     [levelProgress setProgress:currentExp / nextLevelExp];
+    [levelProgress setTransform:CGAffineTransformMakeScale(1.0,6.0)];
     levelProgress.translatesAutoresizingMaskIntoConstraints = NO;
-
-    UILabel *levelLabel = [[UILabel alloc] init];
-    levelLabel.text = @"YOUR LEVEL PROGRESS";
-    levelLabel.textColor = [UIColor whiteColor];
-    levelLabel.textAlignment = NSTextAlignmentCenter;
-    levelLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-    levelLabel.translatesAutoresizingMaskIntoConstraints = NO;
     
     UILabel *currentLevelLabel = [[UILabel alloc] init];
-    NSString *level = @"CURRENT LEVEL: ";
-    currentLevelLabel.text = [level stringByAppendingString:[NSString stringWithFormat:@"%ld", (long)currentLevel]];
+    currentLevelLabel.text = [NSString stringWithFormat:@"%ld", (long)currentLevel];
     currentLevelLabel.textColor = [UIColor whiteColor];
     currentLevelLabel.textAlignment = NSTextAlignmentCenter;
     currentLevelLabel.font = [UIFont boldSystemFontOfSize:17.0f];
     currentLevelLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
+    UILabel *nextLevelLabel = [[UILabel alloc] init];
+    nextLevelLabel.text = [NSString stringWithFormat:@"%ld", (long)currentLevel+1];
+    nextLevelLabel.textColor = [UIColor whiteColor];
+    nextLevelLabel.textAlignment = NSTextAlignmentCenter;
+    nextLevelLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+    nextLevelLabel.translatesAutoresizingMaskIntoConstraints = NO;
+
+    
     UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewLayout.itemSize = CGSizeMake(60.0f, 60.0f);
     collectionViewLayout.sectionInset = UIEdgeInsetsMake(0.0, 16.0, 0, 16.0);
@@ -188,14 +182,14 @@ NSInteger activityCounts[4];
                            action:@selector(legendButtonTapped:)
                  forControlEvents:UIControlEventTouchUpInside];
 
-    NSDictionary *views = NSDictionaryOfVariableBindings(scrollView, _lineChartView, _buttonCollectionView, levelProgress, levelLabel, currentLevelLabel);
+    NSDictionary *views = NSDictionaryOfVariableBindings(scrollView, _lineChartView, _buttonCollectionView, levelProgress, currentLevelLabel, nextLevelLabel);
 
     [self.view addSubview:scrollView];
     [scrollView addSubview:self.lineChartView];
     [scrollView addSubview:self.buttonCollectionView];
     [scrollView addSubview:levelProgress];
+    [scrollView addSubview:nextLevelLabel];
     [scrollView addSubview:currentLevelLabel];
-    [scrollView addSubview:levelLabel];
 
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[scrollView]|"
                                                                       options:0
@@ -207,7 +201,7 @@ NSInteger activityCounts[4];
                                                                       metrics:nil
                                                                         views:views]];
 
-    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(5)-[_lineChartView(250)]-(20)-[_buttonCollectionView(140)]-(20)-[currentLevelLabel]-(20)-[levelProgress]-[levelLabel]-(40)-|"
+    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(5)-[_lineChartView(250)]-(20)-[_buttonCollectionView(140)]-(10)-[levelProgress]-(-16)-[currentLevelLabel]-(-22)-[nextLevelLabel]-(40)-|"
                                                                        options:0
                                                                        metrics:nil
                                                                          views:views]];
@@ -225,21 +219,12 @@ NSInteger activityCounts[4];
                                                                        metrics:nil
                                                                          views:views]];
 
-    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(20)-[levelProgress]-(20)-|"
+    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(20)-[currentLevelLabel]-(10)-[levelProgress]-(10)-[nextLevelLabel]-(20)-|"
                                                                        options:0
                                                                        metrics:nil
                                                                          views:views]];
     
-    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(20)-[currentLevelLabel]-(20)-|"
-                                                                       options:0
-                                                                       metrics:nil
-                                                                         views:views]];
-
-    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(20)-[levelLabel]-(20)-|"
-                                                                       options:0
-                                                                       metrics:nil
-                                                                         views:views]];
-    
+  
 
     [self.lineChartView reloadData];
 }
