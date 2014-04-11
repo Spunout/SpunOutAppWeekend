@@ -124,6 +124,54 @@ static NSString *const kSODatabaseName = @"miyo.db";
     return selectedActivites;
 }
 
+- (NSMutableArray*)getDaysData:(NSString*)activity fromDay:(NSInteger)fromDay toDay:(NSInteger)toDay
+{
+    __block NSMutableArray* days = [[NSMutableArray alloc] init];
+    __block NSDate* lastDate;
+    __block NSInteger daysBetween;
+    
+    [self inDatabase:^(FMDatabase *db) {
+       
+        NSString *query = [NSString stringWithFormat:@"SELECT timestamp,eat,sleep,exercise,learn,talk,make,connect,play FROM data ORDER BY timestamp DESC LIMIT ? OFFSET ?"];
+        
+        FMResultSet *resultSet = [db executeQuery:query, [NSNumber numberWithInteger:toDay], [NSNumber numberWithInteger:fromDay]];
+        
+        while ([resultSet next])
+        {
+            NSDate *date = [NSDate dateWithTimeIntervalSince1970:[resultSet doubleForColumnIndex:0]];
+            
+            if (lastDate != nil)
+            {
+                NSUInteger unitFlags = NSDayCalendarUnit;
+                NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+                NSDateComponents *components = [calendar components:unitFlags fromDate:date toDate:lastDate options:0];
+                daysBetween = [components day]+1;
+            } else {
+                daysBetween = 1;
+            }
+
+            if (daysBetween > 1)
+            {
+                while (daysBetween > 1)
+                {
+                    [days addObject:[[NSNumber alloc] initWithInteger:0]];
+                    daysBetween--;
+                }
+            }
+            
+            NSInteger totalActivities = [resultSet intForColumnIndex:1] + [resultSet intForColumnIndex:2] + [resultSet intForColumnIndex:3] + [resultSet intForColumnIndex:4] + [resultSet intForColumnIndex:5] + [resultSet intForColumnIndex:6] + [resultSet intForColumnIndex:7] + [resultSet intForColumnIndex:8];
+            [days addObject:[[NSNumber alloc] initWithInteger:totalActivities]];
+            lastDate = date;
+            
+        }
+        
+        [resultSet close];
+        
+    }];
+    
+    return days;
+}
+
 - (NSInteger)getCountForActivity:(NSString *)activity fromDay:(NSInteger)fromDay toDay:(NSInteger)toDay
 {
     __block NSInteger activityCount = 0;

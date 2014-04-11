@@ -54,7 +54,7 @@ class sampleDataMaker:
 			elif counter == 3:
 				eat = 1
 
-			while inserts_counter < 7:
+			while inserts_counter < 3:
 				lifetime_points += 50
 				self.c.execute("INSERT INTO data VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (50, eat, eat, random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), self.current_timestamp+random.randint(2,5000), lifetime_points) )
 

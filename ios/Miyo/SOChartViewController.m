@@ -25,7 +25,7 @@ CGFloat const kJBLineChartViewControllerChartHeaderHeight = 75.0f;
 CGFloat const kJBLineChartViewControllerChartHeaderPadding = 20.0f;
 CGFloat const kJBLineChartViewControllerChartFooterHeight = 25.0f;
 NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
-NSInteger activityCounts[4];
+
 
 @interface SOChartViewController () <JBLineChartViewDelegate, JBLineChartViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource>
 
@@ -33,6 +33,9 @@ NSInteger activityCounts[4];
 @property (nonatomic, strong) NSMutableArray *buttons;
 @property (nonatomic, strong) NSArray *activities;
 @property (nonatomic, strong) JBLineChartView *lineChartView;
+@property (nonatomic) NSInteger chartToDay;
+@property (nonatomic) NSInteger chartFromDay;
+@property (nonatomic, strong) NSMutableArray* activityCounts;
 
 @end
 
@@ -90,7 +93,12 @@ NSInteger activityCounts[4];
     nextLevelLabel.textAlignment = NSTextAlignmentCenter;
     nextLevelLabel.font = [UIFont boldSystemFontOfSize:17.0f];
     nextLevelLabel.translatesAutoresizingMaskIntoConstraints = NO;
-
+    
+    UISegmentedControl *chartRangeSwitcher = [[UISegmentedControl alloc] initWithItems:@[@"This Week", @"Last Week", @"Last Month", @"All Time"]];
+    chartRangeSwitcher.translatesAutoresizingMaskIntoConstraints = NO;
+    [chartRangeSwitcher addTarget:self action:@selector(didChangeDateRange:) forControlEvents:UIControlEventValueChanged];
+    
+    
     
     UICollectionViewFlowLayout *collectionViewLayout = [[UICollectionViewFlowLayout alloc] init];
     collectionViewLayout.itemSize = CGSizeMake(60.0f, 60.0f);
@@ -182,7 +190,7 @@ NSInteger activityCounts[4];
                            action:@selector(legendButtonTapped:)
                  forControlEvents:UIControlEventTouchUpInside];
 
-    NSDictionary *views = NSDictionaryOfVariableBindings(scrollView, _lineChartView, _buttonCollectionView, levelProgress, currentLevelLabel, nextLevelLabel);
+    NSDictionary *views = NSDictionaryOfVariableBindings(scrollView, _lineChartView, _buttonCollectionView, levelProgress, currentLevelLabel, nextLevelLabel, chartRangeSwitcher);
 
     [self.view addSubview:scrollView];
     [scrollView addSubview:self.lineChartView];
@@ -190,6 +198,7 @@ NSInteger activityCounts[4];
     [scrollView addSubview:levelProgress];
     [scrollView addSubview:nextLevelLabel];
     [scrollView addSubview:currentLevelLabel];
+    [scrollView addSubview:chartRangeSwitcher];
 
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[scrollView]|"
                                                                       options:0
@@ -201,7 +210,7 @@ NSInteger activityCounts[4];
                                                                       metrics:nil
                                                                         views:views]];
 
-    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(5)-[_lineChartView(250)]-(20)-[_buttonCollectionView(140)]-(10)-[levelProgress]-(-16)-[currentLevelLabel]-(-22)-[nextLevelLabel]-(40)-|"
+    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(5)-[_lineChartView(250)]-(20)-[chartRangeSwitcher]-(20)-[_buttonCollectionView(140)]-(10)-[levelProgress]-(-16)-[currentLevelLabel]-(-22)-[nextLevelLabel]-(40)-|"
                                                                        options:0
                                                                        metrics:nil
                                                                          views:views]];
@@ -229,16 +238,49 @@ NSInteger activityCounts[4];
     [self.lineChartView reloadData];
 }
 
+- (void)didChangeDateRange:(UISegmentedControl*)dateRangeSelector
+{
+    NSInteger selectedIndex = dateRangeSelector.selectedSegmentIndex;
+
+    switch(selectedIndex)
+    {
+        case 0:
+            self.chartFromDay = 0;
+            self.chartToDay = 7;
+            break;
+        case 1:
+            self.chartFromDay = 7;
+            self.chartToDay = 7;
+            break;
+        case 2:
+            self.chartFromDay = 0;
+            self.chartToDay = 30;
+            break;
+        case 3:
+            self.chartFromDay = 0;
+            self.chartToDay = 50;
+            break;
+        default:
+            self.chartFromDay = 0;
+            self.chartToDay = 7;
+            break;
+    }
+    
+    self.activityCounts = [[SOMiyoDatabase sharedInstance] getDaysData:@"Sleep" fromDay:self.chartFromDay toDay:self.chartToDay];
+
+    [self.lineChartView reloadData];
+}
+
 - (void)legendButtonTapped:(UIButton *)sender
 {
     int fromDay, toDay;
-    
-    for (int i = 0; i < 5; i++)
-    {
-        fromDay = (i) * 7;
-        toDay = (i+1) * 7;
-        activityCounts[3-i] = [[SOMiyoDatabase sharedInstance] getCountForActivity:self.activities[sender.tag] fromDay:fromDay toDay:7];
-    }
+//    
+//    for (int i = 0; i < 5; i++)
+//    {
+//        fromDay = (i) * 7;
+//        toDay = (i+1) * 7;
+//        activityCounts[3-i] = [[SOMiyoDatabase sharedInstance] getCountForActivity:self.activities[sender.tag] fromDay:fromDay toDay:7];
+//    }
     
     for (NSInteger i = 0; i < self.buttons.count; i++)
     {
@@ -283,12 +325,13 @@ NSInteger activityCounts[4];
 
 - (NSInteger)numberOfPointsInLineChartView:(JBLineChartView *)lineChartView
 {
-    return 4;
+    return [self.activityCounts count];
 }
 
 - (CGFloat)lineChartView:(JBLineChartView *)lineChartView heightForIndex:(NSInteger)index
 {
-    return [[NSNumber numberWithInteger:activityCounts[index]] floatValue];
+    NSLog(@"%@", [[self.activityCounts objectAtIndex:index] stringValue]);
+    return [[self.activityCounts objectAtIndex:index] floatValue];
 }
 
 - (UIColor *)lineColorForLineChartView:(JBLineChartView *)lineChartView

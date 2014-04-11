@@ -16,9 +16,11 @@
 
 - (NSArray *)getLastSelectedActivites;
 - (NSInteger)getCountForActivity:(NSString *)activity fromDay:(NSInteger)fromDay toDay:(NSInteger)toDay;
+- (NSMutableArray*)getDaysData:(NSString *)activity fromDay:(NSInteger)fromDay toDay:(NSInteger)toDay;
 
 - (NSInteger)getCurrentLifetimePoints;
 
 - (NSDate *)lastUpdateDate;
+
 
 @end
