@@ -133,13 +133,8 @@ static NSString *const kSODatabaseName = @"miyo.db";
     [self inDatabase:^(FMDatabase *db) {
         
         NSString *query;
-        
 
         query = [NSString stringWithFormat:@"SELECT timestamp,eat,sleep,exercise,learn,talk,make,connect,play FROM data ORDER BY timestamp DESC LIMIT %ld OFFSET %ld", (long)toDay, (long)fromDay];
-        
-//        } else {
-//            query = [NSString stringWithFormat:@"SELECT timestamp,eat,sleep,exercise,learn,talk,make,connect,play FROM data WHERE %@ = 1 ORDER BY timestamp DESC LIMIT %ld OFFSET %ld", activity, (long)toDay, (long)fromDay];
-//        }
         
         FMResultSet *resultSet = [db executeQuery:query];
         
@@ -159,13 +154,10 @@ static NSString *const kSODatabaseName = @"miyo.db";
                     daysBetween = 0;
                 }
                 
-
-                NSLog(@"%d", daysBetween);
                 while (daysBetween > 1)
                 {
                     if ([days count] < toDay)
                     {
-                        NSLog(@"adding a zero");
                         [days addObject:[[NSNumber alloc] initWithInteger:0]];
                     }
                     
