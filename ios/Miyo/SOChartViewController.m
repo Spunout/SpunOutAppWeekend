@@ -35,7 +35,9 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
 @property (nonatomic, strong) JBLineChartView *lineChartView;
 @property (nonatomic) NSInteger chartToDay;
 @property (nonatomic) NSInteger chartFromDay;
-@property (nonatomic, strong) NSMutableArray* activityCounts;
+@property (nonatomic, strong) NSArray* activityCounts;
+@property (nonatomic) NSInteger selectedButtonTag;
+@property (nonatomic, strong) SOChartFooter *footerView;
 
 @end
 
@@ -44,7 +46,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    self.selectedButtonTag = -1;
     self.title = @"Activity Chart";
     
     self.view.backgroundColor = [UIColor miyoBlue];
@@ -58,21 +60,21 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     self.lineChartView.delegate = self;
     self.lineChartView.dataSource = self;
 
-    SOChartFooter *footerView = [[SOChartFooter alloc] initWithFrame:CGRectMake(10.0, ceil(self.view.bounds.size.height * 0.5) - ceil(kJBLineChartViewControllerChartFooterHeight * 0.5), self.view.bounds.size.width - (5.0 * 2), kJBLineChartViewControllerChartFooterHeight)];
-    footerView.backgroundColor = [UIColor clearColor];
-    footerView.leftLabel.text = @"4 Weeks Ago";
-    footerView.leftLabel.textColor = [UIColor whiteColor];
-    footerView.leftLabel.font = [UIFont systemFontOfSize:15.0f];
-    footerView.rightLabel.text = @"This Week";
-    footerView.rightLabel.textColor = [UIColor whiteColor];
-    footerView.rightLabel.font = [UIFont systemFontOfSize:15.0f];
-    footerView.sectionCount = kJBLineChartViewControllerNumChartPoints;
-    self.lineChartView.footerView = footerView;
+    self.footerView = [[SOChartFooter alloc] initWithFrame:CGRectMake(10.0, ceil(self.view.bounds.size.height * 0.5) - ceil(kJBLineChartViewControllerChartFooterHeight * 0.5), self.view.bounds.size.width - (5.0 * 2), kJBLineChartViewControllerChartFooterHeight)];
+    self.footerView.backgroundColor = [UIColor clearColor];
+    self.footerView.leftLabel.text = @"4 Weeks Ago";
+    self.footerView.leftLabel.textColor = [UIColor whiteColor];
+    self.footerView.leftLabel.font = [UIFont systemFontOfSize:15.0f];
+    self.footerView.rightLabel.text = @"This Week";
+    self.footerView.rightLabel.textColor = [UIColor whiteColor];
+    self.footerView.rightLabel.font = [UIFont systemFontOfSize:15.0f];
+    self.footerView.sectionCount = kJBLineChartViewControllerNumChartPoints;
+    self.lineChartView.footerView = self.footerView;
 
 
     NSInteger currentExp = [[SOMiyoDatabase sharedInstance] getCurrentLifetimePoints];
-    NSInteger nextLevelExp = [[NSUserDefaults standardUserDefaults] integerForKey:@"next_level_exp"];
-    NSInteger currentLevel = [[NSUserDefaults standardUserDefaults] integerForKey:@"current_level"];
+    float nextLevelExp = [[NSUserDefaults standardUserDefaults] floatForKey:@"next_level_exp"];
+    float currentLevel = [[NSUserDefaults standardUserDefaults] floatForKey:@"current_level"];
 
     UIProgressView *levelProgress = [[UIProgressView alloc] init];
     levelProgress.progressTintColor = [UIColor greenColor];
@@ -94,7 +96,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     nextLevelLabel.font = [UIFont boldSystemFontOfSize:17.0f];
     nextLevelLabel.translatesAutoresizingMaskIntoConstraints = NO;
     
-    UISegmentedControl *chartRangeSwitcher = [[UISegmentedControl alloc] initWithItems:@[@"This Week", @"Last Week", @"Last Month", @"All Time"]];
+    UISegmentedControl *chartRangeSwitcher = [[UISegmentedControl alloc] initWithItems:@[@"Past Week", @"Prev. Week", @"Last Month", @"All Time"]];
     chartRangeSwitcher.translatesAutoresizingMaskIntoConstraints = NO;
     [chartRangeSwitcher addTarget:self action:@selector(didChangeDateRange:) forControlEvents:UIControlEventValueChanged];
     
@@ -228,6 +230,11 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
                                                                        metrics:nil
                                                                          views:views]];
 
+    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(15)-[chartRangeSwitcher]-(15)-|"
+                                                                       options:0
+                                                                       metrics:nil
+                                                                         views:views]];
+    
     [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(20)-[currentLevelLabel]-(10)-[levelProgress]-(10)-[nextLevelLabel]-(20)-|"
                                                                        options:0
                                                                        metrics:nil
@@ -247,18 +254,26 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
         case 0:
             self.chartFromDay = 0;
             self.chartToDay = 7;
+            self.footerView.leftLabel.text = @"7 Days Ago";
+            self.footerView.rightLabel.text = @"Today";
             break;
         case 1:
             self.chartFromDay = 7;
             self.chartToDay = 7;
+            self.footerView.leftLabel.text = @"14 Days Ago";
+            self.footerView.rightLabel.text = @"7 Days Ago";
             break;
         case 2:
             self.chartFromDay = 0;
             self.chartToDay = 30;
+            self.footerView.leftLabel.text = @"30 Days Ago";
+            self.footerView.rightLabel.text = @"Today";
             break;
         case 3:
             self.chartFromDay = 0;
             self.chartToDay = 50;
+
+            
             break;
         default:
             self.chartFromDay = 0;
@@ -266,21 +281,12 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
             break;
     }
     
-    self.activityCounts = [[SOMiyoDatabase sharedInstance] getDaysData:@"Sleep" fromDay:self.chartFromDay toDay:self.chartToDay];
-
-    [self.lineChartView reloadData];
+    [self updateData];
 }
 
 - (void)legendButtonTapped:(UIButton *)sender
 {
-    int fromDay, toDay;
-//    
-//    for (int i = 0; i < 5; i++)
-//    {
-//        fromDay = (i) * 7;
-//        toDay = (i+1) * 7;
-//        activityCounts[3-i] = [[SOMiyoDatabase sharedInstance] getCountForActivity:self.activities[sender.tag] fromDay:fromDay toDay:7];
-//    }
+    self.selectedButtonTag = sender.tag;
     
     for (NSInteger i = 0; i < self.buttons.count; i++)
     {
@@ -288,6 +294,27 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     }
     
     [self.buttons[sender.tag] setSelected:YES];
+    
+    [self updateData];
+}
+
+- (void)updateData
+{
+    
+    if (self.selectedButtonTag != -1)
+    {
+        self.activityCounts = [[SOMiyoDatabase sharedInstance] getDaysData:self.activities[self.selectedButtonTag] fromDay:self.chartFromDay toDay:self.chartToDay];
+    } else {
+        self.activityCounts = [[SOMiyoDatabase sharedInstance] getDaysData:@"" fromDay:self.chartFromDay toDay:self.chartToDay];
+    }
+    
+    self.activityCounts = [[self.activityCounts reverseObjectEnumerator] allObjects];
+    
+//    for (int i = 0; i < [self.activityCounts count]; i++)
+//    {
+//        NSLog(@"%@", [self.activityCounts objectAtIndex:i]);
+//    }
+    
     
     [self.lineChartView reloadData];
 }
@@ -325,13 +352,21 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
 
 - (NSInteger)numberOfPointsInLineChartView:(JBLineChartView *)lineChartView
 {
-    return [self.activityCounts count];
+    return self.chartToDay - self.chartFromDay;
 }
 
 - (CGFloat)lineChartView:(JBLineChartView *)lineChartView heightForIndex:(NSInteger)index
 {
-    NSLog(@"%@", [[self.activityCounts objectAtIndex:index] stringValue]);
-    return [[self.activityCounts objectAtIndex:index] floatValue];
+    float height;
+    
+    if (index > ([self.activityCounts count]-1))
+    {
+        height = 0;
+    } else {
+        height = [[self.activityCounts objectAtIndex:index] floatValue];
+    }
+    
+    return height;
 }
 
 - (UIColor *)lineColorForLineChartView:(JBLineChartView *)lineChartView

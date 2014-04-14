@@ -34,14 +34,14 @@ class sampleDataMaker:
 		self.conn.commit()
 
 	def addRandomData(self):
-		weeks_of_data = 4
+		weeks_of_data = 10
 		counter = 0
 		lifetime_points = 10
 
 		while counter < weeks_of_data:
 
-			self.current_timestamp -= counter * 604800000
-
+			self.current_timestamp -= 604800000
+			print self.current_timestamp
 			num_inserts = random.randint(2,20)
 			inserts_counter = 0
 
@@ -54,9 +54,9 @@ class sampleDataMaker:
 			elif counter == 3:
 				eat = 1
 
-			while inserts_counter < 3:
+			while inserts_counter < 7:
 				lifetime_points += 50
-				self.c.execute("INSERT INTO data VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (50, eat, eat, random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), self.current_timestamp+random.randint(2,5000), lifetime_points) )
+				self.c.execute("INSERT INTO data VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (50, random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), self.current_timestamp+random.randint(2,5000), lifetime_points) )
 
 
 				inserts_counter += 1
@@ -66,5 +66,5 @@ class sampleDataMaker:
 			counter += 1
 
 o = sampleDataMaker()
-o.giveAchievementsToAll("gold")
+#o.giveAchievementsToAll("gold")
 o.addRandomData()
