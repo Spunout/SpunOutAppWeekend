@@ -132,9 +132,7 @@ static NSString *const kSODatabaseName = @"miyo.db";
     
     [self inDatabase:^(FMDatabase *db) {
         
-        NSString *query;
-
-        query = [NSString stringWithFormat:@"SELECT timestamp,eat,sleep,exercise,learn,talk,make,connect,play FROM data ORDER BY timestamp DESC LIMIT %ld OFFSET %ld", (long)toDay, (long)fromDay];
+        NSString *query = [NSString stringWithFormat:@"SELECT timestamp,eat,sleep,exercise,learn,talk,make,connect,play FROM data ORDER BY timestamp DESC LIMIT %ld OFFSET %ld", (long)toDay, (long)fromDay];
         
         FMResultSet *resultSet = [db executeQuery:query];
         
@@ -193,8 +191,6 @@ static NSString *const kSODatabaseName = @"miyo.db";
     __block NSInteger activityCount = 0;
     
     [self inDatabase:^(FMDatabase *db) {
-        // NSString *query = [NSString stringWithFormat:@"SELECT SUM(%@) FROM data ORDER BY timestamp DESC LIMIT ? OFFSET 1;", activity];
-        //NSString *query = [NSString stringWithFormat:@"SELECT SUM(%@) FROM data ORDER BY timestamp DESC LIMIT ? OFFSET ?;", activity];
         NSString *query = [NSString stringWithFormat:@"SELECT sum(%@) FROM (SELECT * FROM data ORDER BY timestamp DESC LIMIT ? OFFSET ?) AS subquery;", activity];
         
         FMResultSet *resultSet = [db executeQuery:query, [NSNumber numberWithInteger:toDay], [NSNumber numberWithInteger:fromDay]];

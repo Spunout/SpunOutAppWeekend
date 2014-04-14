@@ -310,12 +310,6 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     
     self.activityCounts = [[self.activityCounts reverseObjectEnumerator] allObjects];
     
-//    for (int i = 0; i < [self.activityCounts count]; i++)
-//    {
-//        NSLog(@"%@", [self.activityCounts objectAtIndex:i]);
-//    }
-    
-    
     [self.lineChartView reloadData];
 }
 
