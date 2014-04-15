@@ -140,7 +140,7 @@ static NSString *const kSODatabaseName = @"miyo.db";
         {
             if ([days count] <= toDay)
             {
-                NSDate *date = [NSDate dateWithTimeIntervalSince1970:[resultSet doubleForColumnIndex:0]/1000];
+                NSDate *date = [NSDate dateWithTimeIntervalSince1970:[resultSet doubleForColumnIndex:0]];
                 
                 if (lastDate != nil)
                 {
