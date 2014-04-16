@@ -52,7 +52,7 @@
     UINavigationController *chartViewController = [[UINavigationController alloc] initWithRootViewController:[[SOChartViewController alloc] init]];
     chartViewController.navigationBar.translucent = NO;
     chartViewController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-    chartViewController.tabBarItem.title = @"Activity Chart";
+    chartViewController.tabBarItem.title = @"Activity";
     chartViewController.tabBarItem.image = [[UIImage imageNamed:@"ActivityChartTab"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     chartViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"ActivityChartTab"];
 

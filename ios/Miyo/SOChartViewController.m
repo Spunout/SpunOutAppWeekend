@@ -47,7 +47,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
 {
     [super viewDidLoad];
     self.selectedButtonTag = -1;
-    self.title = @"Activity Chart";
+    self.title = @"Activity";
     
     self.view.backgroundColor = [UIColor miyoBlue];
 
