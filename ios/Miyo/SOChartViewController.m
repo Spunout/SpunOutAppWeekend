@@ -351,7 +351,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
 
 - (NSInteger)numberOfPointsInLineChartView:(JBLineChartView *)lineChartView
 {
-    return self.chartToDay - self.chartFromDay;
+    return ([self.activityCounts count] > 0) ? self.chartToDay - self.chartFromDay : 0;
 }
 
 - (CGFloat)lineChartView:(JBLineChartView *)lineChartView heightForIndex:(NSInteger)index
