@@ -313,7 +313,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
         self.activityCounts = [[SOMiyoDatabase sharedInstance] getDaysData:@"" fromDay:self.chartFromDay toDay:self.chartToDay];
     }
     
-    self.activityCounts = [[self.activityCounts reverseObjectEnumerator] allObjects];
+//    self.activityCounts = [[self.activityCounts reverseObjectEnumerator] allObjects];
     
     [self.lineChartView reloadData];
 }
@@ -362,7 +362,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     {
         height = 0;
     } else {
-        height = [[self.activityCounts objectAtIndex:index] floatValue];
+        height = [[self.activityCounts objectAtIndex:([self.activityCounts count]-1-index)] floatValue];
     }
     
     return height;

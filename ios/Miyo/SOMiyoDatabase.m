@@ -130,11 +130,20 @@ static NSString *const kSODatabaseName = @"miyo.db";
     __block NSDate* lastDate;
     __block NSInteger daysBetween;
     
+    NSNumber *zero = [[NSNumber alloc] initWithInteger:0];
+    
+    for (int i = 0; i < toDay; i++)
+    {
+        [days addObject:zero];
+    }
+    
     [self inDatabase:^(FMDatabase *db) {
         
         NSString *query = [NSString stringWithFormat:@"SELECT timestamp,eat,sleep,exercise,learn,talk,make,connect,play FROM data ORDER BY timestamp DESC LIMIT %ld OFFSET %ld", (long)toDay, (long)fromDay];
         
         FMResultSet *resultSet = [db executeQuery:query];
+        
+        int counter = 0;
         
         while ([resultSet next])
         {
@@ -171,8 +180,9 @@ static NSString *const kSODatabaseName = @"miyo.db";
                     totalActivities = [resultSet intForColumnIndex:[resultSet columnIndexForName:activity]];
                 }
                 
-                [days addObject:[[NSNumber alloc] initWithInteger:totalActivities]];
+                [days replaceObjectAtIndex:counter withObject:[[NSNumber alloc] initWithInteger:totalActivities]];
                 
+                counter++;
                 
                 lastDate = date;
             
