@@ -313,8 +313,6 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
         self.activityCounts = [[SOMiyoDatabase sharedInstance] getDaysData:@"" fromDay:self.chartFromDay toDay:self.chartToDay];
     }
     
-//    self.activityCounts = [[self.activityCounts reverseObjectEnumerator] allObjects];
-    
     [self.lineChartView reloadData];
 }
 
