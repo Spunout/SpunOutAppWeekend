@@ -16,15 +16,19 @@
         return NO;
     }
 
-    NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay
-                                                                       fromDate:self];
-    NSDateComponents *todayComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay
-                                                                        fromDate:[NSDate date]];
+    
+    NSDateComponents *otherDay = [[NSCalendar currentCalendar] components:NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:self];
+    NSDateComponents *today = [[NSCalendar currentCalendar] components:NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
+    
+    if([today day] == [otherDay day] &&
+       [today month] == [otherDay month] &&
+       [today year] == [otherDay year] &&
+       [today era] == [otherDay era]) {
+        return YES;
+    } else {
+        return NO;
+    }
 
-    return dateComponents.era == todayComponents.era
-    && dateComponents.year == todayComponents.year
-    && dateComponents.month == todayComponents.month
-    && dateComponents.day == todayComponents.day;
 }
 
 - (BOOL)isNewWeek
