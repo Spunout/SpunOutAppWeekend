@@ -241,7 +241,12 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
                                                                          views:views]];
     
   
-
+    chartRangeSwitcher.selectedSegmentIndex = 0;
+    self.chartFromDay = 0;
+    self.chartToDay = 7;
+    self.footerView.leftLabel.text = @"7 Days Ago";
+    self.footerView.rightLabel.text = @"Today";
+    [self updateData];
     [self.lineChartView reloadData];
 }
 
