@@ -107,10 +107,10 @@
     NSDate *firstLaunchDate =[[NSUserDefaults standardUserDefaults] objectForKey:@"first_launch_date"];
     NSDate *lastAlertDate =[[NSUserDefaults standardUserDefaults] objectForKey:@"last_activity_alert_date"];
 
-//    if (!firstLaunchDate) {
-//        [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"first_launch_date"];
-//    }
-//    else if (![lastAlertDate isToday] && [firstLaunchDate isNewWeek]) {
+    if (!firstLaunchDate) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"first_launch_date"];
+    }
+    else if (![lastAlertDate isToday] && [firstLaunchDate isNewWeek]) {
         self.redirectURLs = [NSMutableArray array];
         self.activityInformationNames = [NSMutableArray array];
 
@@ -158,7 +158,7 @@
                                                   cancelButtonTitle:@"No Thanks"
                                                   otherButtonTitles:@"Yes", nil];
         [alertView show];
-    //}
+    }
 }
 
 - (void)checkLevel
