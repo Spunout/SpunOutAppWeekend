@@ -130,14 +130,6 @@
             [self.redirectURLs addObject:[NSURL URLWithString:@"http://spunout.ie/learningtips"]];
             [self.activityInformationNames addObject:@"Learn"];
         }
-        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"talk" fromDay:1 toDay:7] < 4) {
-            [self.redirectURLs addObject:[NSURL URLWithString:@"http://spunout.ie/talkingtips"]];
-            [self.activityInformationNames addObject:@"Talk"];
-        }
-        if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"make" fromDay:1 toDay:7] < 4) {
-            [self.redirectURLs addObject:[NSURL URLWithString:@"http://spunout.ie/makingtips"]];
-            [self.activityInformationNames addObject:@"Make"];
-        }
         if ([[SOMiyoDatabase sharedInstance] getCountForActivity:@"play" fromDay:1 toDay:7] < 4) {
             [self.redirectURLs addObject:[NSURL URLWithString:@"http://spunout.ie/playingtips"]];
             [self.activityInformationNames addObject:@"Play"];
@@ -206,9 +198,9 @@
 
 - (void)checkAchievements
 {
-    NSArray *activities = @[@"eat", @"sleep", @"exercise", @"learn", @"talk", @"make", @"connect", @"play"];
-    NSArray *fullActivityNames = @[@"Eat Well", @"Sleep Well", @"Move", @"Learn", @"Talk", @"Make", @"Connect", @"Play"];
-    NSArray *badges = @[@"Food Nut", @"Sleep Star", @"Active Champion", @"Wise Owl", @"Chatterbox", @"Producer", @"Play Maker", @"Social Buttterfly"];
+    NSArray *activities = @[@"eat", @"sleep", @"exercise", @"learn", @"connect", @"play"];
+    NSArray *fullActivityNames = @[@"Eat Well", @"Sleep Well", @"Move", @"Learn", @"Connect", @"Play"];
+    NSArray *badges = @[@"Food Nut", @"Sleep Star", @"Active Champion", @"Wise Owl", @"Play Maker", @"Social Buttterfly"];
 
     for (NSInteger i = 0; i < activities.count; i++) {
         NSString *activity = activities[i];
