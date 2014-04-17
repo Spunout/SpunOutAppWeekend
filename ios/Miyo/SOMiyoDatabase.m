@@ -47,8 +47,6 @@ static NSString *const kSODatabaseName = @"miyo.db";
  sleep BOOLEAN,
  exercise BOOLEAN,
  learn BOOLEAN,
- talk BOOLEAN,
- make BOOLEAN,
  connect BOOLEAN,
  play BOOLEAN,
  timestamp DATETIME,
@@ -89,7 +87,7 @@ static NSString *const kSODatabaseName = @"miyo.db";
         [arguments addObject:[NSDate date]];
         [arguments addObject:[NSNumber numberWithInteger:lifetimePointsTotal]];
         
-        if (![db executeUpdate:@"INSERT INTO data VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" withArgumentsInArray:arguments]) {
+        if (![db executeUpdate:@"INSERT INTO data VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)" withArgumentsInArray:arguments]) {
             *rollback = YES;
         }
     }];
@@ -138,7 +136,7 @@ static NSString *const kSODatabaseName = @"miyo.db";
     
     [self inDatabase:^(FMDatabase *db) {
         
-        NSString *query = [NSString stringWithFormat:@"SELECT timestamp,eat,sleep,exercise,learn,talk,make,connect,play FROM data ORDER BY timestamp DESC LIMIT %ld OFFSET %ld", (long)toDay, (long)fromDay];
+        NSString *query = [NSString stringWithFormat:@"SELECT timestamp,eat,sleep,exercise,learn,connect,play FROM data ORDER BY timestamp DESC LIMIT %ld OFFSET %ld", (long)toDay, (long)fromDay];
         
         FMResultSet *resultSet = [db executeQuery:query];
         

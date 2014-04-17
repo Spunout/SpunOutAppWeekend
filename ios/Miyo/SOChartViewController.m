@@ -118,7 +118,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
                   forCellWithReuseIdentifier:kButtonCollectionViewCellIdentifier];
 
     self.buttons = [[NSMutableArray alloc] init];
-    self.activities = @[@"eat", @"sleep", @"exercise", @"learn", @"talk", @"make", @"connect", @"play"];
+    self.activities = @[@"eat", @"sleep", @"exercise", @"learn", @"connect", @"play"];
 
     SOActivityButton *eatActivityButton = [[SOActivityButton alloc] initWithTitle:@"Eat Well" image:[UIImage imageNamed:@"eat"]];
     eatActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -176,7 +176,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
 
     SOActivityButton *connectActivityButton = [[SOActivityButton alloc] initWithTitle:@"Connect" image:[UIImage imageNamed:@"talk"]];
     connectActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    connectActivityButton.tag = 6;
+    connectActivityButton.tag = 4;
     [self.buttons addObject:connectActivityButton];
 
     [connectActivityButton addTarget:self
@@ -185,7 +185,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
 
     SOActivityButton *playActivityButton = [[SOActivityButton alloc] initWithTitle:@"Play" image:[UIImage imageNamed:@"play"]];
     playActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    playActivityButton.tag = 7;
+    playActivityButton.tag = 5;
     [self.buttons addObject:playActivityButton];
     
     [playActivityButton addTarget:self
@@ -293,7 +293,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
 - (void)legendButtonTapped:(UIButton *)sender
 {
     self.selectedButtonTag = sender.tag;
-    
+    NSLog(@"%d", self.buttons.count);
     for (NSInteger i = 0; i < self.buttons.count; i++)
     {
         [self.buttons[i] setSelected:NO];

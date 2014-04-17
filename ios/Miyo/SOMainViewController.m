@@ -167,7 +167,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
     SOActivityButton *connectActivityButton = [[SOActivityButton alloc] initWithTitle:@"Connect" image:[UIImage imageNamed:@"talk"]];
     connectActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    connectActivityButton.tag = 6;
+    connectActivityButton.tag = 4;
     [self.buttons addObject:connectActivityButton];
 
     [connectActivityButton addTarget:self
@@ -176,7 +176,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
     SOActivityButton *playActivityButton = [[SOActivityButton alloc] initWithTitle:@"Play" image:[UIImage imageNamed:@"play"]];
     playActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    playActivityButton.tag = 7;
+    playActivityButton.tag = 5;
     [self.buttons addObject:playActivityButton];
     
     [playActivityButton addTarget:self

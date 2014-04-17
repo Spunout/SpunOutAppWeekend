@@ -4,8 +4,6 @@ CREATE TABLE data (
     sleep BOOLEAN,
     exercise BOOLEAN,
     learn BOOLEAN,
-    talk BOOLEAN,
-    make BOOLEAN,
     connect BOOLEAN,
     play BOOLEAN,
     timestamp DATETIME,
