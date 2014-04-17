@@ -130,10 +130,9 @@ static NSString *const kSODatabaseName = @"miyo.db";
     __block NSDate* lastDate;
     __block NSInteger daysBetween;
     
-    NSNumber *zero = [[NSNumber alloc] initWithInteger:0];
-    
     for (int i = 0; i < toDay; i++)
     {
+        NSNumber *zero = [[NSNumber alloc] initWithInteger:0];
         [days addObject:zero];
     }
     

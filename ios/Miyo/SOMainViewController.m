@@ -147,25 +147,25 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
                             action:@selector(didTapActivityButton:)
                   forControlEvents:UIControlEventTouchUpInside];
 
-    SOActivityButton *talkActivityButton = [[SOActivityButton alloc] initWithTitle:@"Talk" image:[UIImage imageNamed:@"talk"]];
-    talkActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    talkActivityButton.tag = 4;
-    [self.buttons addObject:talkActivityButton];
+//    SOActivityButton *talkActivityButton = [[SOActivityButton alloc] initWithTitle:@"Talk" image:[UIImage imageNamed:@"talk"]];
+//    talkActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+//    talkActivityButton.tag = 4;
+//    [self.buttons addObject:talkActivityButton];
+//
+//    [talkActivityButton addTarget:self
+//                           action:@selector(didTapActivityButton:)
+//                 forControlEvents:UIControlEventTouchUpInside];
+//
+//    SOActivityButton *makeActivityButton = [[SOActivityButton alloc] initWithTitle:@"Make" image:[UIImage imageNamed:@"make"]];
+//    makeActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+//    makeActivityButton.tag = 5;
+//    [self.buttons addObject:makeActivityButton];
+//
+//    [makeActivityButton addTarget:self
+//                           action:@selector(didTapActivityButton:)
+//                 forControlEvents:UIControlEventTouchUpInside];
 
-    [talkActivityButton addTarget:self
-                           action:@selector(didTapActivityButton:)
-                 forControlEvents:UIControlEventTouchUpInside];
-
-    SOActivityButton *makeActivityButton = [[SOActivityButton alloc] initWithTitle:@"Make" image:[UIImage imageNamed:@"make"]];
-    makeActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    makeActivityButton.tag = 5;
-    [self.buttons addObject:makeActivityButton];
-
-    [makeActivityButton addTarget:self
-                           action:@selector(didTapActivityButton:)
-                 forControlEvents:UIControlEventTouchUpInside];
-
-    SOActivityButton *connectActivityButton = [[SOActivityButton alloc] initWithTitle:@"Connect" image:[UIImage imageNamed:@"connect"]];
+    SOActivityButton *connectActivityButton = [[SOActivityButton alloc] initWithTitle:@"Connect" image:[UIImage imageNamed:@"talk"]];
     connectActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
     connectActivityButton.tag = 6;
     [self.buttons addObject:connectActivityButton];
@@ -247,7 +247,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
                                                                       metrics:metrics
                                                                         views:views]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_buttonCollectionView]|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(20)-[_buttonCollectionView]-(20)-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];

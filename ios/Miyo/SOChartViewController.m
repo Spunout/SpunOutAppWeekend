@@ -156,25 +156,25 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
                             action:@selector(legendButtonTapped:)
                   forControlEvents:UIControlEventTouchUpInside];
 
-    SOActivityButton *talkActivityButton = [[SOActivityButton alloc] initWithTitle:@"Talk" image:[UIImage imageNamed:@"talk"]];
-    talkActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    talkActivityButton.tag = 4;
-    [self.buttons addObject:talkActivityButton];
+//    SOActivityButton *talkActivityButton = [[SOActivityButton alloc] initWithTitle:@"Talk" image:[UIImage imageNamed:@"talk"]];
+//    talkActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+//    talkActivityButton.tag = 4;
+//    [self.buttons addObject:talkActivityButton];
+//
+//    [talkActivityButton addTarget:self
+//                           action:@selector(legendButtonTapped:)
+//                 forControlEvents:UIControlEventTouchUpInside];
+//
+//    SOActivityButton *makeActivityButton = [[SOActivityButton alloc] initWithTitle:@"Make" image:[UIImage imageNamed:@"make"]];
+//    makeActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
+//    makeActivityButton.tag = 5;
+//    [self.buttons addObject:makeActivityButton];
+//
+//    [makeActivityButton addTarget:self
+//                           action:@selector(legendButtonTapped:)
+//                 forControlEvents:UIControlEventTouchUpInside];
 
-    [talkActivityButton addTarget:self
-                           action:@selector(legendButtonTapped:)
-                 forControlEvents:UIControlEventTouchUpInside];
-
-    SOActivityButton *makeActivityButton = [[SOActivityButton alloc] initWithTitle:@"Make" image:[UIImage imageNamed:@"make"]];
-    makeActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-    makeActivityButton.tag = 5;
-    [self.buttons addObject:makeActivityButton];
-
-    [makeActivityButton addTarget:self
-                           action:@selector(legendButtonTapped:)
-                 forControlEvents:UIControlEventTouchUpInside];
-
-    SOActivityButton *connectActivityButton = [[SOActivityButton alloc] initWithTitle:@"Connect" image:[UIImage imageNamed:@"connect"]];
+    SOActivityButton *connectActivityButton = [[SOActivityButton alloc] initWithTitle:@"Connect" image:[UIImage imageNamed:@"talk"]];
     connectActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
     connectActivityButton.tag = 6;
     [self.buttons addObject:connectActivityButton];
@@ -191,9 +191,9 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     [playActivityButton addTarget:self
                            action:@selector(legendButtonTapped:)
                  forControlEvents:UIControlEventTouchUpInside];
-
+    
     NSDictionary *views = NSDictionaryOfVariableBindings(scrollView, _lineChartView, _buttonCollectionView, levelProgress, currentLevelLabel, nextLevelLabel, chartRangeSwitcher);
-
+    
     [self.view addSubview:scrollView];
     [scrollView addSubview:self.lineChartView];
     [scrollView addSubview:self.buttonCollectionView];
@@ -201,22 +201,22 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     [scrollView addSubview:nextLevelLabel];
     [scrollView addSubview:currentLevelLabel];
     [scrollView addSubview:chartRangeSwitcher];
-
+    
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[scrollView]|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
-
+    
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[scrollView]|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
-
+    
     [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(5)-[_lineChartView(250)]-(20)-[chartRangeSwitcher]-(20)-[_buttonCollectionView(140)]-(10)-[levelProgress]-(-16)-[currentLevelLabel]-(-22)-[nextLevelLabel]-(40)-|"
                                                                        options:0
                                                                        metrics:nil
                                                                          views:views]];
-
+    
     [scrollView addConstraint:[NSLayoutConstraint constraintWithItem:self.buttonCollectionView
                                                            attribute:NSLayoutAttributeWidth
                                                            relatedBy:NSLayoutRelationEqual
@@ -224,12 +224,12 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
                                                            attribute:NSLayoutAttributeWidth
                                                           multiplier:1.0
                                                             constant:0.0]];
-
+    
     [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_buttonCollectionView]|"
                                                                        options:0
                                                                        metrics:nil
                                                                          views:views]];
-
+    
     [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(15)-[chartRangeSwitcher]-(15)-|"
                                                                        options:0
                                                                        metrics:nil
@@ -239,6 +239,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
                                                                        options:0
                                                                        metrics:nil
                                                                          views:views]];
+    
     
   
     chartRangeSwitcher.selectedSegmentIndex = 0;
