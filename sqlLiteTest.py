@@ -56,7 +56,7 @@ class sampleDataMaker:
 
 			while inserts_counter < 7:
 				lifetime_points += 50
-				self.c.execute("INSERT INTO data VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (50, random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), self.current_timestamp+random.randint(2,5000), lifetime_points) )
+				self.c.execute("INSERT INTO data VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (50, random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), random.getrandbits(1), (self.current_timestamp+random.randint(2,5000))/1000, lifetime_points) )
 
 
 				inserts_counter += 1

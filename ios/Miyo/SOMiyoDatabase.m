@@ -43,53 +43,58 @@ static NSString *const kSODatabaseName = @"miyo.db";
 /*
  CREATE TABLE data (
  mood REAL,
- eat BOOLEAN,
- sleep BOOLEAN,
- exercise BOOLEAN,
- learn BOOLEAN,
- connect BOOLEAN,
- play BOOLEAN,
+ eat REAL,
+ sleep REAL,
+ exercise REAL,
+ learn REAL,
+ connect REAL,
+ play REAL,
  timestamp DATETIME,
  lifetime_points INTEGER,
  PRIMARY KEY (timestamp)
  );
  */
 
-- (void)insertOrUpdateMood:(double)mood activities:(NSArray *)activities earnedPoints:(NSInteger)earnedPoints
+- (void)insertOrUpdateMood:(NSString*)activity earnedPoints:(NSNumber*)earnedPoints tag:(NSUInteger)tag
 {
     [self inTransaction:^(FMDatabase *db, BOOL *rollback) {
         FMResultSet *lastResultSet = [db executeQuery:@"SELECT * FROM data ORDER BY timestamp DESC"];
         
-        NSInteger lifetimePointsTotal = 0;
+        long lifetimePointsTotal;
         
         if ([lastResultSet next]) {
             NSDate *lastTimestamp = [lastResultSet dateForColumn:@"timestamp"];
             
+            lifetimePointsTotal = [lastResultSet longForColumn:@"lifetime_points"] + [earnedPoints longValue];
+            
             if ([lastTimestamp isToday]) {
-                if (![db executeUpdate:@"DELETE FROM data WHERE timestamp = ?", lastTimestamp]) {
+                NSString *query = [NSString stringWithFormat:@"UPDATE data SET %@ = %ld WHERE timestamp = ?", activity, [earnedPoints longValue]];
+                if (![db executeUpdate:query, lastTimestamp]) {
                     *rollback = YES;
                 }
             }
-        }
-        
-        if ([lastResultSet next]) {
-            lifetimePointsTotal = [lastResultSet intForColumn:@"lifetime_points"] + earnedPoints;
-        }
-        else {
-            lifetimePointsTotal = earnedPoints;
+            
+        } else {
+            
+            lifetimePointsTotal = [earnedPoints longValue];
+            
+            NSMutableArray *arguments = [NSMutableArray array];
+            [arguments addObject:[NSNumber numberWithDouble:0.0]];
+            
+            NSMutableArray *activities = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithLong:0], [NSNumber numberWithLong:0], [NSNumber numberWithLong:0], [NSNumber numberWithLong:0], [NSNumber numberWithLong:0], [NSNumber numberWithLong:0]]];
+            [activities replaceObjectAtIndex:tag withObject:[[NSNumber alloc] initWithLong:[earnedPoints longValue]]];
+            
+            [arguments addObjectsFromArray:activities];
+            [arguments addObject:[NSDate date]];
+            [arguments addObject:[NSNumber numberWithLong:lifetimePointsTotal]];
+            
+            if (![db executeUpdate:@"INSERT INTO data VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)" withArgumentsInArray:arguments]) {
+                *rollback = YES;
+            }
         }
         
         [lastResultSet close];
-        
-        NSMutableArray *arguments = [NSMutableArray array];
-        [arguments addObject:[NSNumber numberWithDouble:mood]];
-        [arguments addObjectsFromArray:activities];
-        [arguments addObject:[NSDate date]];
-        [arguments addObject:[NSNumber numberWithInteger:lifetimePointsTotal]];
-        
-        if (![db executeUpdate:@"INSERT INTO data VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)" withArgumentsInArray:arguments]) {
-            *rollback = YES;
-        }
+
     }];
 }
 
@@ -125,8 +130,11 @@ static NSString *const kSODatabaseName = @"miyo.db";
 - (NSMutableArray*)getDaysData:(NSString*)activity fromDay:(NSInteger)fromDay toDay:(NSInteger)toDay
 {
     __block NSMutableArray* days = [[NSMutableArray alloc] init];
-    __block NSDate* lastDate;
+    __block NSDate* lastDate = [NSDate date];
     __block NSInteger daysBetween;
+    __block NSUInteger unitFlags = NSDayCalendarUnit;
+    __block NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    __block NSInteger totalActivities;
     
     for (int i = 0; i < toDay; i++)
     {
@@ -144,46 +152,28 @@ static NSString *const kSODatabaseName = @"miyo.db";
         
         while ([resultSet next])
         {
-            if ([days count] <= toDay)
-            {
-                NSDate *date = [NSDate dateWithTimeIntervalSince1970:[resultSet doubleForColumnIndex:0]];
-                
-                if (lastDate != nil)
-                {
-                    NSUInteger unitFlags = NSDayCalendarUnit;
-                    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-                    NSDateComponents *components = [calendar components:unitFlags fromDate:date toDate:lastDate options:0];
-                    daysBetween = [components day];
-                } else {
-                    daysBetween = 0;
-                }
-                
-                while (daysBetween > 1)
-                {
-                    if ([days count] < toDay)
-                    {
-                        [days addObject:[[NSNumber alloc] initWithInteger:0]];
-                    }
-                    
-                    daysBetween--;
-                }
-                
-                NSInteger totalActivities;
-                
-                if ([activity length] == 0)
-                {
-                    totalActivities = [resultSet intForColumnIndex:1] + [resultSet intForColumnIndex:2] + [resultSet intForColumnIndex:3] + [resultSet intForColumnIndex:4] + [resultSet intForColumnIndex:5] + [resultSet intForColumnIndex:6] + [resultSet intForColumnIndex:7] + [resultSet intForColumnIndex:8];
-                } else {
-                    totalActivities = [resultSet intForColumnIndex:[resultSet columnIndexForName:activity]];
-                }
-                
-                [days replaceObjectAtIndex:counter withObject:[[NSNumber alloc] initWithInteger:totalActivities]];
-                
-                counter++;
-                
-                lastDate = date;
+
+            NSDate *date = [NSDate dateWithTimeIntervalSince1970:[resultSet doubleForColumnIndex:0]];
+
+            NSDateComponents *components = [calendar components:unitFlags fromDate:date toDate:lastDate options:0];
+            daysBetween = [components day];
             
+            if ([activity length] == 0)
+            {
+                totalActivities = [resultSet longForColumnIndex:1] + [resultSet longForColumnIndex:2] + [resultSet longForColumnIndex:3] + [resultSet longForColumnIndex:4] + [resultSet longForColumnIndex:5] + [resultSet longForColumnIndex:6];
+            } else {
+                totalActivities = [resultSet longForColumnIndex:[resultSet columnIndexForName:activity]];
             }
+            
+            if ((counter + daysBetween) < [days count])
+            {
+                [days replaceObjectAtIndex:counter+daysBetween withObject:[[NSNumber alloc] initWithInteger:totalActivities]];
+            }
+            
+            counter++;
+            
+            lastDate = date;
+            
         }
      
         [resultSet close];
@@ -198,7 +188,7 @@ static NSString *const kSODatabaseName = @"miyo.db";
     __block NSInteger activityCount = 0;
     
     [self inDatabase:^(FMDatabase *db) {
-        NSString *query = [NSString stringWithFormat:@"SELECT sum(%@) FROM (SELECT * FROM data ORDER BY timestamp DESC LIMIT ? OFFSET ?) AS subquery;", activity];
+        NSString *query = [NSString stringWithFormat:@"SELECT COUNT(*) FROM data WHERE %@ = 1 ORDER BY timestamp DESC LIMIT ? OFFSET ?) AS subquery;", activity];
         
         FMResultSet *resultSet = [db executeQuery:query, [NSNumber numberWithInteger:toDay], [NSNumber numberWithInteger:fromDay]];
         

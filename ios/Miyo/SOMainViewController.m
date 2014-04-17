@@ -147,24 +147,6 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
                             action:@selector(didTapActivityButton:)
                   forControlEvents:UIControlEventTouchUpInside];
 
-//    SOActivityButton *talkActivityButton = [[SOActivityButton alloc] initWithTitle:@"Talk" image:[UIImage imageNamed:@"talk"]];
-//    talkActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-//    talkActivityButton.tag = 4;
-//    [self.buttons addObject:talkActivityButton];
-//
-//    [talkActivityButton addTarget:self
-//                           action:@selector(didTapActivityButton:)
-//                 forControlEvents:UIControlEventTouchUpInside];
-//
-//    SOActivityButton *makeActivityButton = [[SOActivityButton alloc] initWithTitle:@"Make" image:[UIImage imageNamed:@"make"]];
-//    makeActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-//    makeActivityButton.tag = 5;
-//    [self.buttons addObject:makeActivityButton];
-//
-//    [makeActivityButton addTarget:self
-//                           action:@selector(didTapActivityButton:)
-//                 forControlEvents:UIControlEventTouchUpInside];
-
     SOActivityButton *connectActivityButton = [[SOActivityButton alloc] initWithTitle:@"Connect" image:[UIImage imageNamed:@"talk"]];
     connectActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
     connectActivityButton.tag = 4;
@@ -353,8 +335,10 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
     [[NSUserDefaults standardUserDefaults] setFloat:self.pointMeterView.currentValue forKey:@"score"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    SOActivityButton *button = self.buttons[buttonTag];
 
-    [self logActivites];
+    [[SOMiyoDatabase sharedInstance] insertOrUpdateMood:button.titleLabel.text earnedPoints:[[NSNumber alloc] initWithInteger:points] tag:buttonTag];
+    
     
     [self.buttonCollectionView setHidden:NO];
     [self.activitySlider setHidden:YES];
@@ -363,35 +347,6 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     self.moodLabel.text = @"WHAT HAVE YOU DONE TODAY?";
 }
 
-- (void)logActivites
-{
-    NSMutableArray *selectedActivities = [NSMutableArray array];
-    NSInteger points = 0;
-
-    for (UIButton *button in self.buttons) {
-
-
-        if (button.isSelected) {
-            switch (button.tag) {
-                case 0:
-                case 1:
-                case 4:
-                case 7:
-                    points += 7 * self.activitySlider.value;
-                    break;
-                default:
-                    points += 5 * self.activitySlider.value;
-                    break;
-            }
-        }
-
-        [selectedActivities addObject:[NSNumber numberWithBool:button.isSelected]];
-    }
-
-    [[SOMiyoDatabase sharedInstance] insertOrUpdateMood:0
-                                             activities:selectedActivities
-                                           earnedPoints:points];
-}
 
 
 @end

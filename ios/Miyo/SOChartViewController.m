@@ -156,23 +156,6 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
                             action:@selector(legendButtonTapped:)
                   forControlEvents:UIControlEventTouchUpInside];
 
-//    SOActivityButton *talkActivityButton = [[SOActivityButton alloc] initWithTitle:@"Talk" image:[UIImage imageNamed:@"talk"]];
-//    talkActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-//    talkActivityButton.tag = 4;
-//    [self.buttons addObject:talkActivityButton];
-//
-//    [talkActivityButton addTarget:self
-//                           action:@selector(legendButtonTapped:)
-//                 forControlEvents:UIControlEventTouchUpInside];
-//
-//    SOActivityButton *makeActivityButton = [[SOActivityButton alloc] initWithTitle:@"Make" image:[UIImage imageNamed:@"make"]];
-//    makeActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
-//    makeActivityButton.tag = 5;
-//    [self.buttons addObject:makeActivityButton];
-//
-//    [makeActivityButton addTarget:self
-//                           action:@selector(legendButtonTapped:)
-//                 forControlEvents:UIControlEventTouchUpInside];
 
     SOActivityButton *connectActivityButton = [[SOActivityButton alloc] initWithTitle:@"Connect" image:[UIImage imageNamed:@"talk"]];
     connectActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -293,7 +276,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
 - (void)legendButtonTapped:(UIButton *)sender
 {
     self.selectedButtonTag = sender.tag;
-    NSLog(@"%d", self.buttons.count);
+
     for (NSInteger i = 0; i < self.buttons.count; i++)
     {
         [self.buttons[i] setSelected:NO];
@@ -363,7 +346,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     } else {
         height = [[self.activityCounts objectAtIndex:([self.activityCounts count]-1-index)] floatValue];
     }
-    
+
     return height;
 }
 

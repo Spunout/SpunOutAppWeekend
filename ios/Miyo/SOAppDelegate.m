@@ -97,7 +97,7 @@
 {
     NSDate *lastResetDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"last_reset_date"];
     if ([[[SOMiyoDatabase sharedInstance] lastUpdateDate] isNewWeek] && ![lastResetDate isToday]) {
-        [[NSUserDefaults standardUserDefaults] setInteger:150 forKey:@"score"];
+        [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"score"];
         [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"last_reset_date"];
     }
 }
@@ -165,12 +165,7 @@
         NSInteger lifetimePoints = [[SOMiyoDatabase sharedInstance] getCurrentLifetimePoints];
 
         if (lifetimePoints >= nextLevelExp) {
-            if (currentLevel >= 10) {
-                nextLevelExp *= 1.1;
-            }
-            else {
-                nextLevelExp *= 1.5;
-            }
+            nextLevelExp = (currentLevel >= 10) ? nextLevelExp*1.1 : nextLevelExp*1.5;
 
             [[NSUserDefaults standardUserDefaults] setInteger:nextLevelExp forKey:@"next_level_exp"];
             [[NSUserDefaults standardUserDefaults] setInteger:++currentLevel forKey:@"current_level"];
