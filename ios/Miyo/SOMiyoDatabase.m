@@ -55,42 +55,36 @@ static NSString *const kSODatabaseName = @"miyo.db";
  );
  */
 
-- (void)insertOrUpdateMood:(NSString*)activity earnedPoints:(NSNumber*)earnedPoints tag:(NSUInteger)tag
+- (void)insertOrUpdateMood:(NSString*)activity earnedPoints:(NSNumber*)earnedPoints tag:(NSUInteger)tag mood:(NSInteger)mood
 {
     [self inTransaction:^(FMDatabase *db, BOOL *rollback) {
         FMResultSet *lastResultSet = [db executeQuery:@"SELECT * FROM data ORDER BY timestamp DESC"];
         
-        long lifetimePointsTotal;
+        NSNumber *lifetimePointsTotal;
         
-        if ([lastResultSet next]) {
+        NSDate *lastTimestamp = ([lastResultSet next]) ? [lastResultSet dateForColumn:@"timestamp"] : [NSDate dateWithTimeIntervalSince1970:1297776817];
+        
+        if ([lastTimestamp isToday]) {
+            NSLog(@"hi");
             NSDate *lastTimestamp = [lastResultSet dateForColumn:@"timestamp"];
             
-            lifetimePointsTotal = [lastResultSet longForColumn:@"lifetime_points"] + [earnedPoints longValue];
+            lifetimePointsTotal = [[NSNumber alloc] initWithLong:[lastResultSet longForColumn:@"lifetime_points"] + [earnedPoints longValue]];
             
             if ([lastTimestamp isToday]) {
-                NSString *query = [NSString stringWithFormat:@"UPDATE data SET %@ = %ld WHERE timestamp = ?", activity, [earnedPoints longValue]];
-                if (![db executeUpdate:query, lastTimestamp]) {
-                    *rollback = YES;
-                }
+                NSString *query = [NSString stringWithFormat:@"UPDATE data SET %@ = %ld, lifetime_points = %ld, mood = %ld WHERE timestamp = ?", activity, [earnedPoints longValue], [lifetimePointsTotal longValue], mood];
+                *rollback = (![db executeUpdate:query, lastTimestamp]) ? YES : *rollback;
             }
             
         } else {
             
-            lifetimePointsTotal = [earnedPoints longValue];
+            lifetimePointsTotal = [[NSNumber alloc] initWithLong:[earnedPoints longValue]];
             
-            NSMutableArray *arguments = [NSMutableArray array];
-            [arguments addObject:[NSNumber numberWithDouble:0.0]];
+            NSMutableArray *arguments = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:mood], [NSNumber numberWithLong:0], [NSNumber numberWithLong:0], [NSNumber numberWithLong:0], [NSNumber numberWithLong:0], [NSNumber numberWithLong:0], [NSNumber numberWithLong:0], [NSDate date], lifetimePointsTotal ] ];
             
-            NSMutableArray *activities = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithLong:0], [NSNumber numberWithLong:0], [NSNumber numberWithLong:0], [NSNumber numberWithLong:0], [NSNumber numberWithLong:0], [NSNumber numberWithLong:0]]];
-            [activities replaceObjectAtIndex:tag withObject:[[NSNumber alloc] initWithLong:[earnedPoints longValue]]];
+            [arguments replaceObjectAtIndex:tag+1 withObject:[[NSNumber alloc] initWithLong:[earnedPoints longValue]]];
             
-            [arguments addObjectsFromArray:activities];
-            [arguments addObject:[NSDate date]];
-            [arguments addObject:[NSNumber numberWithLong:lifetimePointsTotal]];
-            
-            if (![db executeUpdate:@"INSERT INTO data VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)" withArgumentsInArray:arguments]) {
-                *rollback = YES;
-            }
+            *rollback = (![db executeUpdate:@"INSERT INTO data VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)" withArgumentsInArray:arguments]) ? YES : *rollback;
+
         }
         
         [lastResultSet close];
@@ -158,12 +152,7 @@ static NSString *const kSODatabaseName = @"miyo.db";
             NSDateComponents *components = [calendar components:unitFlags fromDate:date toDate:lastDate options:0];
             daysBetween = [components day];
             
-            if ([activity length] == 0)
-            {
-                totalActivities = [resultSet longForColumnIndex:1] + [resultSet longForColumnIndex:2] + [resultSet longForColumnIndex:3] + [resultSet longForColumnIndex:4] + [resultSet longForColumnIndex:5] + [resultSet longForColumnIndex:6];
-            } else {
-                totalActivities = [resultSet longForColumnIndex:[resultSet columnIndexForName:activity]];
-            }
+            totalActivities = ([activity length] == 0) ? ([resultSet longForColumnIndex:1] + [resultSet longForColumnIndex:2] + [resultSet longForColumnIndex:3] + [resultSet longForColumnIndex:4] + [resultSet longForColumnIndex:5] + [resultSet longForColumnIndex:6]) : [resultSet longForColumnIndex:[resultSet columnIndexForName:activity]];
             
             if ((counter + daysBetween) < [days count])
             {

@@ -336,8 +336,9 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     [[NSUserDefaults standardUserDefaults] setFloat:self.pointMeterView.currentValue forKey:@"score"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     SOActivityButton *button = self.buttons[buttonTag];
-
-    [[SOMiyoDatabase sharedInstance] insertOrUpdateMood:button.titleLabel.text earnedPoints:[[NSNumber alloc] initWithInteger:points] tag:buttonTag];
+    NSInteger mood = [[NSUserDefaults standardUserDefaults] integerForKey:@"score"];
+    
+    [[SOMiyoDatabase sharedInstance] insertOrUpdateMood:button.titleLabel.text earnedPoints:[[NSNumber alloc] initWithInteger:points] tag:buttonTag mood:mood];
     
     
     [self.buttonCollectionView setHidden:NO];

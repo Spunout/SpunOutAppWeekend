@@ -12,7 +12,7 @@
 
 + (SOMiyoDatabase *)sharedInstance;
 
-- (void)insertOrUpdateMood:(NSString*)activity earnedPoints:(NSNumber*)earnedPoints tag:(NSUInteger)tag;
+- (void)insertOrUpdateMood:(NSString*)activity earnedPoints:(NSNumber*)earnedPoints tag:(NSUInteger)tag mood:(NSInteger)mood;
 
 - (NSArray *)getLastSelectedActivites;
 - (NSInteger)getCountForActivity:(NSString *)activity fromDay:(NSInteger)fromDay toDay:(NSInteger)toDay;

@@ -160,15 +160,15 @@
         [[NSUserDefaults standardUserDefaults] setInteger:10 forKey:@"next_level_exp"];
     }
     else {
-        NSInteger nextLevelExp = [[NSUserDefaults standardUserDefaults] integerForKey:@"next_level_exp"];
+        float nextLevelExp = [[NSUserDefaults standardUserDefaults] floatForKey:@"next_level_exp"];
         NSInteger currentLevel = [[NSUserDefaults standardUserDefaults] integerForKey:@"current_level"];
         NSInteger lifetimePoints = [[SOMiyoDatabase sharedInstance] getCurrentLifetimePoints];
 
         if (lifetimePoints >= nextLevelExp) {
-            nextLevelExp = (currentLevel >= 10) ? nextLevelExp*1.1 : nextLevelExp*1.5;
+            nextLevelExp = (currentLevel >= 10) ? nextLevelExp*1.5f : nextLevelExp*1.1f;
 
-            [[NSUserDefaults standardUserDefaults] setInteger:nextLevelExp forKey:@"next_level_exp"];
-            [[NSUserDefaults standardUserDefaults] setInteger:++currentLevel forKey:@"current_level"];
+            [[NSUserDefaults standardUserDefaults] setFloat:nextLevelExp forKey:@"next_level_exp"];
+            [[NSUserDefaults standardUserDefaults] setFloat:++currentLevel forKey:@"current_level"];
 
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Level up!"
                                                                 message:[NSString stringWithFormat:@"Congratulations! You've leveled up since yesterday.\nYou are now on level %zd\nComplete activites and collect Health Points to progress in MiYo!", currentLevel]
