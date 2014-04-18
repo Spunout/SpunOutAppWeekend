@@ -80,7 +80,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     self.logLabel.text = @"Log";
     self.logLabel.textColor =  [UIColor miyoBlue];
     self.logLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-    self.logLabel.frame = CGRectZero;
+    self.logLabel.frame = CGRectMake(140, 355, 100, 50);
     [self.view addSubview:self.logLabel];
     [self.logLabel setHidden:YES];
     

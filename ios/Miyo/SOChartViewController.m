@@ -248,7 +248,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
             break;
         case 1:
             self.chartFromDay = 7;
-            self.chartToDay = 7;
+            self.chartToDay = 14;
             self.footerView.leftLabel.text = @"14 Days Ago";
             self.footerView.rightLabel.text = @"7 Days Ago";
             break;
