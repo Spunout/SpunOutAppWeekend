@@ -80,7 +80,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     self.logLabel.text = @"Log";
     self.logLabel.textColor =  [UIColor miyoBlue];
     self.logLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-    self.logLabel.frame = CGRectMake(140, 355, 100, 50);
+    self.logLabel.frame = CGRectZero;
     [self.view addSubview:self.logLabel];
     [self.logLabel setHidden:YES];
     
@@ -257,6 +257,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
             button.selected = [(NSNumber *)selectedActivites[i] boolValue];
         }
     }
+
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
@@ -297,21 +298,32 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 
 - (void)didTapActivityButton:(UIButton *)button
 {
+    SOActivityButton *buttonn = self.buttons[button.tag];
     [[NSUserDefaults standardUserDefaults] setInteger:button.tag forKey:@"currentButtonTag"];
     [[NSUserDefaults standardUserDefaults] setBool:button.isSelected forKey:@"currentButtonSelected"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    [self.buttonCollectionView setHidden:YES];
-    [self.activitySlider setHidden:NO];
-    [self.logActivitiesButton setHidden:NO];
-    [self.logLabel setHidden:NO];
-    self.moodLabel.text = [[NSString stringWithFormat:@"How well did you %@?", [button.titleLabel.text stringByReplacingOccurrencesOfString: @" WELL" withString:@""]] lowercaseString];
+    if (buttonn.isSelected)
+    {
+        [self.buttonCollectionView setHidden:YES];
+        [self.activitySlider setHidden:NO];
+        [self.logActivitiesButton setHidden:NO];
+        [self.logLabel setHidden:NO];
+        self.moodLabel.text = [[NSString stringWithFormat:@"How well did you %@?", [button.titleLabel.text stringByReplacingOccurrencesOfString: @" WELL" withString:@""]] lowercaseString];
+    } else {
+        NSInteger points = [[SOMiyoDatabase sharedInstance] getTodaysPointsForActivity:button.tag];
+        self.pointMeterView.currentValue -= points;
+        [[NSUserDefaults standardUserDefaults] setFloat:self.pointMeterView.currentValue forKey:@"score"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+ 
+        [[SOMiyoDatabase sharedInstance] insertOrUpdateMood:[[NSNumber alloc] initWithInteger:points*(-1)] tag:button.tag mood:self.pointMeterView.currentValue];
+    }
 }
 
 - (IBAction)logActivitiesButtonTapped:(UITapGestureRecognizer *)recognizer {
     
     NSInteger buttonTag = [[NSUserDefaults standardUserDefaults] integerForKey:@"currentButtonTag"];
-    BOOL buttonSelected = [[NSUserDefaults standardUserDefaults] boolForKey:@"currentButtonSelected"];
+    
     NSInteger points;
 
     switch (buttonTag) {
@@ -326,19 +338,13 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
             break;
     }
 
-    if (buttonSelected) {
-        self.pointMeterView.currentValue += points;
-    }
-    else {
-        self.pointMeterView.currentValue -= points;
-    }
+    self.pointMeterView.currentValue += points;
+
 
     [[NSUserDefaults standardUserDefaults] setFloat:self.pointMeterView.currentValue forKey:@"score"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    SOActivityButton *button = self.buttons[buttonTag];
-    NSInteger mood = [[NSUserDefaults standardUserDefaults] integerForKey:@"score"];
     
-    [[SOMiyoDatabase sharedInstance] insertOrUpdateMood:button.titleLabel.text earnedPoints:[[NSNumber alloc] initWithInteger:points] tag:buttonTag mood:mood];
+    [[SOMiyoDatabase sharedInstance] insertOrUpdateMood:[[NSNumber alloc] initWithInteger:points] tag:buttonTag mood:self.pointMeterView.currentValue];
     
     
     [self.buttonCollectionView setHidden:NO];

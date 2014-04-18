@@ -29,7 +29,7 @@ class sampleDataMaker:
 		while counter < num_activies:
 
 			lifetime_points += 10
-			self.c.execute("INSERT INTO data VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (50, 1, 1, 1, 1, 1, 1, 1, 1, self.current_timestamp+random.randint(2,5000), lifetime_points) )
+			self.c.execute("INSERT INTO data VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (50, 1, 1, 1, 1, 1, 1, (self.current_timestamp/1000)+random.randint(2,5000), lifetime_points) )
 			counter += 1
 		self.conn.commit()
 
@@ -66,5 +66,5 @@ class sampleDataMaker:
 			counter += 1
 
 o = sampleDataMaker()
-#o.giveAchievementsToAll("gold")
-o.addRandomData()
+o.giveAchievementsToAll("gold")
+#o.addRandomData()

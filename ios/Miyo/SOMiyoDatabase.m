@@ -55,23 +55,28 @@ static NSString *const kSODatabaseName = @"miyo.db";
  );
  */
 
-- (void)insertOrUpdateMood:(NSString*)activity earnedPoints:(NSNumber*)earnedPoints tag:(NSUInteger)tag mood:(NSInteger)mood
+- (void)insertOrUpdateMood:(NSNumber*)earnedPoints tag:(NSUInteger)tag mood:(NSInteger)mood
 {
+    __block NSNumber* points;
+    
     [self inTransaction:^(FMDatabase *db, BOOL *rollback) {
         FMResultSet *lastResultSet = [db executeQuery:@"SELECT * FROM data ORDER BY timestamp DESC"];
         
         NSNumber *lifetimePointsTotal;
+        NSArray *activities = @[@"eat", @"sleep", @"exercise", @"learn", @"connect", @"play"];
         
         NSDate *lastTimestamp = ([lastResultSet next]) ? [lastResultSet dateForColumn:@"timestamp"] : [NSDate dateWithTimeIntervalSince1970:1297776817];
         
         if ([lastTimestamp isToday]) {
-            NSLog(@"hi");
+
             NSDate *lastTimestamp = [lastResultSet dateForColumn:@"timestamp"];
-            
+                                               
             lifetimePointsTotal = [[NSNumber alloc] initWithLong:[lastResultSet longForColumn:@"lifetime_points"] + [earnedPoints longValue]];
             
+            points = ([earnedPoints longValue] < 0) ? [NSNumber numberWithInt:0] : earnedPoints;
+            
             if ([lastTimestamp isToday]) {
-                NSString *query = [NSString stringWithFormat:@"UPDATE data SET %@ = %ld, lifetime_points = %ld, mood = %ld WHERE timestamp = ?", activity, [earnedPoints longValue], [lifetimePointsTotal longValue], mood];
+                NSString *query = [NSString stringWithFormat:@"UPDATE data SET %@ = %ld, lifetime_points = %ld, mood = %ld WHERE timestamp = ?", activities[tag], [points longValue], [lifetimePointsTotal longValue], [[NSNumber numberWithInteger:mood] longValue]];
                 *rollback = (![db executeUpdate:query, lastTimestamp]) ? YES : *rollback;
             }
             
@@ -92,6 +97,34 @@ static NSString *const kSODatabaseName = @"miyo.db";
     }];
 }
 
+-(NSInteger)getTodaysPointsForActivity:(NSInteger)tag
+{
+    __block NSInteger points;
+    
+    
+    
+    [self inDatabase:^(FMDatabase *db) {
+        
+        NSArray *activities = @[@"eat", @"sleep", @"exercise", @"learn", @"connect", @"play"];
+        NSString *query = [NSString stringWithFormat:@"SELECT * FROM data ORDER BY timestamp DESC"];
+        FMResultSet *lastResultSet = [db executeQuery:query];
+        
+        if ([lastResultSet next])
+        {
+            NSDate *lastTimestamp = [lastResultSet dateForColumn:@"timestamp"];
+            
+            if ([lastTimestamp isToday])
+            {
+                points = [lastResultSet longForColumnIndex:[lastResultSet columnIndexForName:activities[tag]]];
+            }
+        }
+        
+        [lastResultSet close];
+    }];
+
+    return points;
+}
+
 - (NSArray *)getLastSelectedActivites
 {
     __block NSMutableArray *selectedActivites = nil;
@@ -110,14 +143,12 @@ static NSString *const kSODatabaseName = @"miyo.db";
                 [selectedActivites addObject:[NSNumber numberWithBool:[lastResultSet boolForColumnIndex:4]]];
                 [selectedActivites addObject:[NSNumber numberWithBool:[lastResultSet boolForColumnIndex:5]]];
                 [selectedActivites addObject:[NSNumber numberWithBool:[lastResultSet boolForColumnIndex:6]]];
-                [selectedActivites addObject:[NSNumber numberWithBool:[lastResultSet boolForColumnIndex:7]]];
-                [selectedActivites addObject:[NSNumber numberWithBool:[lastResultSet boolForColumnIndex:8]]];
             }
         }
         
         [lastResultSet close];
     }];
-    
+
     return selectedActivites;
 }
 
@@ -177,7 +208,7 @@ static NSString *const kSODatabaseName = @"miyo.db";
     __block NSInteger activityCount = 0;
     
     [self inDatabase:^(FMDatabase *db) {
-        NSString *query = [NSString stringWithFormat:@"SELECT COUNT(*) FROM data WHERE %@ = 1 ORDER BY timestamp DESC LIMIT ? OFFSET ?) AS subquery;", activity];
+        NSString *query = [NSString stringWithFormat:@"SELECT COUNT(*) FROM (SELECT timestamp FROM data WHERE %@ = 1 ORDER BY timestamp DESC LIMIT ? OFFSET ?) AS subquery;", activity];
         
         FMResultSet *resultSet = [db executeQuery:query, [NSNumber numberWithInteger:toDay], [NSNumber numberWithInteger:fromDay]];
         
@@ -187,6 +218,8 @@ static NSString *const kSODatabaseName = @"miyo.db";
         
         [resultSet close];
     }];
+    
+
     
     return activityCount;
 }
