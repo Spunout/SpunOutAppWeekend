@@ -1,11 +1,11 @@
 CREATE TABLE data (
-    mood REAL,
-    eat REAL,
-    sleep REAL,
-    exercise REAL,
-    learn REAL,
-    connect REAL,
-    play REAL,
+    mood BOOLEAN,
+    eat BOOLEAN,
+    sleep BOOLEAN,
+    exercise BOOLEAN,
+    learn BOOLEAN,
+    connect BOOLEAN,
+    play BOOLEAN,
     timestamp DATETIME,
     lifetime_points INTEGER,
     PRIMARY KEY (timestamp)
