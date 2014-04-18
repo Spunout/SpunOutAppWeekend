@@ -186,7 +186,8 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
                                                          _buttonCollectionView,
                                                          spacer1,
                                                          spacer2,
-                                                         spacer3);
+                                                         spacer3,
+                                                         _activitySlider);
 
     NSDictionary *metrics = @{@"buttonWidth": @150};
 
@@ -219,7 +220,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
                                                          multiplier:1.0
                                                            constant:0.0]];
 
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(20)-[spacer1]-[_pointMeterView]-[spacer2]-[_moodLabel(17)]-[_buttonCollectionView(140)]-[spacer3]|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(20)-[spacer1]-[_pointMeterView]-[spacer2]-[_moodLabel(17)]-[_buttonCollectionView(140)]-[spacer3]-(20)-[_activitySlider]-(20)-|"
                                                                       options:NSLayoutFormatAlignAllCenterX
                                                                       metrics:metrics
                                                                         views:views]];
