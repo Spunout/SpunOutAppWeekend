@@ -9,12 +9,15 @@
 #import "SOBadgesViewController.h"
 #import "SOMiyoDatabase.h"
 #import "SOBadgeTableViewCell.h"
+#import "SOTutorialViewController.h"
 
 #import "UIColor+Miyo.h"
 
 static NSString *kSOBadgeCellIdentifier = @"SOBadgeCellIdentifier";
 
 @interface SOBadgesViewController ()
+
+@property (nonatomic, strong) UILabel *explainLabel;
 
 @end
 
@@ -26,12 +29,14 @@ static NSString *kSOBadgeCellIdentifier = @"SOBadgeCellIdentifier";
 
     self.title = @"Badges";
 
+
     self.tableView.rowHeight = 70;
     self.tableView.backgroundColor = [UIColor miyoBlue];
     self.tableView.separatorColor = [UIColor colorWithRed:0.15 green:0.64 blue:0.82 alpha:1];
     self.tableView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
 
     [self.tableView registerClass:[SOBadgeTableViewCell class] forCellReuseIdentifier:kSOBadgeCellIdentifier];
+
     
     UIPageControl *pageControl = [[UIPageControl alloc] init];
     pageControl.frame = CGRectMake(130.0, 435.0, 60.0, 70.0);
@@ -49,6 +54,7 @@ static NSString *kSOBadgeCellIdentifier = @"SOBadgeCellIdentifier";
 {
     return UIStatusBarStyleLightContent;
 }
+
 
 #pragma mark - Table view data source
 

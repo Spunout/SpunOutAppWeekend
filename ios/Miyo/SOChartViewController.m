@@ -15,6 +15,7 @@
 #import "SOChartFooter.h"
 #import "SOActivityButton.h"
 #import "SOMiyoDatabase.h"
+#import "SOTutorialViewController.h"
 #include <stdlib.h>
 
 static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionViewCellIdentifier";
@@ -38,6 +39,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
 @property (nonatomic, strong) NSArray* activityCounts;
 @property (nonatomic) NSInteger selectedButtonTag;
 @property (nonatomic, strong) SOChartFooter *footerView;
+@property (nonatomic, strong) UILabel *explainLabel;
 
 @end
 
@@ -50,6 +52,13 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     self.title = @"Activity";
     
     self.view.backgroundColor = [UIColor miyoBlue];
+    
+    UIButton *tutorialButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
+    tutorialButton.frame = CGRectMake(10.0, 30.0, 20.0, 20.0);
+    tutorialButton.tintColor = [UIColor whiteColor];
+    [tutorialButton setTitle:@"Help" forState:UIControlStateNormal];
+    [tutorialButton addTarget:self action:@selector(didTapTutorialButton) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:tutorialButton];
 
     UIScrollView *scrollView = [[UIScrollView alloc] init];
     scrollView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
@@ -71,6 +80,14 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     self.footerView.sectionCount = kJBLineChartViewControllerNumChartPoints;
     self.lineChartView.footerView = self.footerView;
 
+    self.explainLabel = [[UILabel alloc] init];
+    self.explainLabel.text = @"The Graph plots your health points over time. Select an activity to filter to just health points for that activity. The level indicator shows how close you are to progressing to the next level. It is based on how well you do in your activities.";
+    self.explainLabel.textColor = [UIColor whiteColor];
+    self.explainLabel.textAlignment = NSTextAlignmentCenter;
+    self.explainLabel.font = [UIFont boldSystemFontOfSize:12.0f];
+    self.explainLabel.numberOfLines = 0;
+    self.explainLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    self.explainLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
     NSInteger currentExp = [[SOMiyoDatabase sharedInstance] getCurrentLifetimePoints];
     float nextLevelExp = [[NSUserDefaults standardUserDefaults] floatForKey:@"next_level_exp"];
@@ -175,7 +192,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
                            action:@selector(legendButtonTapped:)
                  forControlEvents:UIControlEventTouchUpInside];
     
-    NSDictionary *views = NSDictionaryOfVariableBindings(scrollView, _lineChartView, _buttonCollectionView, levelProgress, currentLevelLabel, nextLevelLabel, chartRangeSwitcher);
+    NSDictionary *views = NSDictionaryOfVariableBindings(scrollView, _lineChartView, _buttonCollectionView, levelProgress, currentLevelLabel, nextLevelLabel, chartRangeSwitcher, _explainLabel);
     
     [self.view addSubview:scrollView];
     [scrollView addSubview:self.lineChartView];
@@ -184,6 +201,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     [scrollView addSubview:nextLevelLabel];
     [scrollView addSubview:currentLevelLabel];
     [scrollView addSubview:chartRangeSwitcher];
+    [scrollView addSubview:self.explainLabel];
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[scrollView]|"
                                                                       options:0
@@ -195,7 +213,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
                                                                       metrics:nil
                                                                         views:views]];
     
-    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(5)-[_lineChartView(250)]-(20)-[chartRangeSwitcher]-(20)-[_buttonCollectionView(140)]-(10)-[levelProgress]-(-16)-[currentLevelLabel]-(-22)-[nextLevelLabel]-(40)-|"
+    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(5)-[_lineChartView(250)]-(20)-[chartRangeSwitcher]-(20)-[_buttonCollectionView(140)]-(10)-[levelProgress]-(-16)-[currentLevelLabel]-(-22)-[nextLevelLabel]-(20)-[_explainLabel]-(40)-|"
                                                                        options:0
                                                                        metrics:nil
                                                                          views:views]];
@@ -212,8 +230,12 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
                                                                        options:0
                                                                        metrics:nil
                                                                          views:views]];
+    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(20)-[_explainLabel]-(20)-|"
+                                                                       options:0
+                                                                       metrics:nil
+                                                                         views:views]];
     
-    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(15)-[chartRangeSwitcher]-(15)-|"
+    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(20)-[chartRangeSwitcher]-(20)-|"
                                                                        options:0
                                                                        metrics:nil
                                                                          views:views]];
@@ -326,6 +348,13 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     [cell.contentView addSubview:button];
 
     return cell;
+}
+
+- (void)didTapTutorialButton
+{
+    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:[[SOTutorialViewController alloc] init]]
+                                        animated:YES
+                                      completion:nil];
 }
 
 #pragma mark - line chart methods
