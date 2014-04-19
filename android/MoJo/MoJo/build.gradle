@@ -20,5 +20,4 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:+'
-    compile files('build/libs/Parse-1.4.0.jar')
 }

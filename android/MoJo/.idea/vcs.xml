@@ -2,8 +2,8 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="" />
-    <mapping directory="$PROJECT_DIR$/../../../../MoJo2" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/../../../../holographlibrary" vcs="Git" />
+    <mapping directory="F:/../MoJo2" vcs="Git" />
+    <mapping directory="F:/../holographlibrary" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../.." vcs="Git" />
   </component>
 </project>

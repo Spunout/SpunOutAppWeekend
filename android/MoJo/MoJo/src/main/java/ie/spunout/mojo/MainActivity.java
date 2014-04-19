@@ -1,38 +1,16 @@
 package ie.spunout.mojo;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.PorterDuff;
-import android.provider.ContactsContract;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
-import android.text.LoginFilter;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.util.Log;
-import com.parse.ParseException;
-import com.parse.Parse;
-import com.parse.ParseAnalytics;
-import com.parse.ParseObject;
 
 
 public class MainActivity extends FragmentActivity {
@@ -105,7 +83,7 @@ public class MainActivity extends FragmentActivity {
 
             switch (i){
                 case 0:
-                    fragment = new Initial();
+                    fragment = new Score();
                     break;
                 case 1:
                     fragment = new Graph();

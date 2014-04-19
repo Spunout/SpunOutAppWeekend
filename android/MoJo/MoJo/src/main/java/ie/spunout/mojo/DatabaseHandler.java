@@ -68,7 +68,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MIYO);
     }
 
-    // Adding new activity record
+    /**
+     * Adds a new activity record to the database.
+     * @param miyo
+     */
     public void addMiyo(Miyo miyo) {
         SQLiteDatabase dbw = this.getWritableDatabase();
 

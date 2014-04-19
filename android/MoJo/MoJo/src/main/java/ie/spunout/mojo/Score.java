@@ -1,18 +1,15 @@
 package ie.spunout.mojo;
 
 import android.animation.ValueAnimator;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.ArcShape;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -21,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 //TODO: fix this so that we don't have to have min api lvl 19
 
@@ -29,7 +25,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
-public class Initial extends Fragment {
+public class Score extends Fragment {
     private View view;                          //the view activity
     private SeekBar sbar;                       //the seekbar in the view
     private int score;                          //The users current score
@@ -53,25 +49,16 @@ public class Initial extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_initial, container, false);
+        view = inflater.inflate(R.layout.fragment_score, container, false);
         scoreNumber = (TextView) view.findViewById(R.id.score_number);
 
         drawIcons();
-
-        //TODO: make sure all of these are in the right order
-
-        //attach onclick methods to the activity buttons
         setupOnClicks();
-
-        //setup the score
         setupScore();
-
-        //set the size of the meter
         setupMeter();
         drawCircle();
-
-        //load miyo
         loadMiyo();
+        loadTimesLogged();
 
         return view;
     }
@@ -98,6 +85,7 @@ public class Initial extends Fragment {
                     //log the change in the database
                     dh.addMiyo(miyo);
                     updatePoints(-7);
+                    incrementTimesLogged();
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
@@ -105,6 +93,7 @@ public class Initial extends Fragment {
                     miyo.setEat(1);
                     dh.addMiyo(miyo);
                     updatePoints(7);
+                    incrementTimesLogged();
                 }
                 v.setBackground(newBackground);
                 eatImage.setImageDrawable(newIcon);
@@ -131,6 +120,7 @@ public class Initial extends Fragment {
                     miyo.setSleep(0);
                     dh.addMiyo(miyo);
                     updatePoints(-7);
+                    incrementTimesLogged();
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
@@ -138,6 +128,7 @@ public class Initial extends Fragment {
                     miyo.setSleep(1);
                     dh.addMiyo(miyo);
                     updatePoints(7);
+                    incrementTimesLogged();
                 }
                 v.setBackground(newBackground);
                 eatImage.setImageDrawable(newIcon);
@@ -161,6 +152,7 @@ public class Initial extends Fragment {
                     miyo.setExercise(0);
                     dh.addMiyo(miyo);
                     updatePoints(-5);
+                    incrementTimesLogged();
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
@@ -168,6 +160,7 @@ public class Initial extends Fragment {
                     miyo.setExercise(1);
                     dh.addMiyo(miyo);
                     updatePoints(5);
+                    incrementTimesLogged();
                 }
                 v.setBackground(newBackground);
                 eatImage.setImageDrawable(newIcon);
@@ -191,6 +184,7 @@ public class Initial extends Fragment {
                     miyo.setLearn(0);
                     dh.addMiyo(miyo);
                     updatePoints(-5);
+                    incrementTimesLogged();
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
@@ -198,6 +192,7 @@ public class Initial extends Fragment {
                     miyo.setLearn(1);
                     dh.addMiyo(miyo);
                     updatePoints(5);
+                    incrementTimesLogged();
                 }
                 v.setBackground(newBackground);
                 eatImage.setImageDrawable(newIcon);
@@ -221,6 +216,7 @@ public class Initial extends Fragment {
                     miyo.setTalk(0);
                     dh.addMiyo(miyo);
                     updatePoints(-7);
+                    incrementTimesLogged();
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
@@ -228,6 +224,7 @@ public class Initial extends Fragment {
                     miyo.setTalk(1);
                     dh.addMiyo(miyo);
                     updatePoints(7);
+                    incrementTimesLogged();
                 }
                 v.setBackground(newBackground);
                 eatImage.setImageDrawable(newIcon);
@@ -251,6 +248,7 @@ public class Initial extends Fragment {
                     miyo.setMake(0);
                     dh.addMiyo(miyo);
                     updatePoints(-5);
+                    incrementTimesLogged();
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
@@ -258,6 +256,7 @@ public class Initial extends Fragment {
                     miyo.setMake(1);
                     dh.addMiyo(miyo);
                     updatePoints(5);
+                    incrementTimesLogged();
                 }
                 v.setBackground(newBackground);
                 eatImage.setImageDrawable(newIcon);
@@ -281,6 +280,7 @@ public class Initial extends Fragment {
                     miyo.setPlay(0);
                     dh.addMiyo(miyo);
                     updatePoints(-5);
+                    incrementTimesLogged();
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
@@ -288,6 +288,7 @@ public class Initial extends Fragment {
                     miyo.setPlay(1);
                     dh.addMiyo(miyo);
                     updatePoints(5);
+                    incrementTimesLogged();
                 }
                 v.setBackground(newBackground);
                 eatImage.setImageDrawable(newIcon);
@@ -311,6 +312,7 @@ public class Initial extends Fragment {
                     miyo.setConnect(0);
                     dh.addMiyo(miyo);
                     updatePoints(-7);
+                    incrementTimesLogged();
                 }else{
                     //if not, highlight it
                     newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
@@ -318,6 +320,7 @@ public class Initial extends Fragment {
                     miyo.setConnect(1);
                     dh.addMiyo(miyo);
                     updatePoints(7);
+                    incrementTimesLogged();
                 }
                 v.setBackground(newBackground);
                 eatImage.setImageDrawable(newIcon);
@@ -325,6 +328,11 @@ public class Initial extends Fragment {
         });
     }
 
+    /**
+     * Loads todays most recently logged record from the database and sets the
+     * activity button icons appropriately, it won't set anything if there's
+     * no entries for today.
+     */
     private void loadMiyo(){
         Long timestamp = dh.getTodayEntryOrZero();
         if(timestamp == 0){
@@ -415,6 +423,33 @@ public class Initial extends Fragment {
                 image.setImageDrawable(getResources().getDrawable(R.drawable.connect_g));
             }
         }
+    }
+
+    /**
+     * Loads the number of times the user has logged activities today and
+     * sets the times_logged text view to that value.
+     */
+    public void loadTimesLogged(){
+        SharedPreferences prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
+        int timesLogged = prefs.getInt("times_logged", 0);
+
+        TextView tv = (TextView) view.findViewById(R.id.times_logged);
+        tv.setText(String.valueOf(timesLogged));
+    }
+
+    /**
+     * Increments the count of records stored today and called loadTimesLogged to
+     * update the displayed view.
+     */
+    public void incrementTimesLogged(){
+        SharedPreferences prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        int timesLogged = prefs.getInt("times_logged", 0);
+        timesLogged++;
+        editor.putInt("times_logged", timesLogged);
+        editor.commit();
+        loadTimesLogged();
     }
 
     /**
