@@ -11,6 +11,10 @@
 @interface SOAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+- (void)checkLowUsage;
+- (void)checkLevel;
+- (void)checkAchievements;
+- (void)resetPointsIfMonday;
 
 + (NSString *)databasePath;
 

@@ -36,6 +36,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 @property (nonatomic, strong) UICollectionView *buttonCollectionView;
 
 @property (nonatomic, strong) NSMutableArray *buttons;
+@property (nonatomic, strong) SOAppDelegate *appDelegate;
 
 @end
 
@@ -44,9 +45,8 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    self.appDelegate = (SOAppDelegate *)[[UIApplication sharedApplication] delegate];
     self.view.backgroundColor = [UIColor miyoBlue];
-
     UIButton *tutorialButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
     tutorialButton.frame = CGRectMake(10.0, 30.0, 20.0, 20.0);
     tutorialButton.tintColor = [UIColor whiteColor];
@@ -239,6 +239,10 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [self.appDelegate checkLowUsage];
+    [self.appDelegate checkLevel];
+    [self.appDelegate checkAchievements];
+    [self.appDelegate resetPointsIfMonday];
 
     BOOL tutorialDate = [[NSUserDefaults standardUserDefaults] boolForKey:@"shown_tutorial"];
     if (!tutorialDate) {

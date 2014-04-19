@@ -229,15 +229,15 @@ static NSString *const kSODatabaseName = @"miyo.db";
     __block NSInteger activityCount = 0;
     
     [self inDatabase:^(FMDatabase *db) {
-        FMResultSet *resultSet = [db executeQuery:@"SELECT lifetime_points FROM data ORDER BY timestamp DESC LIMIT 1 OFFSET 1;"];
+        FMResultSet *resultSet = [db executeQuery:@"SELECT lifetime_points FROM data ORDER BY timestamp DESC LIMIT 1;"];
         
         if ([resultSet next]) {
-            activityCount = [resultSet intForColumnIndex:0];
+            activityCount = [resultSet longForColumnIndex:0];
         }
         
         [resultSet close];
     }];
-    
+    NSLog(@"Activity: %d", activityCount);
     return activityCount;
 }
 

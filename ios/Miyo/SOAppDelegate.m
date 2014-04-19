@@ -163,9 +163,9 @@
         float nextLevelExp = [[NSUserDefaults standardUserDefaults] floatForKey:@"next_level_exp"];
         NSInteger currentLevel = [[NSUserDefaults standardUserDefaults] integerForKey:@"current_level"];
         NSInteger lifetimePoints = [[SOMiyoDatabase sharedInstance] getCurrentLifetimePoints];
-
+        NSLog(@"Current Level: %ld, Next Points: %f, Current Points: %ld", currentLevel, nextLevelExp, lifetimePoints);
         if (lifetimePoints >= nextLevelExp) {
-            nextLevelExp = (currentLevel >= 10) ? nextLevelExp*1.5f : nextLevelExp*1.1f;
+            nextLevelExp = (currentLevel >= 10) ? nextLevelExp*2.5f : nextLevelExp*2.1f;
 
             [[NSUserDefaults standardUserDefaults] setFloat:nextLevelExp forKey:@"next_level_exp"];
             [[NSUserDefaults standardUserDefaults] setFloat:++currentLevel forKey:@"current_level"];
