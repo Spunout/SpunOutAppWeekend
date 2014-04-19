@@ -310,7 +310,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
         [self.activitySlider setHidden:NO];
         [self.logActivitiesButton setHidden:NO];
         [self.logLabel setHidden:NO];
-        self.moodLabel.text = [[NSString stringWithFormat:@"How well did you %@?", [button.titleLabel.text stringByReplacingOccurrencesOfString: @" WELL" withString:@""]] lowercaseString];
+        self.moodLabel.text = [NSString stringWithFormat:@"How well did you %@?", [[button.titleLabel.text stringByReplacingOccurrencesOfString: @" WELL" withString:@""] lowercaseString]];
     } else {
         NSInteger points = [[SOMiyoDatabase sharedInstance] getTodaysPointsForActivity:button.tag];
         self.pointMeterView.currentValue -= points;
@@ -319,6 +319,8 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
  
         [[SOMiyoDatabase sharedInstance] insertOrUpdateMood:[[NSNumber alloc] initWithInteger:points*(-1)] tag:button.tag mood:self.pointMeterView.currentValue];
     }
+    
+    self.activitySlider.value = 0.0f;
 }
 
 - (IBAction)logActivitiesButtonTapped:(UITapGestureRecognizer *)recognizer {

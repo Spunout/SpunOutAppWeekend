@@ -319,7 +319,7 @@
 				ORGANIZATIONNAME = SpunOut;
 				TargetAttributes = {
 					8B3FE42B1893DA500014945F = {
-						DevelopmentTeam = B3JC75ZV37;
+						DevelopmentTeam = S8LRA2X9FA;
 					};
 					8B3FE4461893DA500014945F = {
 						TestTargetID = 8B3FE42B1893DA500014945F;
@@ -517,7 +517,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Community Creations Ltd. (S8LRA2X9FA)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -539,14 +539,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: James Eggers (7BA88VTB8Y)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Miyo/MiYo-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/MiYo/MiYo-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "8A178963-2FAD-46E1-AED2-BD5F5B3897C7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -557,14 +557,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer: James Eggers (7BA88VTB8Y)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Miyo/MiYo-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/MiYo/MiYo-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "8A178963-2FAD-46E1-AED2-BD5F5B3897C7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -628,7 +628,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Community Creations Ltd. (S8LRA2X9FA)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: James Eggers (7BA88VTB8Y)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: James Eggers (7BA88VTB8Y)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -650,14 +651,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Community Creations Ltd. (S8LRA2X9FA)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Community Creations Ltd. (S8LRA2X9FA)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: James Eggers (7BA88VTB8Y)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Miyo/MiYo-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/MiYo/MiYo-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "BB43E663-01A4-4B93-BE47-7FAD45567C6F";
+				PROVISIONING_PROFILE = "8A178963-2FAD-46E1-AED2-BD5F5B3897C7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Testflight;
