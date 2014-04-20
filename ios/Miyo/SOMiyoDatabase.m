@@ -131,12 +131,12 @@ static NSString *const kSODatabaseName = @"miyo.db";
     
     [self inDatabase:^(FMDatabase *db) {
         FMResultSet *lastResultSet = [db executeQuery:@"SELECT * FROM data ORDER BY timestamp DESC LIMIT 1"];
-        NSLog(@"hiii");
+    
         if ([lastResultSet next]) {
             NSDate *lastTimestamp = [lastResultSet dateForColumn:@"timestamp"];
             
             if ([lastTimestamp isToday]) {
-                NSLog(@"last timestamp is today");
+                
                 selectedActivites = [NSMutableArray array];
                 [selectedActivites addObject:[NSNumber numberWithBool:[lastResultSet boolForColumnIndex:1]]];
                 [selectedActivites addObject:[NSNumber numberWithBool:[lastResultSet boolForColumnIndex:2]]];
@@ -187,7 +187,7 @@ static NSString *const kSODatabaseName = @"miyo.db";
             totalActivities = ([activity length] == 0) ? [resultSet longForColumn:@"mood"] : [resultSet longForColumn:activity];
             
             int index = (daysBetween > 0) ? counter+daysBetween : counter;
-            NSLog(@"Days  Between: %d, index: %d", daysBetween, index);
+           
             
             if ((index) < [days count])
             {
@@ -204,10 +204,6 @@ static NSString *const kSODatabaseName = @"miyo.db";
         
     }];
     
-    for (int i = 0; i < [days count]; i++)
-    {
-        NSLog(@"%@", [days[i] stringValue]);
-    }
     
     return days;
 }

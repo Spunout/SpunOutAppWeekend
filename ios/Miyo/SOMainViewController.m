@@ -253,7 +253,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
                                             animated:YES
                                           completion:nil];
     }
-    NSLog(@"getting last selected");
+   
     NSArray *selectedActivites = [[SOMiyoDatabase sharedInstance] getLastSelectedActivites];
 
     if (selectedActivites) {
