@@ -130,12 +130,13 @@ static NSString *const kSODatabaseName = @"miyo.db";
     __block NSMutableArray *selectedActivites = nil;
     
     [self inDatabase:^(FMDatabase *db) {
-        FMResultSet *lastResultSet = [db executeQuery:@"SELECT * FROM data ORDER BY timestamp DESC"];
-        
+        FMResultSet *lastResultSet = [db executeQuery:@"SELECT * FROM data ORDER BY timestamp DESC LIMIT 1"];
+        NSLog(@"hiii");
         if ([lastResultSet next]) {
             NSDate *lastTimestamp = [lastResultSet dateForColumn:@"timestamp"];
             
             if ([lastTimestamp isToday]) {
+                NSLog(@"last timestamp is today");
                 selectedActivites = [NSMutableArray array];
                 [selectedActivites addObject:[NSNumber numberWithBool:[lastResultSet boolForColumnIndex:1]]];
                 [selectedActivites addObject:[NSNumber numberWithBool:[lastResultSet boolForColumnIndex:2]]];
@@ -169,7 +170,7 @@ static NSString *const kSODatabaseName = @"miyo.db";
     
     [self inDatabase:^(FMDatabase *db) {
         
-        NSString *query = [NSString stringWithFormat:@"SELECT timestamp,eat,sleep,exercise,learn,connect,play FROM data ORDER BY timestamp DESC LIMIT %ld OFFSET %ld", (long)toDay, (long)fromDay];
+        NSString *query = [NSString stringWithFormat:@"SELECT timestamp,eat,sleep,exercise,learn,connect,play,mood FROM data ORDER BY timestamp DESC LIMIT %ld OFFSET %ld", (long)toDay, (long)fromDay];
         
         FMResultSet *resultSet = [db executeQuery:query];
         
@@ -183,11 +184,14 @@ static NSString *const kSODatabaseName = @"miyo.db";
             NSDateComponents *components = [calendar components:unitFlags fromDate:date toDate:lastDate options:0];
             daysBetween = [components day];
             
-            totalActivities = ([activity length] == 0) ? ([resultSet longForColumnIndex:1] + [resultSet longForColumnIndex:2] + [resultSet longForColumnIndex:3] + [resultSet longForColumnIndex:4] + [resultSet longForColumnIndex:5] + [resultSet longForColumnIndex:6]) : [resultSet longForColumnIndex:[resultSet columnIndexForName:activity]];
+            totalActivities = ([activity length] == 0) ? [resultSet longForColumn:@"mood"] : [resultSet longForColumn:activity];
             
-            if ((counter + daysBetween) < [days count])
+            int index = (daysBetween > 0) ? counter+daysBetween : counter;
+            NSLog(@"Days  Between: %d, index: %d", daysBetween, index);
+            
+            if ((index) < [days count])
             {
-                [days replaceObjectAtIndex:counter+daysBetween withObject:[[NSNumber alloc] initWithInteger:totalActivities]];
+                    [days replaceObjectAtIndex:index withObject:[[NSNumber alloc] initWithInteger:totalActivities]];
             }
             
             counter++;
@@ -199,6 +203,11 @@ static NSString *const kSODatabaseName = @"miyo.db";
         [resultSet close];
         
     }];
+    
+    for (int i = 0; i < [days count]; i++)
+    {
+        NSLog(@"%@", [days[i] stringValue]);
+    }
     
     return days;
 }
@@ -237,7 +246,7 @@ static NSString *const kSODatabaseName = @"miyo.db";
         
         [resultSet close];
     }];
-    NSLog(@"Activity: %d", activityCount);
+
     return activityCount;
 }
 

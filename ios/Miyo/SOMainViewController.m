@@ -243,7 +243,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     [self.appDelegate checkLevel];
     [self.appDelegate checkAchievements];
     [self.appDelegate resetPointsIfMonday];
-
+   
     BOOL tutorialDate = [[NSUserDefaults standardUserDefaults] boolForKey:@"shown_tutorial"];
     if (!tutorialDate) {
         [[NSUserDefaults standardUserDefaults] setBool:YES
@@ -253,7 +253,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
                                             animated:YES
                                           completion:nil];
     }
-
+    NSLog(@"getting last selected");
     NSArray *selectedActivites = [[SOMiyoDatabase sharedInstance] getLastSelectedActivites];
 
     if (selectedActivites) {
@@ -359,6 +359,9 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     [self.logActivitiesButton setHidden:YES];
     [self.logLabel setHidden:YES];
     self.moodLabel.text = @"WHAT HAVE YOU DONE TODAY?";
+    [self.appDelegate checkLowUsage];
+    [self.appDelegate checkLevel];
+    [self.appDelegate checkAchievements];
 }
 
 

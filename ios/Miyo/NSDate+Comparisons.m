@@ -38,9 +38,7 @@
     NSDateComponents *todayComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitEra | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitWeekOfYear
                                                                         fromDate:[NSDate date]];
 
-    return dateComponents.era == todayComponents.era
-    && dateComponents.yearForWeekOfYear == todayComponents.yearForWeekOfYear
-    && dateComponents.weekOfYear != todayComponents.weekOfYear;
+    return dateComponents.era == todayComponents.era && dateComponents.yearForWeekOfYear == todayComponents.yearForWeekOfYear && dateComponents.weekOfYear != todayComponents.weekOfYear;
 }
 
 @end

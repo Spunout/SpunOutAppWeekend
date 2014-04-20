@@ -40,6 +40,9 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
 @property (nonatomic) NSInteger selectedButtonTag;
 @property (nonatomic, strong) SOChartFooter *footerView;
 @property (nonatomic, strong) UILabel *explainLabel;
+@property (nonatomic, strong) UILabel *currentLevelLabel;
+@property (nonatomic, strong) UILabel *nextLevelLabel;
+@property (nonatomic, strong) UIProgressView *levelProgress;
 
 @end
 
@@ -53,12 +56,6 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     
     self.view.backgroundColor = [UIColor miyoBlue];
     
-    UIButton *tutorialButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
-    tutorialButton.frame = CGRectMake(10.0, 30.0, 20.0, 20.0);
-    tutorialButton.tintColor = [UIColor whiteColor];
-    [tutorialButton setTitle:@"Help" forState:UIControlStateNormal];
-    [tutorialButton addTarget:self action:@selector(didTapTutorialButton) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:tutorialButton];
 
     UIScrollView *scrollView = [[UIScrollView alloc] init];
     scrollView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
@@ -93,25 +90,25 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     float nextLevelExp = [[NSUserDefaults standardUserDefaults] floatForKey:@"next_level_exp"];
     float currentLevel = [[NSUserDefaults standardUserDefaults] floatForKey:@"current_level"];
 
-    UIProgressView *levelProgress = [[UIProgressView alloc] init];
-    levelProgress.progressTintColor = [UIColor greenColor];
-    [levelProgress setProgress:currentExp / nextLevelExp];
-    [levelProgress setTransform:CGAffineTransformMakeScale(1.0,6.0)];
-    levelProgress.translatesAutoresizingMaskIntoConstraints = NO;
+    self.levelProgress = [[UIProgressView alloc] init];
+    self.levelProgress.progressTintColor = [UIColor greenColor];
+    [self.levelProgress setProgress:currentExp / nextLevelExp];
+    [self.levelProgress setTransform:CGAffineTransformMakeScale(1.0,6.0)];
+    self.levelProgress.translatesAutoresizingMaskIntoConstraints = NO;
     
-    UILabel *currentLevelLabel = [[UILabel alloc] init];
-    currentLevelLabel.text = [NSString stringWithFormat:@"%ld", (long)currentLevel];
-    currentLevelLabel.textColor = [UIColor whiteColor];
-    currentLevelLabel.textAlignment = NSTextAlignmentCenter;
-    currentLevelLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-    currentLevelLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.currentLevelLabel = [[UILabel alloc] init];
+    self.currentLevelLabel.text = [NSString stringWithFormat:@"%ld", (long)currentLevel];
+    self.currentLevelLabel.textColor = [UIColor whiteColor];
+    self.currentLevelLabel.textAlignment = NSTextAlignmentCenter;
+    self.currentLevelLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+    self.currentLevelLabel.translatesAutoresizingMaskIntoConstraints = NO;
 
-    UILabel *nextLevelLabel = [[UILabel alloc] init];
-    nextLevelLabel.text = [NSString stringWithFormat:@"%ld", (long)currentLevel+1];
-    nextLevelLabel.textColor = [UIColor whiteColor];
-    nextLevelLabel.textAlignment = NSTextAlignmentCenter;
-    nextLevelLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-    nextLevelLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.nextLevelLabel = [[UILabel alloc] init];
+    self.nextLevelLabel.text = [NSString stringWithFormat:@"%ld", (long)currentLevel+1];
+    self.nextLevelLabel.textColor = [UIColor whiteColor];
+    self.nextLevelLabel.textAlignment = NSTextAlignmentCenter;
+    self.nextLevelLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+    self.nextLevelLabel.translatesAutoresizingMaskIntoConstraints = NO;
     
     UISegmentedControl *chartRangeSwitcher = [[UISegmentedControl alloc] initWithItems:@[@"Past Week", @"Prev. Week", @"Last Month", @"All Time"]];
     chartRangeSwitcher.translatesAutoresizingMaskIntoConstraints = NO;
@@ -192,14 +189,14 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
                            action:@selector(legendButtonTapped:)
                  forControlEvents:UIControlEventTouchUpInside];
     
-    NSDictionary *views = NSDictionaryOfVariableBindings(scrollView, _lineChartView, _buttonCollectionView, levelProgress, currentLevelLabel, nextLevelLabel, chartRangeSwitcher, _explainLabel);
+    NSDictionary *views = NSDictionaryOfVariableBindings(scrollView, _lineChartView, _buttonCollectionView, _levelProgress, _currentLevelLabel, _nextLevelLabel, chartRangeSwitcher, _explainLabel);
     
     [self.view addSubview:scrollView];
     [scrollView addSubview:self.lineChartView];
     [scrollView addSubview:self.buttonCollectionView];
-    [scrollView addSubview:levelProgress];
-    [scrollView addSubview:nextLevelLabel];
-    [scrollView addSubview:currentLevelLabel];
+    [scrollView addSubview:self.levelProgress];
+    [scrollView addSubview:self.nextLevelLabel];
+    [scrollView addSubview:self.currentLevelLabel];
     [scrollView addSubview:chartRangeSwitcher];
     [scrollView addSubview:self.explainLabel];
     
@@ -213,7 +210,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
                                                                       metrics:nil
                                                                         views:views]];
     
-    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(5)-[_lineChartView(250)]-(20)-[chartRangeSwitcher]-(20)-[_buttonCollectionView(140)]-(10)-[levelProgress]-(-16)-[currentLevelLabel]-(-22)-[nextLevelLabel]-(20)-[_explainLabel]-(40)-|"
+    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(5)-[_lineChartView(250)]-(20)-[chartRangeSwitcher]-(20)-[_buttonCollectionView(140)]-(10)-[_levelProgress]-(-16)-[_currentLevelLabel]-(-22)-[_nextLevelLabel]-(20)-[_explainLabel]-(40)-|"
                                                                        options:0
                                                                        metrics:nil
                                                                          views:views]];
@@ -235,12 +232,12 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
                                                                        metrics:nil
                                                                          views:views]];
     
-    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(20)-[chartRangeSwitcher]-(20)-|"
+    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(15)-[chartRangeSwitcher]-(13)-|"
                                                                        options:0
                                                                        metrics:nil
                                                                          views:views]];
     
-    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(20)-[currentLevelLabel]-(10)-[levelProgress]-(10)-[nextLevelLabel]-(20)-|"
+    [scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(20)-[_currentLevelLabel]-(10)-[_levelProgress]-(10)-[_nextLevelLabel]-(20)-|"
                                                                        options:0
                                                                        metrics:nil
                                                                          views:views]];
@@ -254,6 +251,20 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     self.footerView.rightLabel.text = @"Today";
     [self updateData];
     [self.lineChartView reloadData];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    NSInteger currentExp = [[SOMiyoDatabase sharedInstance] getCurrentLifetimePoints];
+    float nextLevelExp = [[NSUserDefaults standardUserDefaults] floatForKey:@"next_level_exp"];
+    float currentLevel = [[NSUserDefaults standardUserDefaults] floatForKey:@"current_level"];
+    
+
+    [self.levelProgress setProgress:currentExp / nextLevelExp];
+
+    self.currentLevelLabel.text = [NSString stringWithFormat:@"%ld", (long)currentLevel];
+
+    self.nextLevelLabel.text = [NSString stringWithFormat:@"%ld", (long)currentLevel+1];
 }
 
 - (void)didChangeDateRange:(UISegmentedControl*)dateRangeSelector
