@@ -55,7 +55,7 @@ static NSString *const kSODatabaseName = @"miyo.db";
  );
  */
 
-- (void)insertOrUpdateMood:(NSNumber*)earnedPoints tag:(NSUInteger)tag mood:(NSInteger)mood
+- (void)insertOrUpdateMood:(NSNumber*)earnedPoints tag:(NSUInteger)tag mood:(NSInteger)mood lifetime:(NSInteger)lifetime
 {
     __block NSNumber* points;
     
@@ -81,8 +81,8 @@ static NSString *const kSODatabaseName = @"miyo.db";
             }
             
         } else {
-            
-            lifetimePointsTotal = [[NSNumber alloc] initWithLong:[earnedPoints longValue]];
+           
+            lifetimePointsTotal = [[NSNumber alloc] initWithLong:([earnedPoints longValue]+lifetime)];
             
             NSMutableArray *arguments = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:mood], [NSNumber numberWithLong:0], [NSNumber numberWithLong:0], [NSNumber numberWithLong:0], [NSNumber numberWithLong:0], [NSNumber numberWithLong:0], [NSNumber numberWithLong:0], [NSDate date], lifetimePointsTotal ] ];
             
@@ -134,7 +134,7 @@ static NSString *const kSODatabaseName = @"miyo.db";
     
         if ([lastResultSet next]) {
             NSDate *lastTimestamp = [lastResultSet dateForColumn:@"timestamp"];
-            
+           
             if ([lastTimestamp isToday]) {
                 
                 selectedActivites = [NSMutableArray array];
@@ -162,19 +162,12 @@ static NSString *const kSODatabaseName = @"miyo.db";
     __block NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     __block NSInteger totalActivities;
     
-    for (int i = 0; i < toDay; i++)
-    {
-        NSNumber *zero = [[NSNumber alloc] initWithInteger:0];
-        [days addObject:zero];
-    }
     
     [self inDatabase:^(FMDatabase *db) {
         
         NSString *query = [NSString stringWithFormat:@"SELECT timestamp,eat,sleep,exercise,learn,connect,play,mood FROM data ORDER BY timestamp DESC LIMIT %ld OFFSET %ld", (long)toDay, (long)fromDay];
         
         FMResultSet *resultSet = [db executeQuery:query];
-        
-        int counter = 0;
         
         while ([resultSet next])
         {
@@ -186,15 +179,21 @@ static NSString *const kSODatabaseName = @"miyo.db";
             
             totalActivities = ([activity length] == 0) ? [resultSet longForColumn:@"mood"] : [resultSet longForColumn:activity];
             
-            int index = (daysBetween > 0) ? counter+daysBetween : counter;
-           
-            
-            if ((index) < [days count])
+            while (daysBetween > 1)
             {
-                    [days replaceObjectAtIndex:index withObject:[[NSNumber alloc] initWithInteger:totalActivities]];
+                if ([days count] < toDay)
+                {
+                    [days addObject:[[NSNumber alloc] initWithInteger:0]];
+                }
+                
+                daysBetween--;
             }
             
-            counter++;
+            
+            if ([days count] < toDay)
+            {
+                [days addObject:[[NSNumber alloc] initWithInteger:totalActivities]];
+            }
             
             lastDate = date;
             
@@ -231,19 +230,19 @@ static NSString *const kSODatabaseName = @"miyo.db";
 
 - (NSInteger)getCurrentLifetimePoints
 {
-    __block NSInteger activityCount = 0;
+    __block NSInteger lifetimePoints = 0;
     
     [self inDatabase:^(FMDatabase *db) {
         FMResultSet *resultSet = [db executeQuery:@"SELECT lifetime_points FROM data ORDER BY timestamp DESC LIMIT 1;"];
         
         if ([resultSet next]) {
-            activityCount = [resultSet longForColumnIndex:0];
+            lifetimePoints = [resultSet longForColumnIndex:0];
         }
         
         [resultSet close];
     }];
-
-    return activityCount;
+    
+    return lifetimePoints;
 }
 
 - (NSDate *)lastUpdateDate

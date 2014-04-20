@@ -93,12 +93,15 @@
     return YES;
 }
 
-- (void)resetPointsIfMonday
+- (bool)resetPointsIfMonday
 {
     NSDate *lastResetDate = [[NSUserDefaults standardUserDefaults] objectForKey:@"last_reset_date"];
     if ([[[SOMiyoDatabase sharedInstance] lastUpdateDate] isNewWeek] && ![lastResetDate isToday]) {
         [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"score"];
         [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:@"last_reset_date"];
+        return true;
+    } else {
+        return false;
     }
 }
 

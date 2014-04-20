@@ -56,7 +56,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     
     self.view.backgroundColor = [UIColor miyoBlue];
     
-
+    
     UIScrollView *scrollView = [[UIScrollView alloc] init];
     scrollView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
     scrollView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -65,7 +65,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     self.lineChartView.frame = CGRectMake(10.0, 5.0, self.view.bounds.size.width - 20.0, 170.0);
     self.lineChartView.delegate = self;
     self.lineChartView.dataSource = self;
-
+    
     self.footerView = [[SOChartFooter alloc] initWithFrame:CGRectMake(10.0, ceil(self.view.bounds.size.height * 0.5) - ceil(kJBLineChartViewControllerChartFooterHeight * 0.5), self.view.bounds.size.width - (5.0 * 2), kJBLineChartViewControllerChartFooterHeight)];
     self.footerView.backgroundColor = [UIColor clearColor];
     self.footerView.leftLabel.text = @"4 Weeks Ago";
@@ -76,7 +76,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     self.footerView.rightLabel.font = [UIFont systemFontOfSize:15.0f];
     self.footerView.sectionCount = kJBLineChartViewControllerNumChartPoints;
     self.lineChartView.footerView = self.footerView;
-
+    
     self.explainLabel = [[UILabel alloc] init];
     self.explainLabel.text = @"The Graph plots your health points over time. Select an activity to filter to just health points for that activity. The level indicator shows how close you are to progressing to the next level. It is based on how well you do in your activities.";
     self.explainLabel.textColor = [UIColor whiteColor];
@@ -85,11 +85,11 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     self.explainLabel.numberOfLines = 0;
     self.explainLabel.lineBreakMode = NSLineBreakByWordWrapping;
     self.explainLabel.translatesAutoresizingMaskIntoConstraints = NO;
-
+    
     NSInteger currentExp = [[SOMiyoDatabase sharedInstance] getCurrentLifetimePoints];
     float nextLevelExp = [[NSUserDefaults standardUserDefaults] floatForKey:@"next_level_exp"];
     float currentLevel = [[NSUserDefaults standardUserDefaults] floatForKey:@"current_level"];
-
+    
     self.levelProgress = [[UIProgressView alloc] init];
     self.levelProgress.progressTintColor = [UIColor greenColor];
     [self.levelProgress setProgress:currentExp / nextLevelExp];
@@ -102,7 +102,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     self.currentLevelLabel.textAlignment = NSTextAlignmentCenter;
     self.currentLevelLabel.font = [UIFont boldSystemFontOfSize:17.0f];
     self.currentLevelLabel.translatesAutoresizingMaskIntoConstraints = NO;
-
+    
     self.nextLevelLabel = [[UILabel alloc] init];
     self.nextLevelLabel.text = [NSString stringWithFormat:@"%ld", (long)currentLevel+1];
     self.nextLevelLabel.textColor = [UIColor whiteColor];
@@ -120,66 +120,66 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     collectionViewLayout.itemSize = CGSizeMake(60.0f, 60.0f);
     collectionViewLayout.sectionInset = UIEdgeInsetsMake(0.0, 16.0, 0, 16.0);
     collectionViewLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
-
+    
     self.buttonCollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero
                                                    collectionViewLayout:collectionViewLayout];
     self.buttonCollectionView.delegate = self;
     self.buttonCollectionView.dataSource = self;
     self.buttonCollectionView.backgroundColor = [UIColor clearColor];
     self.buttonCollectionView.translatesAutoresizingMaskIntoConstraints = NO;
-
+    
     [self.buttonCollectionView registerClass:[UICollectionViewCell class]
                   forCellWithReuseIdentifier:kButtonCollectionViewCellIdentifier];
-
+    
     self.buttons = [[NSMutableArray alloc] init];
     self.activities = @[@"eat", @"sleep", @"exercise", @"learn", @"connect", @"play"];
-
+    
     SOActivityButton *eatActivityButton = [[SOActivityButton alloc] initWithTitle:@"Eat Well" image:[UIImage imageNamed:@"eat"]];
     eatActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
     eatActivityButton.tag = 0;
     [self.buttons addObject:eatActivityButton];
-
+    
     [eatActivityButton addTarget:self
                           action:@selector(legendButtonTapped:)
                 forControlEvents:UIControlEventTouchUpInside];
-
+    
     SOActivityButton *sleepActivityButton = [[SOActivityButton alloc] initWithTitle:@"Sleep Well" image:[UIImage imageNamed:@"sleep"]];
     sleepActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
     sleepActivityButton.tag = 1;
     [self.buttons addObject:sleepActivityButton];
-
+    
     [sleepActivityButton addTarget:self
                             action:@selector(legendButtonTapped:)
                   forControlEvents:UIControlEventTouchUpInside];
-
+    
     SOActivityButton *exerciseActivityButton = [[SOActivityButton alloc] initWithTitle:@"Move" image:[UIImage imageNamed:@"exercise"]];
     exerciseActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
     exerciseActivityButton.tag = 2;
     [self.buttons addObject:exerciseActivityButton];
-
+    
     [exerciseActivityButton addTarget:self
                                action:@selector(legendButtonTapped:)
                      forControlEvents:UIControlEventTouchUpInside];
-
+    
     SOActivityButton *learnActivityButton = [[SOActivityButton alloc] initWithTitle:@"Learn" image:[UIImage imageNamed:@"learn"]];
     learnActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
     learnActivityButton.tag = 3;
     [self.buttons addObject:learnActivityButton];
-
+    
     [learnActivityButton addTarget:self
                             action:@selector(legendButtonTapped:)
                   forControlEvents:UIControlEventTouchUpInside];
-
-
+    
+    
     SOActivityButton *connectActivityButton = [[SOActivityButton alloc] initWithTitle:@"Connect" image:[UIImage imageNamed:@"talk"]];
     connectActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
     connectActivityButton.tag = 4;
     [self.buttons addObject:connectActivityButton];
-
+    
     [connectActivityButton addTarget:self
                               action:@selector(legendButtonTapped:)
                     forControlEvents:UIControlEventTouchUpInside];
-
+    
     SOActivityButton *playActivityButton = [[SOActivityButton alloc] initWithTitle:@"Play" image:[UIImage imageNamed:@"play"]];
     playActivityButton.translatesAutoresizingMaskIntoConstraints = NO;
     playActivityButton.tag = 5;
@@ -243,7 +243,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
                                                                          views:views]];
     
     
-  
+    
     chartRangeSwitcher.selectedSegmentIndex = 0;
     self.chartFromDay = 0;
     self.chartToDay = 7;
@@ -259,18 +259,18 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     float nextLevelExp = [[NSUserDefaults standardUserDefaults] floatForKey:@"next_level_exp"];
     float currentLevel = [[NSUserDefaults standardUserDefaults] floatForKey:@"current_level"];
     
-
+    
     [self.levelProgress setProgress:currentExp / nextLevelExp];
-
+    
     self.currentLevelLabel.text = [NSString stringWithFormat:@"%ld", (long)currentLevel];
-
+    
     self.nextLevelLabel.text = [NSString stringWithFormat:@"%ld", (long)currentLevel+1];
 }
 
 - (void)didChangeDateRange:(UISegmentedControl*)dateRangeSelector
 {
     NSInteger selectedIndex = dateRangeSelector.selectedSegmentIndex;
-
+    
     switch(selectedIndex)
     {
         case 0:
@@ -293,8 +293,10 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
             break;
         case 3:
             self.chartFromDay = 0;
-            self.chartToDay = 50;
-
+            self.chartToDay = 100;
+            self.footerView.leftLabel.text = @"";
+            self.footerView.rightLabel.text = @"Today";
+            
             
             break;
         default:
@@ -309,7 +311,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
 - (void)legendButtonTapped:(UIButton *)sender
 {
     self.selectedButtonTag = sender.tag;
-
+    
     for (NSInteger i = 0; i < self.buttons.count; i++)
     {
         [self.buttons[i] setSelected:NO];
@@ -349,23 +351,23 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kButtonCollectionViewCellIdentifier forIndexPath:indexPath];
-
+    
     for (UIView *subview in cell.contentView.subviews) {
         [subview removeFromSuperview];
     }
-
+    
     SOActivityButton *button = self.buttons[indexPath.row];
     button.frame = cell.contentView.frame;
     [cell.contentView addSubview:button];
-
+    
     return cell;
 }
 
 - (void)didTapTutorialButton
 {
     [self presentViewController:[[UINavigationController alloc] initWithRootViewController:[[SOTutorialViewController alloc] init]]
-                                        animated:YES
-                                      completion:nil];
+                       animated:YES
+                     completion:nil];
 }
 
 #pragma mark - line chart methods
@@ -386,7 +388,7 @@ NSInteger const kJBLineChartViewControllerNumChartPoints = 4;
     } else {
         height = [[self.activityCounts objectAtIndex:([self.activityCounts count]-1-index)] floatValue];
     }
-
+    
     return height;
 }
 

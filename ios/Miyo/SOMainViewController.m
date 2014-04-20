@@ -242,7 +242,10 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     [self.appDelegate checkLowUsage];
     [self.appDelegate checkLevel];
     [self.appDelegate checkAchievements];
-    [self.appDelegate resetPointsIfMonday];
+    if ([self.appDelegate resetPointsIfMonday])
+    {
+        self.pointMeterView.currentValue = 0;
+    }
    
     BOOL tutorialDate = [[NSUserDefaults standardUserDefaults] boolForKey:@"shown_tutorial"];
     if (!tutorialDate) {
@@ -260,6 +263,11 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
         for (NSInteger i = 0; i < self.buttons.count; i++) {
             SOActivityButton *button = self.buttons[i];
             button.selected = [(NSNumber *)selectedActivites[i] boolValue];
+        }
+    } else {
+        for (NSInteger i = 0; i < self.buttons.count; i++) {
+            SOActivityButton *button = self.buttons[i];
+            button.selected = 0;
         }
     }
 
@@ -307,6 +315,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
     [[NSUserDefaults standardUserDefaults] setInteger:button.tag forKey:@"currentButtonTag"];
     [[NSUserDefaults standardUserDefaults] setBool:button.isSelected forKey:@"currentButtonSelected"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    NSInteger currentLifetimePoints = [[SOMiyoDatabase sharedInstance] getCurrentLifetimePoints];
     
     if (buttonn.isSelected)
     {
@@ -321,7 +330,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
         [[NSUserDefaults standardUserDefaults] setFloat:self.pointMeterView.currentValue forKey:@"score"];
         [[NSUserDefaults standardUserDefaults] synchronize];
  
-        [[SOMiyoDatabase sharedInstance] insertOrUpdateMood:[[NSNumber alloc] initWithInteger:points*(-1)] tag:button.tag mood:self.pointMeterView.currentValue];
+        [[SOMiyoDatabase sharedInstance] insertOrUpdateMood:[[NSNumber alloc] initWithInteger:points*(-1)] tag:button.tag mood:self.pointMeterView.currentValue lifetime:currentLifetimePoints];
     }
     
     self.activitySlider.value = 0.0f;
@@ -345,15 +354,23 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
             break;
     }
 
-    self.pointMeterView.currentValue += points;
+    if (self.activitySlider.value > 0)
+    {
+        
+        self.pointMeterView.currentValue += points;
+        
+        NSInteger currentLifetimePoints = [[SOMiyoDatabase sharedInstance] getCurrentLifetimePoints];
 
+        [[NSUserDefaults standardUserDefaults] setFloat:self.pointMeterView.currentValue forKey:@"score"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        
+        [[SOMiyoDatabase sharedInstance] insertOrUpdateMood:[[NSNumber alloc] initWithInteger:points] tag:buttonTag mood:self.pointMeterView.currentValue lifetime:currentLifetimePoints];
+    } else {
+        SOActivityButton *button = self.buttons[buttonTag];
+        [button setSelected:NO];
+    }
 
-    [[NSUserDefaults standardUserDefaults] setFloat:self.pointMeterView.currentValue forKey:@"score"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    [[SOMiyoDatabase sharedInstance] insertOrUpdateMood:[[NSNumber alloc] initWithInteger:points] tag:buttonTag mood:self.pointMeterView.currentValue];
-    
-    
     [self.buttonCollectionView setHidden:NO];
     [self.activitySlider setHidden:YES];
     [self.logActivitiesButton setHidden:YES];

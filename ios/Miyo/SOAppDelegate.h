@@ -14,7 +14,7 @@
 - (void)checkLowUsage;
 - (void)checkLevel;
 - (void)checkAchievements;
-- (void)resetPointsIfMonday;
+- (bool)resetPointsIfMonday;
 
 + (NSString *)databasePath;
 
