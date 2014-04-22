@@ -186,7 +186,6 @@ static NSString *const kSODatabaseName = @"miyo.db";
             daysBetween = [components day];
             
             totalActivities = ([activity length] == 0) ? [resultSet longForColumn:@"mood"] : [resultSet longForColumn:activity];
-            NSLog(@"Days Between: %ld", daysBetween);
             
             counter += daysBetween;
             
@@ -202,11 +201,6 @@ static NSString *const kSODatabaseName = @"miyo.db";
         [resultSet close];
         
     }];
-    
-    for (int i = 0; i < [days count]; i++)
-    {
-        NSLog(@"%@", [days[i] stringValue]);
-    }
     
     return days;
 }
