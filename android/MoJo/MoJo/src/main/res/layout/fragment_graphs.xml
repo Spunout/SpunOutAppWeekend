@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="220dp"
         android:orientation="vertical"
-        android:layout_weight="1">
+        android:layout_weight="4">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,43 +56,46 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
+            <Button
+                android:id="@+id/button_all_time"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="wk 4"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
+                android:textSize="10sp"
+                android:text="All Time"/>
+            <Button
+                android:id="@+id/button_this_month"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="wk 3"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
+                android:textSize="10sp"
+                android:text="This Month"/>
+            <Button
+                android:id="@+id/button_last_week"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="wk 2"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="wk 1"/>
-            </LinearLayout>
+                android:textSize="10sp"
+                android:text="Last Week"/>
+            <Button
+                android:id="@+id/button_this_week"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="10sp"
+                android:text="This Week"/>
+        </LinearLayout>
 
     </LinearLayout>
 
-
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_weight="0"
+        android:layout_height="20dp"
+        android:layout_weight="1"
         android:text="See how you've been doing"
-        android:layout_marginTop="10dp"
         android:textSize="@dimen/menu_ts"
         android:gravity="center"/>
 
@@ -99,7 +103,8 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_weight="0"
-        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal"
         android:gravity="center_horizontal">
 
@@ -126,7 +131,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="#000000"
-                android:textSize="8dp"
+                android:textSize="9dp"
                 android:text="EAT WELL"/>
 
         </LinearLayout>
@@ -154,13 +159,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="#000000"
-                android:textSize="8dp"
+                android:textSize="9dp"
                 android:text="SLEEP WELL"/>
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/exercise_button"
+            android:id="@+id/move_button"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:gravity="center_vertical"
@@ -182,10 +187,21 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="#000000"
-                android:textSize="8dp"
+                android:textSize="9dp"
                 android:text="MOVE"/>
 
         </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_weight="0"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
 
         <LinearLayout
             android:id="@+id/learn_button"
@@ -210,133 +226,66 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:textColor="#000000"
-                android:textSize="8dp"
+                android:textSize="9dp"
                 android:text="LEARN"/>
 
         </LinearLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/play_button"
+            android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="30dp"
-            android:layout_weight="0"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal">
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="10dp"
+            android:orientation="vertical"
+            android:background="@drawable/menu_item">
 
-            <LinearLayout
-                android:id="@+id/talk_button"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:gravity="center_vertical"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="10dp"
-                android:orientation="vertical"
-                android:background="@drawable/menu_item">
+            <ImageView
+                android:id="@+id/img"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:src="@drawable/play"/>
 
-                <ImageView
-                    android:id="@+id/img"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/talk"/>
+            <TextView
+                android:id="@+id/txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="#000000"
+                android:textSize="9dp"
+                android:text="PLAY"/>
 
-                <TextView
-                    android:id="@+id/txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textColor="#000000"
-                    android:textSize="8dp"
-                    android:text="TALK"/>
+        </LinearLayout>
 
-            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/connect_button"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="10dp"
+            android:orientation="vertical"
+            android:background="@drawable/menu_item">
 
-            <LinearLayout
-                android:id="@+id/make_button"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:gravity="center_vertical"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="10dp"
-                android:orientation="vertical"
-                android:background="@drawable/menu_item">
+            <ImageView
+                android:id="@+id/img"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:src="@drawable/relationship"/>
 
-                <ImageView
-                    android:id="@+id/img"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/creative"/>
+            <TextView
+                android:id="@+id/txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="#000000"
+                android:textSize="9dp"
+                android:text="CONNECT"/>
 
-                <TextView
-                    android:id="@+id/txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textColor="#000000"
-                    android:textSize="8dp"
-                    android:text="MAKE"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/play_button"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:gravity="center_vertical"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="10dp"
-                android:orientation="vertical"
-                android:background="@drawable/menu_item">
-
-                <ImageView
-                    android:id="@+id/img"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/play"/>
-
-                <TextView
-                    android:id="@+id/txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textColor="#000000"
-                    android:textSize="8dp"
-                    android:text="PLAY"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/connect_button"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:gravity="center_vertical"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="10dp"
-                android:orientation="vertical"
-                android:background="@drawable/menu_item">
-
-                <ImageView
-                    android:id="@+id/img"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/relationship"/>
-
-                <TextView
-                    android:id="@+id/txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textColor="#000000"
-                    android:textSize="8dp"
-                    android:text="CONNECT"/>
-
-            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -138,7 +138,7 @@ public class MainActivity extends FragmentActivity {
             editor.putBoolean("first_time", false);
 
             //store the initial score
-            editor.putInt("current_points", 150);
+            editor.putInt("current_points", 0);
 
             //initialise the level and points to level 2
             editor.putInt("current_level", 1);
@@ -149,8 +149,6 @@ public class MainActivity extends FragmentActivity {
             editor.putInt("sleep", 0);
             editor.putInt("exercise", 0);
             editor.putInt("learn", 0);
-            editor.putInt("talk", 0);
-            editor.putInt("make", 0);
             editor.putInt("play", 0);
             editor.putInt("connect", 0);
 
@@ -224,9 +222,7 @@ public class MainActivity extends FragmentActivity {
         checkBadge("learn");
         checkBadge("play");
         checkBadge("exercise");
-        checkBadge("make");
         checkBadge("connect");
-        checkBadge("talk");
     }
 
     public void checkBadge(String action){
@@ -267,16 +263,14 @@ public class MainActivity extends FragmentActivity {
     public void allLowUse(){
         Log.i(TAG, "checking for any low usage");
         int check = -1;
-        check = checkLowUse("connect")? 7:check;
-        check = checkLowUse("exercise")? 6:check;
-        check = checkLowUse("learn")? 5:check;
-        check = checkLowUse("make")? 4:check;
-        check = checkLowUse("play")? 3:check;
-        check = checkLowUse("talk")? 2:check;
+        check = checkLowUse("connect")? 5:check;
+        check = checkLowUse("exercise")? 4:check;
+        check = checkLowUse("learn")? 3:check;
+        check = checkLowUse("play")? 2:check;
         check = checkLowUse("sleep")? 1:check;
         check = checkLowUse("eat")? 0:check;
 
-        if (check > -1){
+        if (check >= 0){
             openLowUse(check);
         }
     }
@@ -286,6 +280,7 @@ public class MainActivity extends FragmentActivity {
      * less than four times in a week is considered bad
      */
     public boolean checkLowUse(String action){
+        //get the number of times the given action has been logged in the last seven days
         int timesDone = dh.getNumberOf(action, 7);
         return (timesDone < 4);
     }
@@ -302,7 +297,7 @@ public class MainActivity extends FragmentActivity {
 
     /**
      * Performs the updates that need to happen at the start of every week.
-     * Resets the users score to 150.
+     * Resets the users score to 0.
      * Resets the times logged to 0;
      */
     private void checkIfStartOfWeek(){
@@ -312,7 +307,7 @@ public class MainActivity extends FragmentActivity {
         if(prefs.getLong("week_timer", 0) < aWeekAgo){
             SharedPreferences.Editor edit = prefs.edit();
             edit.putLong("week_timer", System.currentTimeMillis());
-            edit.putInt("current_score", 150);
+            edit.putInt("current_score", 0);
             edit.putInt("times_logged", 0);
             edit.commit();
             Log.i(TAG, "resetting the score and count of times logged as a week has passed");

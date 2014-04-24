@@ -3,13 +3,13 @@ package ie.spunout.mojo;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -22,8 +22,8 @@ import ie.spunout.mojo.graph.LinePoint;
  */
 public class Graph extends Fragment{
     private View view;
-    private boolean[] choices = {false,false,false,false,false,false,false,false,};
-    private View[] buttons = new View[8];
+    private boolean[] choices = {false,false,false,false,false,false};
+    private View[] buttons = new View[6];
     private int currentlySelected = 0;
     DatabaseHandler dh;
     private static final String TAG = "Miyo";   //log tag
@@ -38,7 +38,7 @@ public class Graph extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){
         view = inflater.inflate(R.layout.fragment_graphs, container, false);
         setupButtons();
-        setupOnClicks();
+        setActivityButtonOnClicks();
         setupProgressBar();
         return view;
     }
@@ -51,7 +51,7 @@ public class Graph extends Fragment{
             LinePoint p = new LinePoint(i, weeks[3-i]);
             l.addPoint(p);
         }
-        l.setColor(Color.parseColor("#FFBB33"));
+        l.setColor(getResources().getColor(R.color.spunoutGreen));
 
         LineGraph li = (LineGraph) view.findViewById(R.id.graph);
         li.removeAllLines();
@@ -87,155 +87,45 @@ public class Graph extends Fragment{
         //load all the button views
         buttons[0] = view.findViewById(R.id.eat_button);
         buttons[1] = view.findViewById(R.id.sleep_button);
-        buttons[2] = view.findViewById(R.id.exercise_button);
+        buttons[2] = view.findViewById(R.id.move_button);
         buttons[3] = view.findViewById(R.id.learn_button);
-        buttons[4] = view.findViewById(R.id.talk_button);
-        buttons[5] = view.findViewById(R.id.make_button);
-        buttons[6] = view.findViewById(R.id.play_button);
-        buttons[7] = view.findViewById(R.id.connect_button);
+        buttons[4] = view.findViewById(R.id.play_button);
+        buttons[5] = view.findViewById(R.id.connect_button);
     }
 
     /**
      * Add on click methods for all of the activity buttons
      */
-    private void setupOnClicks(){
-        //setup the eat button listener
-        View eat = view.findViewById(R.id.eat_button);
-        eat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //check if the item has already been selected
-                if(!choices[0]){
-                    //if not deselect the previous button and highlight this one
-                    buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
-                    v.setBackground(getResources().getDrawable(R.drawable.eat_highlighted));
-                    choices[currentlySelected] = false;
-                    currentlySelected = 0;
-                    choices[0] = true;
-                    drawGraph("eat");
-                }
-            }
-        });
+    private void setActivityButtonOnClicks(){
+        View v;
+        int normal = R.drawable.menu_item_normal;
+        int[] viewArray = {
+                R.id.eat_button, R.id.sleep_button,
+                R.id.move_button, R.id.learn_button,
+                R.id.play_button, R.id.connect_button};
+        int[] bgArray= {
+                R.drawable.eat_highlighted, R.drawable.sleep_highlighted,
+                R.drawable.move_highlighted, R.drawable.learn_highlighted,
+                R.drawable.play_highlighted, R.drawable.connect_highlighted};
+        String[] labelArray = {
+                "eat", "sleep", "exercise",
+                "learn", "play", "connect"};
 
-        //setup the sleep button listener
-        View sleep = view.findViewById(R.id.sleep_button);
-        sleep.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //check if the item has already been selected
-                if(!choices[1]){
-                    //if not deselect the previous button and highlight this one
-                    buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
-                    v.setBackground(getResources().getDrawable(R.drawable.sleep_highlighted));
-                    choices[currentlySelected] = false;
-                    currentlySelected = 1;
-                    choices[1] = true;
-                    drawGraph("sleep");
-                }
-            }
-        });
+        for(int i = 0; i < 6; i++){
+            v = view.findViewById(viewArray[i]);
+            v.setOnClickListener(new GraphButtonOnClick(bgArray[i], normal, i, labelArray[i]));
+        }
+    }
 
-        //setup the exercise button listener
-        View exercise = view.findViewById(R.id.exercise_button);
-        exercise.setOnClickListener(new View.OnClickListener() {
+    /**
+     * Set the onclick listeners for the graph time range selection buttons
+     */
+    private void setGraphButtonOnClicks(){
+        Button b = (Button) view.findViewById(R.id.button_all_time);
+        b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //check if the item has already been selected
-                if(!choices[2]){
-                    //if not deselect the previous button and highlight this one
-                    buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
-                    v.setBackground(getResources().getDrawable(R.drawable.move_highlighted));
-                    choices[currentlySelected] = false;
-                    currentlySelected = 2;
-                    choices[2] = true;
-                    drawGraph("exercise");
-                }
-            }
-        });
 
-        //setup the learn button listener
-        View learn = view.findViewById(R.id.learn_button);
-        learn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //check if the item has already been selected
-                if(!choices[3]){
-                    //if not deselect the previous button and highlight this one
-                    buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
-                    v.setBackground(getResources().getDrawable(R.drawable.learn_highlight));
-                    choices[currentlySelected] = false;
-                    currentlySelected = 3;
-                    choices[3] = true;
-                    drawGraph("learn");
-                }
-            }
-        });
-
-        //setup the talk button listener
-        View talk = view.findViewById(R.id.talk_button);
-        talk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!choices[4]){
-                    //if not deselect the previous button and highlight this one
-                    buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
-                    v.setBackground(getResources().getDrawable(R.drawable.talk_highlighted));
-                    choices[currentlySelected] = false;
-                    currentlySelected = 4;
-                    choices[4] = true;
-                    drawGraph("talk");
-                }
-            }
-        });
-
-        //setup the make button listener
-        View make = view.findViewById(R.id.make_button);
-        make.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!choices[5]){
-                    //if not deselect the previous button and highlight this one
-                    buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
-                    v.setBackground(getResources().getDrawable(R.drawable.make_highlighted));
-                    choices[currentlySelected] = false;
-                    currentlySelected = 5;
-                    choices[5] = true;
-                    drawGraph("make");
-                }
-            }
-        });
-
-        //setup the play button listener
-        View play = view.findViewById(R.id.play_button);
-        play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!choices[6]){
-                    //if not deselect the previous button and highlight this one
-                    buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
-                    v.setBackground(getResources().getDrawable(R.drawable.play_highlighted));
-                    choices[currentlySelected] = false;
-                    currentlySelected = 6;
-                    choices[6] = true;
-                    drawGraph("play");
-                }
-            }
-        });
-
-        //setup the connect button listener
-        View connect = view.findViewById(R.id.connect_button);
-        connect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!choices[7]){
-                    //if not deselect the previous button and highlight this one
-                    buttons[currentlySelected].setBackground(getResources().getDrawable(R.drawable.menu_item_normal));
-                    v.setBackground(getResources().getDrawable(R.drawable.connect_highlighted));
-                    choices[currentlySelected] = false;
-                    currentlySelected = 7;
-                    choices[7] = true;
-                    drawGraph("connect");
-                }
             }
         });
     }
@@ -259,4 +149,29 @@ public class Graph extends Fragment{
         bar.setProgress(points.intValue());
     }
 
+    private class GraphButtonOnClick implements View.OnClickListener{
+        int bgId;
+        int activityId;
+        int normalBgId;
+        String activityLabel;
+
+        public GraphButtonOnClick(int bgId, int normalBgId, int activityId, String activityLabel){
+            this.bgId = bgId;
+            this.normalBgId = normalBgId;
+            this.activityId = activityId;
+            this.activityLabel = activityLabel;
+        }
+
+        @Override
+        public void onClick(View v){
+            if(!choices[activityId]){
+                buttons[currentlySelected].setBackground(getResources().getDrawable(normalBgId));
+                v.setBackground(getResources().getDrawable(bgId));
+                choices[currentlySelected] = false;
+                currentlySelected = activityId;
+                choices[activityId] = true;
+                drawGraph(activityLabel);
+            }
+        }
+    }
 }

@@ -33,9 +33,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_LEARN            = "learn";
     private static final String KEY_PLAY             = "play";
     private static final String KEY_EXERCISE         = "exercise";
-    private static final String KEY_MAKE             = "make";
     private static final String KEY_CONNECT          = "connect";
-    private static final String KEY_TALK             = "talk";
     private static final String KEY_TIMESTAMP        = "timestamp";
     private static final String KEY_LIFE_TIME_POINTS = "life_time_points";
 
@@ -54,8 +52,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_MOOD + " REAL,"+ KEY_EAT + " INTEGER,"
                 + KEY_SLEEP + " INTEGER," + KEY_LEARN + " INTEGER,"
                 + KEY_PLAY + " INTEGER," + KEY_EXERCISE + " INTEGER,"
-                + KEY_MAKE + " INTEGER," + KEY_CONNECT + " INTEGER,"
-                + KEY_TALK + " INTEGER," + KEY_LIFE_TIME_POINTS + " INTEGER" + ")";
+                + KEY_CONNECT + " INTEGER," + KEY_LIFE_TIME_POINTS + " INTEGER" + ")";
         Log.i(TAG, CREATE_MIYO_TABLE);
         db.execSQL(CREATE_MIYO_TABLE);
     }
@@ -87,9 +84,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_LEARN, miyo.getLearn());
         values.put(KEY_PLAY, miyo.getPlay());
         values.put(KEY_EXERCISE, miyo.getExercise());
-        values.put(KEY_MAKE, miyo.getMake());
         values.put(KEY_CONNECT, miyo.getConnect());
-        values.put(KEY_TALK, miyo.getTalk());
         calculateLTP(miyo);
         values.put(KEY_LIFE_TIME_POINTS, miyo.getLifeTimePoints());
 
@@ -116,9 +111,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_LEARN, miyo.getLearn());
         values.put(KEY_PLAY, miyo.getPlay());
         values.put(KEY_EXERCISE, miyo.getExercise());
-        values.put(KEY_MAKE, miyo.getMake());
         values.put(KEY_CONNECT, miyo.getConnect());
-        values.put(KEY_TALK, miyo.getTalk());
         values.put(KEY_LIFE_TIME_POINTS, 0);
 
         dbw.insert(TABLE_MIYO, null, values);
@@ -140,8 +133,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 Integer.parseInt(cursor.getString(1)), Integer.parseInt(cursor.getString(2)),
                 Integer.parseInt(cursor.getString(3)), Integer.parseInt(cursor.getString(4)),
                 Integer.parseInt(cursor.getString(5)), Integer.parseInt(cursor.getString(6)),
-                Integer.parseInt(cursor.getString(7)), Integer.parseInt(cursor.getString(8)),
-                Integer.parseInt(cursor.getString(9)), Integer.parseInt(cursor.getString(10))
+                Integer.parseInt(cursor.getString(7)), Integer.parseInt(cursor.getString(8))
             );
         }else{
             miyo = new Miyo();
@@ -261,9 +253,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ltp += miyo.getLearn();
         ltp += miyo.getPlay();
         ltp += miyo.getExercise();
-        ltp += miyo.getMake();
         ltp += miyo.getConnect();
-        ltp += miyo.getTalk();
         miyo.setLifeTimePoints(ltp);
         Log.i(TAG,"final lifetime points = "+ltp);
     }

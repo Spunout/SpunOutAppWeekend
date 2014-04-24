@@ -6,6 +6,7 @@
     <color name="buttonBackground">#ced6d8</color>
     <color name="menuBackground">#e5ffffff</color>
     <color name="white">#ffff</color>
+    <color name="text_color">#ffff</color>
     <color name="splashBlue">#06addf</color>
     <color name="backgroundBlue">#0094CA</color>
     <color name="button_blue">#4BB4B1</color>

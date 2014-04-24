@@ -31,6 +31,7 @@ public class Badges extends Fragment {
         return view;
     }
 
+    //TODO: abstract this to a for loop and arrays
     private void checkBadges(){
         SharedPreferences prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
         int currentLevel;
@@ -94,36 +95,6 @@ public class Badges extends Fragment {
             case 3:
                 currentView = (ImageView) view.findViewById(R.id.learn_gold);
                 currentView.setImageDrawable(getResources().getDrawable(R.drawable.learn_gold));
-                break;
-        }
-        currentLevel = prefs.getInt("talk",0);
-        switch (currentLevel){
-            case 1:
-                currentView = (ImageView) view.findViewById(R.id.talk_bronze);
-                currentView.setImageDrawable(getResources().getDrawable(R.drawable.talk_bronze));
-                break;
-            case 2:
-                currentView = (ImageView) view.findViewById(R.id.talk_silver);
-                currentView.setImageDrawable(getResources().getDrawable(R.drawable.talk_silver));
-                break;
-            case 3:
-                currentView = (ImageView) view.findViewById(R.id.talk_gold);
-                currentView.setImageDrawable(getResources().getDrawable(R.drawable.talk_gold));
-                break;
-        }
-        currentLevel = prefs.getInt("make",0);
-        switch (currentLevel){
-            case 1:
-                currentView = (ImageView) view.findViewById(R.id.make_bronze);
-                currentView.setImageDrawable(getResources().getDrawable(R.drawable.make_bronze));
-                break;
-            case 2:
-                currentView = (ImageView) view.findViewById(R.id.make_silver);
-                currentView.setImageDrawable(getResources().getDrawable(R.drawable.make_silver));
-                break;
-            case 3:
-                currentView = (ImageView) view.findViewById(R.id.make_gold);
-                currentView.setImageDrawable(getResources().getDrawable(R.drawable.make_gold));
                 break;
         }
         currentLevel = prefs.getInt("play",0);

@@ -4,7 +4,6 @@ import android.animation.ValueAnimator;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -28,7 +27,7 @@ import java.util.Scanner;
 //TODO: the "EAT WELL" button icon is lighter than the other button icons
 public class Score extends Fragment {
     private View view;                          //the view activity
-    private SeekBar sbar;                       //the seekbar in the view
+    private SeekBar sbar;                       //the seek bar in the view
     private int score;                          //The users current score
     private TextView scoreNumber;               //the score in the middle of the circle
     private TextView prompt;                    //the text shown on screen to prompt the user
@@ -37,7 +36,7 @@ public class Score extends Fragment {
     private Miyo miyo;                          //keeps track of the selected activities
     private DatabaseHandler dh;                 //used to interact with the database
     private int lastSet;                        //keeps track of the last action recorded for the slider
-    private int[] pointValues = {7,7,5,5,5,5,5,5};
+    private int[] pointValues = {7,7,5,5,5,5};
     private static final String TAG = "Miyo";   //log tag
 
     @Override
@@ -64,7 +63,7 @@ public class Score extends Fragment {
         drawCircle();
         loadActivities();
         loadTimesLogged();
-        setupSeekbar();
+        setupSeekBar();
 
         return view;
     }
@@ -72,7 +71,7 @@ public class Score extends Fragment {
     /**
      * Hide the seekbar
      */
-    private void setupSeekbar(){
+    private void setupSeekBar(){
         sbar = (SeekBar) view.findViewById(R.id.slider);
         sbar.setVisibility(View.INVISIBLE);
         sbar.setMax(100);
@@ -118,6 +117,8 @@ public class Score extends Fragment {
      * Add on click methods for all of the activity buttons
      */
     private void setupOnClicks(){
+        //TODO: make this a for loop over arrays
+
         //setup the eat button listener
         View eat = view.findViewById(R.id.eat_button);
         eat.setOnClickListener(new ActivityButtonOnClick(R.id.eat_img, 0, R.drawable.eat_g, R.drawable.eat_w, "eat"));
@@ -127,32 +128,20 @@ public class Score extends Fragment {
         sleep.setOnClickListener(new ActivityButtonOnClick(R.id.sleep_img, 1, R.drawable.sleep_g, R.drawable.sleep_w, "sleep"));
 
         //setup the exercise button listener
-        View exercise = view.findViewById(R.id.exercise_button);
+        View exercise = view.findViewById(R.id.move_button);
         exercise.setOnClickListener(new ActivityButtonOnClick(R.id.exercise_img, 2, R.drawable.exercise_g, R.drawable.exercise_w, "exercise"));
 
         //setup the learn button listener
         View learn = view.findViewById(R.id.learn_button);
         learn.setOnClickListener(new ActivityButtonOnClick(R.id.learn_img, 3, R.drawable.learn_g, R.drawable.learn_w, "learn"));
 
-
-        //setup the talk button listener
-        View talk = view.findViewById(R.id.talk_button);
-        talk.setOnClickListener(new ActivityButtonOnClick(R.id.talk_img, 4, R.drawable.talk_g, R.drawable.talk_w, "talk"));
-
-
-        //setup the make button listener
-        View make = view.findViewById(R.id.make_button);
-        make.setOnClickListener(new ActivityButtonOnClick(R.id.make_img, 5, R.drawable.make_g, R.drawable.make_w, "make"));
-
-
         //setup the play button listener
         View play = view.findViewById(R.id.play_button);
-        play.setOnClickListener(new ActivityButtonOnClick(R.id.play_img, 6, R.drawable.play_g, R.drawable.play_w, "play"));
-
+        play.setOnClickListener(new ActivityButtonOnClick(R.id.play_img, 4, R.drawable.play_g, R.drawable.play_w, "play"));
 
         //setup the connect button listener
         View connect = view.findViewById(R.id.connect_button);
-        connect.setOnClickListener(new ActivityButtonOnClick(R.id.connect_img, 7, R.drawable.connect_g, R.drawable.connect_w, "connect"));
+        connect.setOnClickListener(new ActivityButtonOnClick(R.id.connect_img, 5, R.drawable.connect_g, R.drawable.connect_w, "connect"));
     }
 
     /**
@@ -173,29 +162,25 @@ public class Score extends Fragment {
             //TODO: move these to the class level and use everywhere
             int[] vArray = {
                     R.id.eat_button, R.id.sleep_button,
-                    R.id.exercise_button, R.id.learn_button,
-                    R.id.talk_button, R.id.make_button,
+                    R.id.move_button, R.id.learn_button,
                     R.id.play_button, R.id.connect_button};
 
             int[] iArray = {
                     R.id.eat_img, R.id.sleep_img,
                     R.id.exercise_img, R.id.learn_img,
-                    R.id.talk_img, R.id.make_img,
                     R.id.play_img, R.id.connect_img};
             
             int[] wArray = {
                     R.drawable.eat_w, R.drawable.sleep_w,
                     R.drawable.exercise_w, R.drawable.learn_w,
-                    R.drawable.talk_w, R.drawable.make_w,
                     R.drawable.play_w, R.drawable.connect_w};
 
             int[] gArray = {
                     R.drawable.eat_g, R.drawable.sleep_g,
                     R.drawable.exercise_g, R.drawable.learn_g,
-                    R.drawable.talk_g, R.drawable.make_g,
                     R.drawable.play_g, R.drawable.connect_g};
             
-            for(int i = 0; i < 8; i++){
+            for(int i = 0; i < 6; i++){
                 v = view.findViewById(vArray[i]);
                 image = (ImageView) view.findViewById(iArray[i]);
                 if(miyo.getAny(i) > 0){
@@ -267,7 +252,7 @@ public class Score extends Fragment {
     private void setupScore(){
         SharedPreferences prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
         //get the score view items
-        score = prefs.getInt("current_points", 150);
+        score = prefs.getInt("current_points", 0);
         scoreNumber.setText(String.valueOf(score));
     }
 
@@ -324,8 +309,12 @@ public class Score extends Fragment {
 
     //draws the meter circle
     public boolean drawCircle(){
+        //This is the maximum number of points that could be earned in a week
+        //TODO: this should be a static class variable
+        int scoreMax = 238;
+
         //calculate the score as a 0-1 double
-        double scoreScale = (double) score/500;
+        double scoreScale = (double) score/scoreMax;
 
         double start, end;
         start = -90;
@@ -337,6 +326,7 @@ public class Score extends Fragment {
 
         //set the color
         shape.getPaint().setColor(0xff01c390);
+        shape.getPaint().setAlpha((int) Math.round((0xe0 * scoreScale)+(0x1f)));
 
         ValueAnimator anim = new ValueAnimator();
         anim.setTarget(arc);
@@ -348,37 +338,6 @@ public class Score extends Fragment {
         foreground.getDrawable();
 
         return true;
-    }
-
-    public int updateActivities(boolean[] activities) {
-        int score = 0;
-        float scoreupdate = 0;
-        Resources res = getResources();
-        String[] types = res.getStringArray(R.array.button_labels);
-        for (int i = 0; i < activities.length; i++) {
-            if (activities[i]) {
-                String name = "";
-                SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-                name = types[i];
-                scoreupdate = sharedPref.getFloat(name, scoreupdate);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                if (i < 2) {
-                    editor.putFloat(name, scoreupdate + 5);
-                    editor.commit();
-                } else if (i < 6) {
-                    editor.putFloat(name, scoreupdate + 7);
-                    editor.commit();
-                } else {
-                    editor.putFloat(name, scoreupdate + 6);
-                    editor.commit();
-                }
-            }
-        }
-        return score;
-    }
-
-    public void recordChoices(View view){
-        Log.i(TAG, "recording choices: "+miyo.toString());
     }
 
     //code to calculate whether they have achieved badges
@@ -432,7 +391,6 @@ public class Score extends Fragment {
         int activityId;
         int gDrawable;
         int wDrawable;
-        int pointsValue;
         String activityLabel;
 
         public ActivityButtonOnClick(int imageId, int activityId, int gDrawable, int wDrawable, String activityLabel){
@@ -440,7 +398,6 @@ public class Score extends Fragment {
             this.activityId = activityId;
             this.gDrawable = gDrawable;
             this.wDrawable = wDrawable;
-            this.pointsValue = pointsValue;
             this.activityLabel = activityLabel;
         }
 

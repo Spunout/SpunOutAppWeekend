@@ -17,9 +17,7 @@ public class Miyo {
     private int learn;
     private int play;
     private int exercise;
-    private int make;
     private int connect;
-    private int talk;
     private long timestamp;
     private int life_time_points;
 
@@ -32,24 +30,20 @@ public class Miyo {
         learn = 0;
         play = 0;
         exercise = 0;
-        make = 0;
         connect = 0;
-        talk = 0;
         life_time_points = 0;
         setTimestamp();
     }
 
     // constructor
-    public Miyo(int mood, int eat, int sleep, int learn, int play, int exercise, int make, int connect, int talk, int life_time_points) {
+    public Miyo(int mood, int eat, int sleep, int learn, int play, int exercise, int connect, int life_time_points) {
         this.mood = mood;
         this.eat = eat;
         this.sleep = sleep;
         this.learn = learn;
         this.play = play;
         this.exercise = exercise;
-        this.make = make;
         this.connect = connect;
-        this.talk = talk;
         this.timestamp = new Date().getTime();
         this.life_time_points = life_time_points;
     }
@@ -114,16 +108,6 @@ public class Miyo {
         this.exercise = exercise;
     }
 
-    // getting make
-    public int getMake(){
-        return this.make;
-    }
-
-    // setting make
-    public void setMake(int make){
-        this.make = make;
-    }
-
     // getting connect
     public int getConnect(){
         return this.connect;
@@ -132,16 +116,6 @@ public class Miyo {
     // setting connect
     public void setConnect(int connect){
         this.connect = connect;
-    }
-
-    // getting talk
-    public int getTalk(){
-        return this.talk;
-    }
-
-    // setting talk
-    public void setTalk(int talk){
-        this.talk = talk;
     }
 
     /**
@@ -162,15 +136,9 @@ public class Miyo {
                 setLearn(value);
                 break;
             case 4:
-                setTalk(value);
-                break;
-            case 5:
-                setMake(value);
-                break;
-            case 6:
                 setPlay(value);
                 break;
-            case 7:
+            case 5:
                 setConnect(value);
                 break;
         }
@@ -190,12 +158,8 @@ public class Miyo {
             case 3:
                 return getLearn();
             case 4:
-                return getTalk();
-            case 5:
-                return getMake();
-            case 6:
                 return getPlay();
-            case 7:
+            case 5:
                 return getConnect();
             default:
                 return 0;
