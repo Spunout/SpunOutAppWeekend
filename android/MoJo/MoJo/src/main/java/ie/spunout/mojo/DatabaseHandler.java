@@ -1,6 +1,5 @@
 package ie.spunout.mojo;
 
-import android.app.ActionBar;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -177,8 +176,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String range = r.toString();
         Log.i(TAG, "range is values greater than "+range);
 
-        String[] args = { range};
-        String qry = "SELECT * FROM "+TABLE_MIYO+" WHERE "+action.toLowerCase()+" = 1 AND "+KEY_TIMESTAMP+" >= ?";
+        String[] args = {range};
+        String qry = "SELECT * FROM "+TABLE_MIYO+" WHERE "+action.toLowerCase()+" > 0 AND "+KEY_TIMESTAMP+" >= ?";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(qry,args);
@@ -257,14 +256,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void calculateLTP(Miyo miyo){
         int ltp =  (int)getRecentLTP();//yesterday's score OR zero
         Log.i(TAG,"initial lifetime points = "+ltp);
-        ltp += (miyo.getEat()*7);
-        ltp += (miyo.getSleep()*7);
-        ltp += (miyo.getLearn()*5);
-        ltp += (miyo.getPlay()*5);
-        ltp += (miyo.getExercise()*6);
-        ltp += (miyo.getMake()*6);
-        ltp += (miyo.getConnect()*6);
-        ltp += (miyo.getTalk()*6);
+        ltp += miyo.getEat();
+        ltp += miyo.getSleep();
+        ltp += miyo.getLearn();
+        ltp += miyo.getPlay();
+        ltp += miyo.getExercise();
+        ltp += miyo.getMake();
+        ltp += miyo.getConnect();
+        ltp += miyo.getTalk();
         miyo.setLifeTimePoints(ltp);
         Log.i(TAG,"final lifetime points = "+ltp);
     }

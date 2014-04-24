@@ -144,6 +144,64 @@ public class Miyo {
         this.talk = talk;
     }
 
+    /**
+     * sets any of the activities
+     */
+    public void setAny(int activity, int value){
+        switch (activity){
+            case 0:
+                setEat(value);
+                break;
+            case 1:
+                setSleep(value);
+                break;
+            case 2:
+                setExercise(value);
+                break;
+            case 3:
+                setLearn(value);
+                break;
+            case 4:
+                setTalk(value);
+                break;
+            case 5:
+                setMake(value);
+                break;
+            case 6:
+                setPlay(value);
+                break;
+            case 7:
+                setConnect(value);
+                break;
+        }
+    }
+    
+    /**
+     * gets any of the activities
+     */
+    public int getAny(int activity){
+        switch (activity){
+            case 0:
+                return getEat();
+            case 1:
+                return getSleep();
+            case 2:
+                return getExercise();
+            case 3:
+                return getLearn();
+            case 4:
+                return getTalk();
+            case 5:
+                return getMake();
+            case 6:
+                return getPlay();
+            case 7:
+                return getConnect();
+            default:
+                return 0;
+        }
+    }
+
     // getting timestamp
     public long getTimestamp(){
         return this.timestamp;

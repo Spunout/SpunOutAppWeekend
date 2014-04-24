@@ -300,6 +300,11 @@ public class MainActivity extends FragmentActivity {
         lowUseDialog.show(fm, "Sample");
     }
 
+    /**
+     * Performs the updates that need to happen at the start of every week.
+     * Resets the users score to 150.
+     * Resets the times logged to 0;
+     */
     private void checkIfStartOfWeek(){
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
         Long currentTime = System.currentTimeMillis();
@@ -308,8 +313,9 @@ public class MainActivity extends FragmentActivity {
             SharedPreferences.Editor edit = prefs.edit();
             edit.putLong("week_timer", System.currentTimeMillis());
             edit.putInt("current_score", 150);
+            edit.putInt("times_logged", 0);
             edit.commit();
-            Log.i(TAG, "resetting the score as a week has passed");
+            Log.i(TAG, "resetting the score and count of times logged as a week has passed");
         }
     }
 }

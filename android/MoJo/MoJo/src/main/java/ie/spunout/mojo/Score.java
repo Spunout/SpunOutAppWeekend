@@ -25,15 +25,19 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
+//TODO: the "EAT WELL" button icon is lighter than the other button icons
 public class Score extends Fragment {
     private View view;                          //the view activity
     private SeekBar sbar;                       //the seekbar in the view
     private int score;                          //The users current score
     private TextView scoreNumber;               //the score in the middle of the circle
+    private TextView prompt;                    //the text shown on screen to prompt the user
     private ImageView meterForeground;          //the circle filling the score indicator
     private ImageView meterBackground;
     private Miyo miyo;                          //keeps track of the selected activities
     private DatabaseHandler dh;                 //used to interact with the database
+    private int lastSet;                        //keeps track of the last action recorded for the slider
+    private int[] pointValues = {7,7,5,5,5,5,5,5};
     private static final String TAG = "Miyo";   //log tag
 
     @Override
@@ -51,16 +55,63 @@ public class Score extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_score, container, false);
         scoreNumber = (TextView) view.findViewById(R.id.score_number);
+        prompt = (TextView) view.findViewById(R.id.prompt);
 
         drawIcons();
         setupOnClicks();
         setupScore();
         setupMeter();
         drawCircle();
-        loadMiyo();
+        loadActivities();
         loadTimesLogged();
+        setupSeekbar();
 
         return view;
+    }
+
+    /**
+     * Hide the seekbar
+     */
+    private void setupSeekbar(){
+        sbar = (SeekBar) view.findViewById(R.id.slider);
+        sbar.setVisibility(View.INVISIBLE);
+        sbar.setMax(100);
+
+        sbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                //remove the points from the last log from the points circle
+                updatePoints(-(miyo.getAny(lastSet)));
+                //log a new miyo
+                float current = (float) sbar.getProgress();
+                float pointValue = (float) pointValues[lastSet];
+                float oneHundred = 100;
+                float value = current * pointValue / oneHundred;
+                int result = (int) Math.round(value);
+
+                miyo.setAny(lastSet, result);
+                dh.addMiyo(miyo);
+                updatePoints(result);
+                incrementTimesLogged();
+            }
+        });
+    }
+
+    /**
+     * Show the seekbar and change the prompt text.
+     */
+    private void updateScreen(){
+
     }
 
     /**
@@ -69,263 +120,39 @@ public class Score extends Fragment {
     private void setupOnClicks(){
         //setup the eat button listener
         View eat = view.findViewById(R.id.eat_button);
-        eat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ImageView eatImage = (ImageView) v.findViewById(R.id.eat_img);
-                Drawable newBackground;
-                Drawable newIcon;
-
-                //check if the item has already been selected
-                if(miyo.getEat() == 1){
-                    //if so, deselect it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
-                    newIcon = getResources().getDrawable(R.drawable.eat_g);
-                    miyo.setEat(0);
-                    //log the change in the database
-                    dh.addMiyo(miyo);
-                    updatePoints(-7);
-                    incrementTimesLogged();
-                }else{
-                    //if not, highlight it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
-                    newIcon = getResources().getDrawable(R.drawable.eat_w);
-                    miyo.setEat(1);
-                    dh.addMiyo(miyo);
-                    updatePoints(7);
-                    incrementTimesLogged();
-                }
-                v.setBackground(newBackground);
-                eatImage.setImageDrawable(newIcon);
-
-                //store the new state of the activities
-
-            }
-        });
+        eat.setOnClickListener(new ActivityButtonOnClick(R.id.eat_img, 0, R.drawable.eat_g, R.drawable.eat_w, "eat"));
 
         //setup the sleep button listener
         View sleep = view.findViewById(R.id.sleep_button);
-        sleep.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ImageView eatImage = (ImageView) v.findViewById(R.id.sleep_img);
-                Drawable newBackground;
-                Drawable newIcon;
-
-                //check if the item has already been selected
-                if(miyo.getSleep() == 1){
-                    //if so, deselect it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
-                    newIcon = getResources().getDrawable(R.drawable.sleep_g);
-                    miyo.setSleep(0);
-                    dh.addMiyo(miyo);
-                    updatePoints(-7);
-                    incrementTimesLogged();
-                }else{
-                    //if not, highlight it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
-                    newIcon = getResources().getDrawable(R.drawable.sleep_w);
-                    miyo.setSleep(1);
-                    dh.addMiyo(miyo);
-                    updatePoints(7);
-                    incrementTimesLogged();
-                }
-                v.setBackground(newBackground);
-                eatImage.setImageDrawable(newIcon);
-            }
-        });
+        sleep.setOnClickListener(new ActivityButtonOnClick(R.id.sleep_img, 1, R.drawable.sleep_g, R.drawable.sleep_w, "sleep"));
 
         //setup the exercise button listener
         View exercise = view.findViewById(R.id.exercise_button);
-        exercise.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ImageView eatImage = (ImageView) v.findViewById(R.id.exercise_img);
-                Drawable newBackground;
-                Drawable newIcon;
-
-                //check if the item has already been selected
-                if(miyo.getExercise() == 1){
-                    //if so, deselect it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
-                    newIcon = getResources().getDrawable(R.drawable.exercise_g);
-                    miyo.setExercise(0);
-                    dh.addMiyo(miyo);
-                    updatePoints(-5);
-                    incrementTimesLogged();
-                }else{
-                    //if not, highlight it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
-                    newIcon = getResources().getDrawable(R.drawable.exercise_w);
-                    miyo.setExercise(1);
-                    dh.addMiyo(miyo);
-                    updatePoints(5);
-                    incrementTimesLogged();
-                }
-                v.setBackground(newBackground);
-                eatImage.setImageDrawable(newIcon);
-            }
-        });
+        exercise.setOnClickListener(new ActivityButtonOnClick(R.id.exercise_img, 2, R.drawable.exercise_g, R.drawable.exercise_w, "exercise"));
 
         //setup the learn button listener
         View learn = view.findViewById(R.id.learn_button);
-        learn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ImageView eatImage = (ImageView) v.findViewById(R.id.learn_img);
-                Drawable newBackground;
-                Drawable newIcon;
+        learn.setOnClickListener(new ActivityButtonOnClick(R.id.learn_img, 3, R.drawable.learn_g, R.drawable.learn_w, "learn"));
 
-                //check if the item has already been selected
-                if(miyo.getLearn() == 1){
-                    //if so, deselect it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
-                    newIcon = getResources().getDrawable(R.drawable.learn_g);
-                    miyo.setLearn(0);
-                    dh.addMiyo(miyo);
-                    updatePoints(-5);
-                    incrementTimesLogged();
-                }else{
-                    //if not, highlight it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
-                    newIcon = getResources().getDrawable(R.drawable.learn_w);
-                    miyo.setLearn(1);
-                    dh.addMiyo(miyo);
-                    updatePoints(5);
-                    incrementTimesLogged();
-                }
-                v.setBackground(newBackground);
-                eatImage.setImageDrawable(newIcon);
-            }
-        });
 
         //setup the talk button listener
         View talk = view.findViewById(R.id.talk_button);
-        talk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ImageView eatImage = (ImageView) v.findViewById(R.id.talk_img);
-                Drawable newBackground;
-                Drawable newIcon;
+        talk.setOnClickListener(new ActivityButtonOnClick(R.id.talk_img, 4, R.drawable.talk_g, R.drawable.talk_w, "talk"));
 
-                //check if the item has already been selected
-                if(miyo.getTalk() == 1){
-                    //if so, deselect it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
-                    newIcon = getResources().getDrawable(R.drawable.talk_g);
-                    miyo.setTalk(0);
-                    dh.addMiyo(miyo);
-                    updatePoints(-7);
-                    incrementTimesLogged();
-                }else{
-                    //if not, highlight it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
-                    newIcon = getResources().getDrawable(R.drawable.talk_w);
-                    miyo.setTalk(1);
-                    dh.addMiyo(miyo);
-                    updatePoints(7);
-                    incrementTimesLogged();
-                }
-                v.setBackground(newBackground);
-                eatImage.setImageDrawable(newIcon);
-            }
-        });
 
         //setup the make button listener
         View make = view.findViewById(R.id.make_button);
-        make.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ImageView eatImage = (ImageView) v.findViewById(R.id.make_img);
-                Drawable newBackground;
-                Drawable newIcon;
+        make.setOnClickListener(new ActivityButtonOnClick(R.id.make_img, 5, R.drawable.make_g, R.drawable.make_w, "make"));
 
-                //check if the item has already been selected
-                if(miyo.getMake() == 1){
-                    //if so, deselect it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
-                    newIcon = getResources().getDrawable(R.drawable.make_g);
-                    miyo.setMake(0);
-                    dh.addMiyo(miyo);
-                    updatePoints(-5);
-                    incrementTimesLogged();
-                }else{
-                    //if not, highlight it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
-                    newIcon = getResources().getDrawable(R.drawable.make_w);
-                    miyo.setMake(1);
-                    dh.addMiyo(miyo);
-                    updatePoints(5);
-                    incrementTimesLogged();
-                }
-                v.setBackground(newBackground);
-                eatImage.setImageDrawable(newIcon);
-            }
-        });
 
         //setup the play button listener
         View play = view.findViewById(R.id.play_button);
-        play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ImageView eatImage = (ImageView) v.findViewById(R.id.play_img);
-                Drawable newBackground;
-                Drawable newIcon;
+        play.setOnClickListener(new ActivityButtonOnClick(R.id.play_img, 6, R.drawable.play_g, R.drawable.play_w, "play"));
 
-                //check if the item has already been selected
-                if(miyo.getPlay() == 1){
-                    //if so, deselect it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
-                    newIcon = getResources().getDrawable(R.drawable.play_g);
-                    miyo.setPlay(0);
-                    dh.addMiyo(miyo);
-                    updatePoints(-5);
-                    incrementTimesLogged();
-                }else{
-                    //if not, highlight it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
-                    newIcon = getResources().getDrawable(R.drawable.play_w);
-                    miyo.setPlay(1);
-                    dh.addMiyo(miyo);
-                    updatePoints(5);
-                    incrementTimesLogged();
-                }
-                v.setBackground(newBackground);
-                eatImage.setImageDrawable(newIcon);
-            }
-        });
 
         //setup the connect button listener
         View connect = view.findViewById(R.id.connect_button);
-        connect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ImageView eatImage = (ImageView) v.findViewById(R.id.connect_img);
-                Drawable newBackground;
-                Drawable newIcon;
-
-                //check if the item has already been selected
-                if(miyo.getConnect() == 1){
-                    //if so, deselect it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
-                    newIcon = getResources().getDrawable(R.drawable.connect_g);
-                    miyo.setConnect(0);
-                    dh.addMiyo(miyo);
-                    updatePoints(-7);
-                    incrementTimesLogged();
-                }else{
-                    //if not, highlight it
-                    newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
-                    newIcon = getResources().getDrawable(R.drawable.connect_w);
-                    miyo.setConnect(1);
-                    dh.addMiyo(miyo);
-                    updatePoints(7);
-                    incrementTimesLogged();
-                }
-                v.setBackground(newBackground);
-                eatImage.setImageDrawable(newIcon);
-            }
-        });
+        connect.setOnClickListener(new ActivityButtonOnClick(R.id.connect_img, 7, R.drawable.connect_g, R.drawable.connect_w, "connect"));
     }
 
     /**
@@ -333,7 +160,7 @@ public class Score extends Fragment {
      * activity button icons appropriately, it won't set anything if there's
      * no entries for today.
      */
-    private void loadMiyo(){
+    private void loadActivities(){
         Long timestamp = dh.getTodayEntryOrZero();
         if(timestamp == 0){
             miyo = new Miyo();
@@ -343,84 +170,40 @@ public class Score extends Fragment {
             View v;
             ImageView image;
 
-            v = view.findViewById(R.id.eat_button);
-            image = (ImageView) view.findViewById(R.id.eat_img);
-            //set the buttons
-            if(miyo.getEat() == 1){
-                v.setBackground(newBackground);
-                image.setImageDrawable(getResources().getDrawable(R.drawable.eat_w));
-            }else{
-                image.setImageDrawable(getResources().getDrawable(R.drawable.eat_g));
-            }
+            //TODO: move these to the class level and use everywhere
+            int[] vArray = {
+                    R.id.eat_button, R.id.sleep_button,
+                    R.id.exercise_button, R.id.learn_button,
+                    R.id.talk_button, R.id.make_button,
+                    R.id.play_button, R.id.connect_button};
 
-            v = view.findViewById(R.id.sleep_button);
-            image = (ImageView) view.findViewById(R.id.sleep_img);
-            //set the buttons
-            if(miyo.getSleep() == 1){
-                v.setBackground(newBackground);
-                image.setImageDrawable(getResources().getDrawable(R.drawable.sleep_w));
-            }else{
-                image.setImageDrawable(getResources().getDrawable(R.drawable.sleep_g));
-            }
+            int[] iArray = {
+                    R.id.eat_img, R.id.sleep_img,
+                    R.id.exercise_img, R.id.learn_img,
+                    R.id.talk_img, R.id.make_img,
+                    R.id.play_img, R.id.connect_img};
+            
+            int[] wArray = {
+                    R.drawable.eat_w, R.drawable.sleep_w,
+                    R.drawable.exercise_w, R.drawable.learn_w,
+                    R.drawable.talk_w, R.drawable.make_w,
+                    R.drawable.play_w, R.drawable.connect_w};
 
-            v = view.findViewById(R.id.exercise_button);
-            image = (ImageView) view.findViewById(R.id.exercise_img);
-            //set the buttons
-            if(miyo.getExercise() == 1){
-                v.setBackground(newBackground);
-                image.setImageDrawable(getResources().getDrawable(R.drawable.exercise_w));
-            }else{
-                image.setImageDrawable(getResources().getDrawable(R.drawable.exercise_g));
-            }
-
-            v = view.findViewById(R.id.learn_button);
-            image = (ImageView) view.findViewById(R.id.learn_img);
-            //set the buttons
-            if(miyo.getLearn() == 1){
-                v.setBackground(newBackground);
-                image.setImageDrawable(getResources().getDrawable(R.drawable.learn_w));
-            }else{
-                image.setImageDrawable(getResources().getDrawable(R.drawable.learn_g));
-            }
-
-            v = view.findViewById(R.id.talk_button);
-            image = (ImageView) view.findViewById(R.id.talk_img);
-            //set the buttons
-            if(miyo.getTalk() == 1){
-                v.setBackground(newBackground);
-                image.setImageDrawable(getResources().getDrawable(R.drawable.talk_w));
-            }else{
-                image.setImageDrawable(getResources().getDrawable(R.drawable.talk_g));
-            }
-
-            v = view.findViewById(R.id.make_button);
-            image = (ImageView) view.findViewById(R.id.make_img);
-            //set the buttons
-            if(miyo.getMake() == 1){
-                v.setBackground(newBackground);
-                image.setImageDrawable(getResources().getDrawable(R.drawable.make_w));
-            }else{
-                image.setImageDrawable(getResources().getDrawable(R.drawable.make_g));
-            }
-
-            v = view.findViewById(R.id.play_button);
-            image = (ImageView) view.findViewById(R.id.play_img);
-            //set the buttons
-            if(miyo.getPlay() == 1){
-                v.setBackground(newBackground);
-                image.setImageDrawable(getResources().getDrawable(R.drawable.play_w));
-            }else{
-                image.setImageDrawable(getResources().getDrawable(R.drawable.play_g));
-            }
-
-            v = view.findViewById(R.id.connect_button);
-            image = (ImageView) view.findViewById(R.id.connect_img);
-            //set the buttons
-            if(miyo.getConnect() == 1){
-                v.setBackground(newBackground);
-                image.setImageDrawable(getResources().getDrawable(R.drawable.connect_w));
-            }else{
-                image.setImageDrawable(getResources().getDrawable(R.drawable.connect_g));
+            int[] gArray = {
+                    R.drawable.eat_g, R.drawable.sleep_g,
+                    R.drawable.exercise_g, R.drawable.learn_g,
+                    R.drawable.talk_g, R.drawable.make_g,
+                    R.drawable.play_g, R.drawable.connect_g};
+            
+            for(int i = 0; i < 8; i++){
+                v = view.findViewById(vArray[i]);
+                image = (ImageView) view.findViewById(iArray[i]);
+                if(miyo.getAny(i) > 0){
+                    v.setBackground(newBackground);
+                    image.setImageDrawable(getResources().getDrawable(wArray[i]));
+                }else{
+                    image.setImageDrawable(getResources().getDrawable(gArray[i]));
+                }
             }
         }
     }
@@ -453,7 +236,8 @@ public class Score extends Fragment {
     }
 
     /**
-     * Draws the score circle proportionally for the screen
+     * Draws the score circle proportionally for the screen using the min of either the
+     * width or the height of the display
      */
     private void setupMeter(){
         meterForeground = (ImageView) view.findViewById(R.id.meterforeground);
@@ -465,9 +249,10 @@ public class Score extends Fragment {
         display.getSize(size);
         int width = size.x;
         int height = size.y;
+        int min = (width > height)? height: width;
 
-        double outerSize = width * .65;
-        double innerSize = width * .6;
+        double outerSize = min * .65;
+        double innerSize = min * .6;
 
         Log.i(TAG,"meter size = "+String.valueOf(outerSize)+","+String.valueOf(innerSize));
 
@@ -597,6 +382,7 @@ public class Score extends Fragment {
     }
 
     //code to calculate whether they have achieved badges
+    //laura's code
     public class CalculateLevel {
         private final Integer[] levels = new Integer[29];
         private Scanner sc;
@@ -639,5 +425,56 @@ public class Score extends Fragment {
      */
     public void drawIcons(){
         //
+    }
+
+    private class ActivityButtonOnClick implements View.OnClickListener{
+        int imageId;
+        int activityId;
+        int gDrawable;
+        int wDrawable;
+        int pointsValue;
+        String activityLabel;
+
+        public ActivityButtonOnClick(int imageId, int activityId, int gDrawable, int wDrawable, String activityLabel){
+            this.imageId = imageId;
+            this.activityId = activityId;
+            this.gDrawable = gDrawable;
+            this.wDrawable = wDrawable;
+            this.pointsValue = pointsValue;
+            this.activityLabel = activityLabel;
+        }
+
+        @Override
+        public void onClick(View v){
+            ImageView image = (ImageView) v.findViewById(imageId);
+            Drawable newBackground;
+            Drawable newIcon;
+
+            //check if the item has already been selected
+            if(miyo.getAny(activityId) > 0){
+                //if so, deselect it
+                newBackground = getResources().getDrawable(R.drawable.menu_item_normal);
+                newIcon = getResources().getDrawable(gDrawable);
+                updatePoints(-(miyo.getAny(activityId)));
+                miyo.setAny(activityId, 0);
+                //log the change in the database
+                dh.addMiyo(miyo);
+                sbar.setVisibility(View.INVISIBLE);
+                prompt.setText("What have you done today?");
+            }else{
+                //if not, select it
+                sbar.setVisibility(View.VISIBLE);
+                newBackground = getResources().getDrawable(R.drawable.menu_item_highlighted);
+                newIcon = getResources().getDrawable(wDrawable);
+                miyo.setAny(activityId, pointValues[activityId]);
+                dh.addMiyo(miyo);
+                updatePoints(pointValues[activityId]);
+                incrementTimesLogged();
+                prompt.setText("How well did you "+activityLabel+"?");
+                lastSet = activityId;
+            }
+            v.setBackground(newBackground);
+            image.setImageDrawable(newIcon);
+        }
     }
 }
