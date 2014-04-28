@@ -161,7 +161,13 @@ static NSString *const kSODatabaseName = @"miyo.db";
     __block NSUInteger unitFlags = NSDayCalendarUnit;
     __block NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     __block NSInteger totalActivities;
+    __block NSInteger index;
     
+    for (int i = 0; i < toDay; i++)
+    {
+        NSNumber *zero = [[NSNumber alloc] initWithInteger:0];
+        [days addObject:zero];
+    }
     
     [self inDatabase:^(FMDatabase *db) {
         
@@ -169,40 +175,38 @@ static NSString *const kSODatabaseName = @"miyo.db";
         
         FMResultSet *resultSet = [db executeQuery:query];
         
+        int counter = 0;
+        
         while ([resultSet next])
         {
-
+            
             NSDate *date = [NSDate dateWithTimeIntervalSince1970:[resultSet doubleForColumnIndex:0]];
-
+            
             NSDateComponents *components = [calendar components:unitFlags fromDate:date toDate:lastDate options:0];
             daysBetween = [components day];
             
             totalActivities = ([activity length] == 0) ? [resultSet longForColumn:@"mood"] : [resultSet longForColumn:activity];
+            NSLog(@"Days Between: %ld", daysBetween);
             
-            while (daysBetween > 1)
+            counter += daysBetween;
+            
+            if (counter < [days count])
             {
-                if ([days count] < toDay)
-                {
-                    [days addObject:[[NSNumber alloc] initWithInteger:0]];
-                }
-                
-                daysBetween--;
-            }
-            
-            
-            if ([days count] < toDay)
-            {
-                [days addObject:[[NSNumber alloc] initWithInteger:totalActivities]];
+                [days replaceObjectAtIndex:counter withObject:[[NSNumber alloc] initWithInteger:totalActivities]];
             }
             
             lastDate = date;
             
         }
-     
+        
         [resultSet close];
         
     }];
     
+    for (int i = 0; i < [days count]; i++)
+    {
+        NSLog(@"%@", [days[i] stringValue]);
+    }
     
     return days;
 }
