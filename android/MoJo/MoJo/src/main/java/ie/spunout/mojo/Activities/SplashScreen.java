@@ -1,9 +1,11 @@
-package ie.spunout.mojo;
+package ie.spunout.mojo.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import ie.spunout.mojo.R;
 
 public class SplashScreen extends Activity {
 
@@ -26,7 +28,7 @@ public class SplashScreen extends Activity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                Intent i = new Intent(SplashScreen.this, MainActivity.class);
+                Intent i = new Intent(SplashScreen.this, Home.class);
                 startActivity(i);
 
                 // close this activity

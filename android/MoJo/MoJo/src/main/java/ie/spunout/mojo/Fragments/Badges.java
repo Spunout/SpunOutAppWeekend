@@ -1,26 +1,21 @@
-package ie.spunout.mojo;
+package ie.spunout.mojo.Fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
+
+import ie.spunout.mojo.R;
 
 /**
  * Created by jameswalsh on 16/02/2014.
  */
 public class Badges extends Fragment {
     View view;
-    @Override
-    public void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){

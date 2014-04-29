@@ -1,4 +1,4 @@
-package ie.spunout.mojo;
+package ie.spunout.mojo.Fragments;
 
 import android.animation.ValueAnimator;
 import android.support.v4.app.Fragment;
@@ -23,6 +23,10 @@ import android.widget.TextView;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
+
+import ie.spunout.mojo.DatabaseHandler;
+import ie.spunout.mojo.Miyo;
+import ie.spunout.mojo.R;
 
 //TODO: the "EAT WELL" button icon is lighter than the other button icons
 public class Score extends Fragment {

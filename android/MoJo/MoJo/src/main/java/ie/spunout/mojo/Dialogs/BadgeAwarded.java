@@ -1,4 +1,4 @@
-package ie.spunout.mojo;
+package ie.spunout.mojo.Dialogs;
 
 import android.app.Dialog;
 import android.content.SharedPreferences;
@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+
+import ie.spunout.mojo.R;
 
 
 /**

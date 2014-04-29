@@ -1,6 +1,7 @@
-package ie.spunout.mojo;
+package ie.spunout.mojo.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -12,28 +13,38 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.util.Log;
 
+import ie.spunout.mojo.Dialogs.BadgeAwarded;
+import ie.spunout.mojo.Fragments.Badges;
+import ie.spunout.mojo.DataPoint;
+import ie.spunout.mojo.DatabaseHandler;
+import ie.spunout.mojo.Fragments.Graph;
+import ie.spunout.mojo.Dialogs.Instructions;
+import ie.spunout.mojo.Dialogs.LevelUp;
+import ie.spunout.mojo.Dialogs.LowUse;
+import ie.spunout.mojo.R;
+import ie.spunout.mojo.Fragments.Score;
 
-public class MainActivity extends FragmentActivity {
+
+public class Home extends FragmentActivity {
     DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
     ViewPager mViewPager;
     public DatabaseHandler dh;
     private static final String TAG = "Miyo";   //log tag
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home);
 
         //create new database handler
         dh = new DatabaseHandler(this);
         checkIfFirstOpen();
 
         mDemoCollectionPagerAdapter = new DemoCollectionPagerAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager = (ViewPager) findViewById(R.id.home_pager);
         mViewPager.setAdapter(mDemoCollectionPagerAdapter);
 
-        //load the first fragment (initial)
+        //load the first fragment (Score)
         mViewPager.setCurrentItem(0);
 
         //check if the user has leveled up
@@ -67,57 +78,6 @@ public class MainActivity extends FragmentActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    // Since this is an object collection, use a FragmentStatePagerAdapter,
-    // and NOT a FragmentPagerAdapter.
-    public class DemoCollectionPagerAdapter extends FragmentPagerAdapter {
-        public DemoCollectionPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int i) {
-            //TODO: add in the other fragments
-            Fragment fragment;
-
-            switch (i){
-                case 0:
-                    fragment = new Score();
-                    break;
-                case 1:
-                    fragment = new Graph();
-                    break;
-                default:
-                    fragment = new Badges();
-            }
-
-            return fragment;
-        }
-
-        @Override
-        public int getCount() {
-            return 3;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            //TODO: add in the other fragments
-            String title;
-
-            switch (position){
-                case 0:
-                    title = "Log Activities";
-                    break;
-                case 1:
-                    title = "See your Progress";
-                    break;
-                default:
-                    title = "Badge Gallery";
-            }
-
-            return title;
-        }
     }
 
     /**
@@ -172,9 +132,11 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void openInstructions(){
-        FragmentManager fm = getSupportFragmentManager();
-        Instructions instructionsDialog = new Instructions();
-        instructionsDialog.show(fm, "Sample");
+        //FragmentManager fm = getSupportFragmentManager();
+        //Instructions instructionsDialog = new Instructions();
+        //instructionsDialog.show(fm, "Sample");
+        Intent i = new Intent(this, InfoPages.class);
+        startActivity(i);
     }
 
     public void checkLevel(){
@@ -235,7 +197,13 @@ public class MainActivity extends FragmentActivity {
 
         //add one for easier manipulation
         currentBadge++;
-        int timesDone = dh.getNumberOf(action, (currentBadge*7));
+        int timesDone = 0;
+        DataPoint[] data = dh.getNumberOf(action, (currentBadge*7), 0);
+        for (int i = 0; i < data.length; i++){
+            if(data[i].getTimestamp() != 0){
+                timesDone++;
+            }
+        }
         Log.i(TAG, action+" was done "+timesDone+" times");
         if(timesDone > (currentBadge*6)){
             //the user has earned a new badge
@@ -281,7 +249,13 @@ public class MainActivity extends FragmentActivity {
      */
     public boolean checkLowUse(String action){
         //get the number of times the given action has been logged in the last seven days
-        int timesDone = dh.getNumberOf(action, 7);
+        int timesDone = 0;
+        DataPoint[] data = dh.getNumberOf(action, 7, 0);
+        for (int i = 0; i < data.length; i++){
+            if(data[i].getTimestamp() != 0){
+                timesDone++;
+            }
+        }
         return (timesDone < 4);
     }
 
@@ -313,4 +287,57 @@ public class MainActivity extends FragmentActivity {
             Log.i(TAG, "resetting the score and count of times logged as a week has passed");
         }
     }
+
+    /** Adapter for the page fragments
+     */
+    public class DemoCollectionPagerAdapter extends FragmentPagerAdapter {
+        public DemoCollectionPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int i) {
+            Fragment fragment;
+
+            switch (i){
+                case 0:
+                    fragment = new Score();
+                    break;
+                case 1:
+                    fragment = new Graph();
+                    break;
+                case 2:
+                    fragment = new Badges();
+                    break;
+                default:
+                    fragment = new Score();
+            }
+
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            String title;
+
+            switch (position){
+                case 0:
+                    title = "Log Activities";
+                    break;
+                case 1:
+                    title = "See your Progress";
+                    break;
+                default:
+                    title = "Badge Gallery";
+            }
+
+            return title;
+        }
+    }
+
 }

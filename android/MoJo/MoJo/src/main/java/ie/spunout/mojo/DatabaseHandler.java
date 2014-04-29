@@ -151,39 +151,66 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     /**
-     * Gets the number of actions in the past days days.
+     * Gets the number of actions between the specified days in the past e.g.
+     * bigger=10, smaller=3 returns a datapoint for each day that an activity was logged
+     * between three days ago and ten days ago.
      *
      * @param action - the action you're looking for (e.g. eat, sleep, dance, fight)
-     * @param days - the number of days in the past you want to look at
+     * @param bigger - the farther back number of days to include in the range
+     * @param smaller - the closer number of days to include in the range
      *
-     * @return the number of times action has happened in the past days
+     * @return an array of data points, one for each day in which the activity was logged.
      */
-    public int getNumberOf(String action, long days){
-        long millisperday = 86400000;//1000*60*60*24
-        int count = 0;
+    public DataPoint[] getNumberOf(String action, long bigger, long smaller){
+        long millisperday = 86400000;                       //1000*60*60*24
         Calendar cal = new GregorianCalendar();
+        DataPoint[] data = new DataPoint[(int)(bigger-smaller)];
+
         long currentTime = cal.getTimeInMillis();
         Log.i(TAG,"current time is "+currentTime);
-        Long r = currentTime - (millisperday*days);
-        String range = r.toString();
-        Log.i(TAG, "range is values greater than "+range);
+        Long timeA = currentTime - (millisperday*bigger);
+        Long timeB = currentTime - (millisperday*smaller);
+        String rangeA = timeA.toString();
+        String rangeB = timeB.toString();
+        Log.i(TAG, "range is values greater than "+rangeA+" and less than "+rangeB);
 
-        String[] args = {range};
-        String qry = "SELECT * FROM "+TABLE_MIYO+" WHERE "+action.toLowerCase()+" > 0 AND "+KEY_TIMESTAMP+" >= ?";
+        String[] args = {rangeA, rangeB};
+        String qry = "SELECT * FROM "+TABLE_MIYO+" WHERE "+action.toLowerCase()+" > 0 AND "+KEY_TIMESTAMP+" >= ? AND "+KEY_TIMESTAMP+" <= ?";
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(qry,args);
 
         Log.i(TAG,"number of items returned is "+cursor.getCount());
-        cursor.moveToFirst();
-        do{
-            //strCount = cursor.getString(cursor.getColumnIndex("COUNT(*)"));
-            count++;
-            Log.i(TAG, "cursor item "+count);
-        }while(cursor.moveToNext());
+        long current_timestamp;
+        int current_value;
+        while(cursor.moveToNext()){
+            current_timestamp = cursor.getLong(cursor.getColumnIndex(KEY_TIMESTAMP));
+            current_value = cursor.getInt(cursor.getColumnIndex(action));
+            //Log.i(TAG,"number of columns = "+cursor.getColumnCount());
+            Log.i(TAG,"the value of the activity = "+cursor.getInt(cursor.getColumnIndex(action)));
+            for(int i = 0; i < data.length; i++){
+                long beginning_of_day = timeA + (millisperday * i);
+                long end_of_day = timeB + (millisperday*(i+1));
+                Log.i(TAG, "beginning of day is "+beginning_of_day);
+                Log.i(TAG, "end of day is "+end_of_day);
+                Log.i(TAG, "current timestamp is "+current_timestamp);
+                if(current_timestamp >= beginning_of_day && current_timestamp <= end_of_day){
+                    data[i] = new DataPoint(current_timestamp, current_value);
+                    Log.i(TAG,"added "+current_value);
+                }else{
+                    //data[i] = new DataPoint(0,0);
+                    //Log.i(TAG,"added 0");
+                }
+            }
+        }
+        for(int i = 0; i < data.length; i++){
+            if(data[i] == null){
+                data[i] = new DataPoint(0 ,0);
+            }
+        }
         cursor.close();
         //count = Integer.valueOf(strCount).intValue();
-        return count;
+        return data;
     }
 
     public Long getTodayEntryOrZero(){

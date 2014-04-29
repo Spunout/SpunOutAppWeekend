@@ -1,4 +1,4 @@
-package ie.spunout.mojo;
+package ie.spunout.mojo.Fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,6 +13,9 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import ie.spunout.mojo.DataPoint;
+import ie.spunout.mojo.DatabaseHandler;
+import ie.spunout.mojo.R;
 import ie.spunout.mojo.graph.Line;
 import ie.spunout.mojo.graph.LineGraph;
 import ie.spunout.mojo.graph.LinePoint;
@@ -43,20 +46,30 @@ public class Graph extends Fragment{
         return view;
     }
 
+    /**
+     * This method draws the graph for any of the activities
+     * @param activity      the activity which the data should be for
+     */
     private void drawGraph(String activity){
-        int [] weeks = getGraphData(activity);
+        int [] points = getGraphData(activity);
+        int max = 7;
 
         Line l = new Line();
-        for (int i = 0; i < weeks.length; i++){
-            LinePoint p = new LinePoint(i, weeks[3-i]);
+        for (int i = 0; i < points.length; i++){
+            Log.i(TAG,"adding point to graph "+points[i]);
+            LinePoint p = new LinePoint(i, points[i]);
             l.addPoint(p);
+            if (points[i] >= max) max = points[i];
         }
+        //l.addPoint(new LinePoint(0,0));
+        //l.addPoint(new LinePoint(7,7));
         l.setColor(getResources().getColor(R.color.spunoutGreen));
 
         LineGraph li = (LineGraph) view.findViewById(R.id.graph);
         li.removeAllLines();
         li.addLine(l);
-        li.setRangeY(0, 7);
+        li.setRangeX(0, points.length);
+        li.setRangeY(0, max);
         li.setLineToFill(0);
     }
 
@@ -64,23 +77,30 @@ public class Graph extends Fragment{
      * this will get the data for the graph for each activity
      * @param activity      this is the label of the activity
      *                      the data should be for
+     *
+     * @return an array containing the data points for the graph
      */
     private int[] getGraphData(String activity){
         //week 0 is the most recent week
-        int[] weeks = new int[4];
+        int[] points;
         //this is the accumulative difference in values over the weeks
         int diff = 0;
         int value;
 
-        for(int i = 1; i <= weeks.length; i++){
+        DataPoint[] data = dh.getNumberOf(activity, 7, 0);
+        points = new int[data.length];
+        for (int i = 0; i < data.length; i++){
+            points[i] = data[i].getValue();
+        }
+        /*for(int i = 1; i <= points.length; i++){
             //calculate the number of times done that week
-            value = dh.getNumberOf(activity, (i*7));
-            weeks[i-1] = value - diff;
+
+            points[i-1] = value - diff;
             Log.i(TAG, activity+" for week "+i+" is "+(value-diff));
             diff = value;
-        }
+        }*/
 
-        return weeks;
+        return points;
     }
 
     private void setupButtons(){

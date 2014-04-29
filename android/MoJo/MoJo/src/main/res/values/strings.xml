@@ -6,6 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="slider_title">How are you feeling?</string>
     <string name="icons_title">What have you done today?</string>
+
     <string name="instructions_p1">Complete real life activites and log them in Miyo to gain Health Points. \n\nYour Health Points reset every week so keep coming back to enter your activities!</string>
     <string name="instructions_eat">Eat a healthy meal or drink some water</string>
     <string name="instructions_sleep">Have a good nights sleep or get a power nap</string>
@@ -20,6 +21,7 @@
     <string name="instructions_badges2">Gain any Silver Badge by completing any acitivity for 12 days in 2 weeks</string>
     <string name="instructions_badges3">Gain any Gold Badge by completing any activity for 18 days in 3 weeks</string>
     <string name="instructions_contact">Find out more about Spunout.ie by going to</string>
+
     <string name="about_link">http://spunout.ie/miyo</string>
     <string name="badge_copy">Congratulations, you\'ve unlocked a new * badge!</string>
     <string name="badge_p2_bronze">Shoot for silver. Complete \'(activity)\' 12 days in 2 weeks</string>
@@ -27,6 +29,7 @@
     <string name="level_p2">You are now on level</string>
     <string name="level_p3">Complete activites and collect Health Points points to progress in Miyo!</string>
     <string name="low_use_p1">How are you doing with your activities, Would you like some information on how to improve?</string>
+
     <string name="link_eat">spunout.ie/eatingtips</string>
     <string name="link_sleep">spunout.ie/sleepingtips</string>
     <string name="link_move">spunout.ie/movingtips</string>
@@ -35,6 +38,11 @@
     <string name="link_make">spunout.ie/makeingtips</string>
     <string name="link_play">spunout.ie/playingtips</string>
     <string name="link_connect">spunout.ie/connectingtips</string>
+
+    <string name="info_score">The first view of the app is the score page, it shows you how many points you have earned so far this week.\n\nYou can record activities to earn more points.\n\nEach time you log an activity you can use the slider to say how well you did it, the number of points earned will scale with how well you did it.\n\nThe number in the top right corner is the number of times you have logged this week.\n\nEach week the score and number of times logged will reset to give you a fresh start.</string>
+    <string name="info_graph">The graph page lets you see how well you are doing, You can see what level you have reached and your progress in each activity.\n\nYou earn levels over time, they\'re based on the total number of points you have earned, they become harder to earn the higher they get.\n\nWhen you select an activity you are shown your history for that activity in the selected time frame.</string>
+    <string name="info_badges">Badges are rewards for doing well.\n\nThere is a bronze, silver and gold badge for each activity.\n\nThey represent you building a positive habit out of each activity.\n\nYou get each badge for doing an activity more than six times per week, bronze takes one week, silver two weeks and gold three weeks.\n\nIf you earn all the badges for an activity you will have incorporated it into your routine.</string>
+
     <string-array name="spunout_links">
         <item>@string/link_eat</item>
         <item>@string/link_sleep</item>

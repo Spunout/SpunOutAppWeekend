@@ -9,7 +9,7 @@
         android:theme="@style/AppTheme" >
         <!-- Splash screen -->
         <activity
-            android:name="SplashScreen"
+            android:name=".Activities.SplashScreen"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.NoActionBar">
@@ -21,12 +21,17 @@
         </activity>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.Home"
             android:label="main"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar">
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
 
-            </activity>
-        </application>
+        <activity
+            android:name=".Activities.InfoPages"
+            android:label="info"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
+
+    </application>
 
 </manifest>
