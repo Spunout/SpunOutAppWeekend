@@ -1,6 +1,7 @@
 package ie.spunout.miyo.Fragments;
 
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,17 +18,15 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-//TODO: fix this so that we don't have to have min api lvl 19
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
+import ie.spunout.miyo.Activities.InfoPages;
 import ie.spunout.miyo.DatabaseHandler;
 import ie.spunout.miyo.Miyo;
 import ie.spunout.miyo.R;
 
-//TODO: the "EAT WELL" button icon is lighter than the other button icons
 public class Score extends Fragment {
     private View view;                          //the view activity
     private SeekBar sbar;                       //the seek bar in the view
@@ -67,6 +66,7 @@ public class Score extends Fragment {
         loadActivities();
         loadTimesLogged();
         setupSeekBar();
+        setupInfoOnClick();
 
         return view;
     }
@@ -271,6 +271,18 @@ public class Score extends Fragment {
         //get the score view items
         score = prefs.getInt("current_points", 0);
         scoreNumber.setText(String.valueOf(score));
+    }
+
+    private void setupInfoOnClick(){
+        View v = view.findViewById(R.id.info_button);
+
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), InfoPages.class);
+                startActivity(i);
+            }
+        });
     }
 
     public boolean firstOpenOfTheDay() {

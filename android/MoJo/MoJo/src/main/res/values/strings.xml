@@ -42,6 +42,8 @@
     <string name="info_score">The first view of the app is the score page, it shows you how many points you have earned so far this week.\n\nYou can record activities to earn more points.\n\nEach time you log an activity you can use the slider to say how well you did it, the number of points earned will scale with how well you did it.\n\nThe number in the top right corner is the number of times you have logged this week.\n\nEach week the score and number of times logged will reset to give you a fresh start.</string>
     <string name="info_graph">The graph page lets you see how well you are doing, You can see what level you have reached and your progress in each activity.\n\nYou earn levels over time, they\'re based on the total number of points you have earned, they become harder to earn the higher they get.\n\nWhen you select an activity you are shown your history for that activity in the selected time frame.</string>
     <string name="info_badges">Badges are rewards for doing well.\n\nThere is a bronze, silver and gold badge for each activity.\n\nThey represent you building a positive habit out of each activity.\n\nYou get each badge for doing an activity more than six times per week, bronze takes one week, silver two weeks and gold three weeks.\n\nIf you earn all the badges for an activity you will have incorporated it into your routine.</string>
+    <string name="info_get_help">For more information on health and life visit</string>
+    <string name="info_link">www.spunout.ie</string>
 
     <string-array name="spunout_links">
         <item>@string/link_eat</item>
