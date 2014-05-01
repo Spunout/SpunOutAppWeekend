@@ -185,6 +185,13 @@ static NSString *const kSODatabaseName = @"miyo.db";
             NSDateComponents *components = [calendar components:unitFlags fromDate:date toDate:lastDate options:0];
             daysBetween = [components day];
             
+            NSLog(@"Days Between: %ld", daysBetween);
+            if (daysBetween == 0 && ![date isToday])
+            {
+                daysBetween = 1;
+            }
+             NSLog(@"Days Between: %ld", daysBetween);
+            
             totalActivities = ([activity length] == 0) ? [resultSet longForColumn:@"mood"] : [resultSet longForColumn:activity];
             
             counter += daysBetween;
