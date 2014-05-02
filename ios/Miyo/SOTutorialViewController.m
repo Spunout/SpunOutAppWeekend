@@ -48,8 +48,8 @@
 
     UILabel *topText = [[UILabel alloc] init];
     topText.textColor = [UIColor whiteColor];
-    topText.font = [UIFont systemFontOfSize:16.0];
-    topText.text = @"Complete real life activites and log them in MiYo to gain Health Points.\n\nYour Health Points reset every week so keep coming back to enter your activities!";
+    topText.font = [UIFont systemFontOfSize:11.0];
+    topText.text = @"Complete real life activities and log them in MiYo to gain health points. Your health points reset every week so keep coming back to enter your activities. All points help you to increase your level and unlock content. On the activities page, chart your current and previous progress in each category with interactive graphs to show you how you've been doing over the past week, past month and all time.";
     topText.textAlignment = NSTextAlignmentCenter;
     topText.lineBreakMode = NSLineBreakByWordWrapping;
     topText.numberOfLines = 0;
@@ -103,30 +103,6 @@
     UIImageView *learnImageView = [[UIImageView alloc] init];
     learnImageView.image = [UIImage imageNamed:@"Learn-Gold"];
     learnImageView.translatesAutoresizingMaskIntoConstraints = NO;
-
-    UILabel *talkText = [[UILabel alloc] init];
-    talkText.textColor = [UIColor whiteColor];
-    talkText.text = @"Talk - Talk & connect with friends or family and get something off your chest if you need to";
-    talkText.font = [UIFont systemFontOfSize:16.0];
-    talkText.lineBreakMode = NSLineBreakByWordWrapping;
-    talkText.numberOfLines = 0;
-    talkText.translatesAutoresizingMaskIntoConstraints = NO;
-
-    UIImageView *talkImageView = [[UIImageView alloc] init];
-    talkImageView.image = [UIImage imageNamed:@"Talk-Gold"];
-    talkImageView.translatesAutoresizingMaskIntoConstraints = NO;
-
-    UILabel *makeText = [[UILabel alloc] init];
-    makeText.textColor = [UIColor whiteColor];
-    makeText.text = @"Make - Go wild! Do something artistic or creative";
-    makeText.font = [UIFont systemFontOfSize:16.0];
-    makeText.lineBreakMode = NSLineBreakByWordWrapping;
-    makeText.numberOfLines = 0;
-    makeText.translatesAutoresizingMaskIntoConstraints = NO;
-
-    UIImageView *makeImageView = [[UIImageView alloc] init];
-    makeImageView.image = [UIImage imageNamed:@"Make-Gold"];
-    makeImageView.translatesAutoresizingMaskIntoConstraints = NO;
 
     UILabel *connectText = [[UILabel alloc] init];
     connectText.textColor = [UIColor whiteColor];
@@ -202,16 +178,14 @@
     [contentView addSubview:sleepText];
     [contentView addSubview:moveText];
     [contentView addSubview:learnText];
-    [contentView addSubview:talkText];
-    [contentView addSubview:makeText];
+
     [contentView addSubview:connectText];
     [contentView addSubview:playText];
     [contentView addSubview:eatImageView];
     [contentView addSubview:sleepImageView];
     [contentView addSubview:moveImageView];
     [contentView addSubview:learnImageView];
-    [contentView addSubview:talkImageView];
-    [contentView addSubview:makeImageView];
+
     [contentView addSubview:connectImageView];
     [contentView addSubview:playImageView];
     [contentView addSubview:bronzeBadgeText];
@@ -230,10 +204,6 @@
                             @"moveImageView": moveImageView,
                             @"learnText": learnText,
                             @"learnImageView": learnImageView,
-                            @"talkText": talkText,
-                            @"talkImageView": talkImageView,
-                            @"makeText": makeText,
-                            @"makeImageView": makeImageView,
                             @"connectText": connectText,
                             @"connectImageView": connectImageView,
                             @"playText": playText,
@@ -308,25 +278,18 @@
                                                                       metrics:metrics
                                                                         views:views]];
 
-    [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[learnText]-(textSpacing)-[talkText]"
+    [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[learnText]-(textSpacing)-[connectText]"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];
 
-    [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[talkText]-(textSpacing)-[makeText]"
-                                                                      options:0
-                                                                      metrics:metrics
-                                                                        views:views]];
-
-    [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[makeText]-(textSpacing)-[connectText]"
-                                                                      options:0
-                                                                      metrics:metrics
-                                                                        views:views]];
 
     [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[connectText]-(textSpacing)-[playText]"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];
+
+
 
     [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[topText]-(textSpacing)-[eatImageView(imageSize)]"
                                                                       options:0
@@ -348,17 +311,7 @@
                                                                       metrics:metrics
                                                                         views:views]];
 
-    [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[learnText]-(textSpacing)-[talkImageView(imageSize)]"
-                                                                      options:0
-                                                                      metrics:metrics
-                                                                        views:views]];
-
-    [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[talkText]-(textSpacing)-[makeImageView(imageSize)]"
-                                                                      options:0
-                                                                      metrics:metrics
-                                                                        views:views]];
-
-    [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[makeText]-(textSpacing)-[connectImageView(imageSize)]"
+    [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[learnText]-(textSpacing)-[connectImageView(imageSize)]"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];
@@ -367,6 +320,7 @@
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];
+
 
     [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(padding)-[topText]-(padding)-|"
                                                                       options:0
@@ -393,15 +347,6 @@
                                                                       metrics:metrics
                                                                         views:views]];
 
-    [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(padding)-[talkImageView(imageSize)]-(padding)-[talkText]-(padding)-|"
-                                                                      options:0
-                                                                      metrics:metrics
-                                                                        views:views]];
-
-    [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(padding)-[makeImageView(imageSize)]-(padding)-[makeText]-(padding)-|"
-                                                                      options:0
-                                                                      metrics:metrics
-                                                                        views:views]];
 
     [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-(padding)-[connectImageView(imageSize)]-(padding)-[connectText]-(padding)-|"
                                                                       options:0
