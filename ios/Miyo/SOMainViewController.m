@@ -45,6 +45,10 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+    // register a UINotification so we know when the app returns from the background
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshButtons) name:UIApplicationWillEnterForegroundNotification object:nil];
     self.appDelegate = (SOAppDelegate *)[[UIApplication sharedApplication] delegate];
     self.view.backgroundColor = [UIColor miyoBlue];
     UIButton *tutorialButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
@@ -257,6 +261,13 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
                                           completion:nil];
     }
     
+    [self refreshButtons];
+    
+}
+
+-(void)refreshButtons
+{
+    
     NSArray *selectedActivites = [[SOMiyoDatabase sharedInstance] getLastSelectedActivites];
     
     if (selectedActivites) {
@@ -270,7 +281,7 @@ static NSString *const kButtonCollectionViewCellIdentifier = @"ButtonCollectionV
             button.selected = 0;
         }
     }
-    
+
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle
